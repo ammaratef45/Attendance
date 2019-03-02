@@ -1,0 +1,17 @@
+architect:
+  - ammaratef45
+install: |-
+  sudo gem install pdd
+  git clone https://github.com/flutter/flutter.git -b beta --depth 1
+  ./flutter/bin/flutter doctor
+merge:
+  script: |-
+    cd attendance
+    ../flutter/bin/flutter packages get
+    ../flutter/bin/flutter test
+    ../flutter/bin/flutter -v build apk
+    cd ../attendance_admin
+    ../flutter/bin/flutter packages get
+    ../flutter/bin/flutter test
+    ../flutter/bin/flutter -v build apk
+    pdd -f /dev/null -v

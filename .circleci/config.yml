@@ -6,9 +6,6 @@ jobs:
     steps:
       - checkout
       - run: flutter doctor
-      - run: cd attendance_admin && flutter packages get 
-      - run: cd attendance_admin && flutter test 
-      - run: cd attendance_admin && flutter -v build apk
       - run: cd attendance && flutter packages get 
       - run: cd attendance && flutter test 
       - run: cd attendance && flutter -v build apk

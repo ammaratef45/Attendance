@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 abstract class LoginPageViewModel extends State<LoginPage> {
    final FirebaseAuth auth = FirebaseAuth.instance;
@@ -24,6 +25,9 @@ abstract class LoginPageViewModel extends State<LoginPage> {
           timeInSecForIos: 1
       );
     } else {
+      FirebaseDatabase.instance.reference().child(user.uid).child("name").set(user.displayName);
+      FirebaseDatabase.instance.reference().child(user.uid).child("mail").set(user.email);
+      FirebaseDatabase.instance.reference().child(user.uid).child("photo").set(user.photoUrl);
       Navigator.of(context).pushReplacementNamed('/home');
     }
   }

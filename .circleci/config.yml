@@ -8,4 +8,3 @@ jobs:
       - run: flutter doctor
       - run: cd attendance && flutter packages get 
       - run: cd attendance && flutter test 
-      - run: cd attendance && flutter -v build apk

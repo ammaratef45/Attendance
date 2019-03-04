@@ -13,8 +13,25 @@ abstract class HomePageViewModel extends State<HomePage> {
   String scanResult = "";
   List<AttendModel> litems = [];
   List<AttendModel> uitems = [];
+  final auth = FirebaseAuth.instance;
+  FirebaseUser mUser;
+  String mail = "";
+  String imageUrl = "";
+  String name = "";
   HomePageViewModel() {
-    fillData();
+    auth.currentUser().then((user) {
+      mUser = user;
+      setState(() {
+        if(mUser.email!=null) mail = mUser.email;
+        if(mUser.displayName!=null) name = mUser.displayName;
+        if(mUser.photoUrl!=null) imageUrl = mUser.photoUrl;
+        fillData();
+      });
+    });
+  }
+  void signOut() {
+    auth.signOut();
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   void openDetails(AttendModel model) async {
@@ -26,12 +43,11 @@ abstract class HomePageViewModel extends State<HomePage> {
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
-      FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      String uid = user.uid;
+      String uid = mUser.uid;
       SessionModel session = SessionModel(barcode);
       DatabaseReference sessionRef = FirebaseDatabase.instance.reference().child(session.admin).child("classes")
               .child(session.classKey).child("sessions").child(session.key);
-      if(await isScanned(sessionRef, user)) {
+      if(await isScanned(sessionRef, mUser)) {
         throw new AlreadyScannedSessionException("already scanned atendance to this session");
       }
       DatabaseReference attendanceRef =  FirebaseDatabase.instance.reference().child("attendances").push();
@@ -86,8 +102,7 @@ abstract class HomePageViewModel extends State<HomePage> {
   Future fillData() async {
     litems.clear();
     uitems.clear();
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    FirebaseDatabase.instance.reference().child(user.uid).child("attended").onChildAdded.listen((event) async {
+    FirebaseDatabase.instance.reference().child(mUser.uid).child("attended").onChildAdded.listen((event) async {
       var key = event.snapshot.value;
       DatabaseReference itemRef = FirebaseDatabase.instance.reference().child("attendances").child(key);
       DataSnapshot item = await itemRef.once();

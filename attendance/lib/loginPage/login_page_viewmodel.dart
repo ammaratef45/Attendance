@@ -9,6 +9,14 @@ abstract class LoginPageViewModel extends State<LoginPage> {
    final FirebaseAuth auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = new GoogleSignIn();
 
+  LoginPageViewModel() {
+    auth.currentUser().then((user){
+      if(user !=null) {
+        handleUser(user);
+      }
+    });
+  }
+
   Future<FirebaseUser> signInUser() async {
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;

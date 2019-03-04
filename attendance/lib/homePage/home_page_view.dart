@@ -56,6 +56,36 @@ class HomePageView extends HomePageViewModel{
           ),
           title: Text("Home"),
         ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Column(
+                  children: <Widget>[
+                    new Image.network(
+                      imageUrl,
+                      width: 100.0,
+                      height: 100.0,
+                    ),
+                    new Text(name),
+                    new Text(mail),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+              ),
+              ListTile(
+                title: Text('Sign Out'),
+                onTap: () {
+                  Navigator.pop(context);
+                  signOut();
+                },
+              ),
+            ],
+          ),
+        ),
         body: TabBarView(
           children: [
             ListView.builder(

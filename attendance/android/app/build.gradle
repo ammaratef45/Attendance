@@ -41,8 +41,8 @@ android {
         applicationId "com.ammar.attendance"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 5
-        versionName "0.1.0"
+        versionCode 6
+        versionName "0.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -59,9 +59,9 @@ android {
         release {
             signingConfig signingConfigs.release
 
-            shrinkResources true
-            minifyEnabled true
-            useProguard true
+            shrinkResources false
+            minifyEnabled false
+            useProguard false
 
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

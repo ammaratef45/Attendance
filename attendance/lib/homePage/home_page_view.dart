@@ -77,6 +77,12 @@ class HomePageView extends HomePageViewModel{
                 ),
               ),
               ListTile(
+                title: Text('Offline scan'),
+                onTap: (){
+                  Navigator.of(context).pushNamed('/offline');
+                },
+              ),
+              ListTile(
                 title: Text('Sign Out'),
                 onTap: () {
                   Navigator.pop(context);

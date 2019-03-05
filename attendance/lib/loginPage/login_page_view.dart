@@ -14,9 +14,15 @@ class LoginPageView extends LoginPageViewModel {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new RaisedButton(
-              child: new Text("Sign In"),
+            RaisedButton(
+              child: Text("Sign In"),
               onPressed: ()=>signInUser().then((FirebaseUser user)=>handleUser(user)),
+              color: Colors.green,
+            ),
+            Text("Or"),
+            RaisedButton(
+              child: Text("Offline mode"),
+              onPressed: ()=>Navigator.of(context).pushNamed('/offline'),
               color: Colors.green,
             ),
           ],

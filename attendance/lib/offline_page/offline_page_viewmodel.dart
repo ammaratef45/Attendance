@@ -20,9 +20,8 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
 
   getScans() async {
     scanedList.clear();
-    await DBProvider.db.getAllScans().then((res) {
-      scanedList.addAll(res);
-      debugPrint(scanedList.toString());
+    scanedList.addAll(await DBProvider.db.getAllScans());
+    setState(() {
     });
   }
   Future scan() async {
@@ -32,9 +31,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       var now = new DateTime.now();
       Scan scan =Scan(key: session.key, classKey: session.classKey, admin: session.admin, arrive: now.toIso8601String());
       DBProvider.db.newScan(scan);
-      setState(() {
-        getScans();
-      });
+      getScans();
       this.scanResult = "Scanned Successfully";
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -60,9 +57,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       var now = new DateTime.now();
       scanedList[index].leave = now.toIso8601String();
       DBProvider.db.addLeave(scanedList[index]);
-      setState(() {
-        getScans();
-      });
+      getScans();
       this.scanResult = "Scanned Successfully";
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -80,5 +75,10 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       setState(() => this.scanResult = 'Unknown error: $e');
     }
     showMessageDialog("scan", this.scanResult);
+  }
+
+  deleteItem(int index) {
+    DBProvider.db.deleteScan(scanedList[index].id);
+    getScans();
   }
 }

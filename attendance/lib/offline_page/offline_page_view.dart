@@ -16,6 +16,9 @@ class OfflinePageView extends OfflinePageViewModel {
               child: new Text("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
+                setState(() {
+                  
+                });
               },
             ),
           ],
@@ -41,25 +44,31 @@ class OfflinePageView extends OfflinePageViewModel {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      scanedList[index].arriveTimePart(),
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white
+                    Flexible(
+                      child: Text(
+                        scanedList[index].arriveTimePart(),
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.white
+                        ),
                       ),
                     ),
-                    Visibility(
-                      child: RaisedButton(
-                        child: Text("Leave"),
-                        onPressed: (){
-                          scanLeave(index);
-                        },
+                    Flexible(
+                      child: Visibility(
+                        child: RaisedButton(
+                          child: Text("Leave"),
+                          onPressed: (){
+                            scanLeave(index);
+                          },
+                        ),
+                        visible: scanedList[index].leave==null,
                       ),
-                      visible: scanedList[index].leave==null,
                     ),
-                    Visibility(
-                      child: Text(scanedList[index].leaveTimePart()),
-                      visible: scanedList[index].leave!=null,
+                    Flexible(
+                      child: Visibility(
+                        child: Text(scanedList[index].leaveTimePart()),
+                        visible: scanedList[index].leave!=null,
+                      ),
                     ),
                   ],
                 ),
@@ -68,7 +77,7 @@ class OfflinePageView extends OfflinePageViewModel {
                   children: <Widget>[
                     RaisedButton(
                       child: Text("Delete"),
-                      onPressed: null,
+                      onPressed: ()=>deleteItem(index),
                     ),
                     RaisedButton(
                       child: Text("Test"),

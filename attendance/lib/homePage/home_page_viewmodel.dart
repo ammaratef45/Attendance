@@ -9,6 +9,7 @@ import '../model/session_model.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import '../scan_exceptions.dart';
 
+
 abstract class HomePageViewModel extends State<HomePage> {
   String scanResult = "";
   List<AttendModel> litems = [];

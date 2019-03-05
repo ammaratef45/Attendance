@@ -10,14 +10,28 @@ import '../scan_exceptions.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 abstract class OfflinePageViewModel extends State<OfflinePage> {
   String scanResult;
   List<Scan> scanedList=[];
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser mUser;
-
+  BannerAd myBanner = BannerAd(
+    adUnitId: "ca-app-pub-5308838739950508/3820629006",
+    size: AdSize.smartBanner,
+    listener: (MobileAdEvent event) {
+      print("BannerAd event is $event");
+    },
+  );
   OfflinePageViewModel() {
+    FirebaseAdMob.instance.initialize(appId: "ca-app-pub-5308838739950508~2647148134");
+    myBanner
+      ..load()
+      ..show(
+        anchorOffset: 60.0,
+        anchorType: AnchorType.bottom,
+      );
     getScans();
   }
 

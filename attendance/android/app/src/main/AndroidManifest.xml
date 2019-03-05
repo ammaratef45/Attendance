@@ -16,6 +16,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="attendance"
         android:icon="@mipmap/launcher_icon">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5308838739950508~2647148134"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

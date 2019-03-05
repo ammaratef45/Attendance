@@ -7,10 +7,15 @@ import '../model/session_model.dart';
 import '../model/scan_model.dart';
 import '../DB/Database.dart';
 import '../scan_exceptions.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class OfflinePageViewModel extends State<OfflinePage> {
   String scanResult;
   List<Scan> scanedList=[];
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseUser mUser;
 
   OfflinePageViewModel() {
     getScans();
@@ -81,4 +86,66 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     DBProvider.db.deleteScan(scanedList[index].id);
     getScans();
   }
+
+  testConnection() async {
+    String message = "You are not connected to internet";
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      message = "You are connected to mobile data";
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      message = "You are connected to wifi";
+    }
+    showMessageDialog("test", message);
+  }
+
+  registerMe(int index) async {
+    String message = "";
+    if(!(await isLoggedIn())) {
+      message = "Not loggedin, login first";
+    } else if(await isScanned(index)) {
+      message = "You already registered this session, Delete this record";
+    } else {
+      DatabaseReference attendanceRef =  FirebaseDatabase.instance.reference().child("attendances").push();
+      DatabaseReference sessionRef = FirebaseDatabase.instance.reference().child(scanedList[index].admin).child("classes")
+              .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);
+      await attendanceRef.set({
+        "session": scanedList[index].key,
+        "sessionClass": scanedList[index].classKey,
+        "sessionAdmin": scanedList[index].admin,
+        "user": mUser.uid,
+        "arriveTime": scanedList[index].arrive,
+        "leaveTime": scanedList[index].leave==null?"NULL":scanedList[index].leave
+      });
+      sessionRef.child("attended").push().set(attendanceRef.key);
+      await FirebaseDatabase.instance.reference().child(mUser.uid).child("attended").push().set(attendanceRef.key);
+      DBProvider.db.deleteScan(scanedList[index].id);
+      message = "Synced with the cloud successfully";
+      getScans();
+    }
+    showMessageDialog("result", message);
+  }
+
+  Future<bool> isLoggedIn() async {
+    mUser = await auth.currentUser();
+    return mUser!=null;
+  }
+
+  Future<bool> isScanned(int index) async {
+    DatabaseReference session = FirebaseDatabase.instance.reference().child(scanedList[index].admin).child("classes")
+              .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);
+    DataSnapshot attendencies = await session.child("attended").once();
+    Map<dynamic, dynamic> value = attendencies.value;
+    if(value==null || value.isEmpty) return false;
+    for(var key in value.keys) {
+      DataSnapshot ref = await FirebaseDatabase.instance.reference().child("attendances").child(value[key]).once();
+      if(ref.value["user"] == mUser.uid) {
+        debugPrint(mUser.uid);
+        debugPrint(ref.value["user"]);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  
 }

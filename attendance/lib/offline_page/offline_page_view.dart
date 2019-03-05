@@ -81,11 +81,11 @@ class OfflinePageView extends OfflinePageViewModel {
                     ),
                     RaisedButton(
                       child: Text("Test"),
-                      onPressed: null,
+                      onPressed: testConnection,
                     ),
                     RaisedButton(
                       child: Text("Register"),
-                      onPressed: null,
+                      onPressed: ()=>registerMe(index),
                     ),
                   ],
                 ),

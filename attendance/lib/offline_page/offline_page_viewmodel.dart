@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../model/session_model.dart';
 import '../model/scan_model.dart';
 import '../DB/Database.dart';
+import '../scan_exceptions.dart';
 
 abstract class OfflinePageViewModel extends State<OfflinePage> {
   String scanResult;
@@ -45,6 +46,36 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       }
     } on FormatException{
       setState(() => this.scanResult = 'Scan cancelled');
+    } catch (e) {
+      setState(() => this.scanResult = 'Unknown error: $e');
+    }
+    showMessageDialog("scan", this.scanResult);
+  }
+
+  Future scanLeave(int index) async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      SessionModel session = SessionModel(barcode);
+      if(session.key!=scanedList[index].key) throw InvalidSessionException("This is not the same session you attended");
+      var now = new DateTime.now();
+      scanedList[index].leave = now.toIso8601String();
+      DBProvider.db.addLeave(scanedList[index]);
+      setState(() {
+        getScans();
+      });
+      this.scanResult = "Scanned Successfully";
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          this.scanResult = 'You did not grant the camera permission!';
+        });
+      } else {
+        setState(() => this.scanResult = 'Unknown error: $e');
+      }
+    } on FormatException{
+      setState(() => this.scanResult = 'Scan cancelled');
+    } on InvalidSessionException {
+      setState(() => this.scanResult = "This is not the same session you attended");
     } catch (e) {
       setState(() => this.scanResult = 'Unknown error: $e');
     }

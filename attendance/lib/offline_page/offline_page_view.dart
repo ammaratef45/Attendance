@@ -36,25 +36,49 @@ class OfflinePageView extends OfflinePageViewModel {
           child: Container(
             decoration: BoxDecoration(color: Colors.blue),
             alignment: Alignment(0, 0),
-            child: Row(
+            child: Column(
               children: <Widget>[
-                Text(
-                  scanedList[index].toString(),
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      scanedList[index].arriveTimePart(),
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white
+                      ),
+                    ),
+                    Visibility(
+                      child: RaisedButton(
+                        child: Text("Leave"),
+                        onPressed: (){
+                          scanLeave(index);
+                        },
+                      ),
+                      visible: scanedList[index].leave==null,
+                    ),
+                    Visibility(
+                      child: Text(scanedList[index].leaveTimePart()),
+                      visible: scanedList[index].leave!=null,
+                    ),
+                  ],
                 ),
-                RaisedButton(
-                  child: Text("Leave"),
-                  onPressed: null,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 2.0),
-                ),
-                RaisedButton(
-                  child: Text("Done"),
-                  onPressed: null,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text("Delete"),
+                      onPressed: null,
+                    ),
+                    RaisedButton(
+                      child: Text("Test"),
+                      onPressed: null,
+                    ),
+                    RaisedButton(
+                      child: Text("Register"),
+                      onPressed: null,
+                    ),
+                  ],
                 ),
               ],
             )

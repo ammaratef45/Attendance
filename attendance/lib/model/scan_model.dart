@@ -23,4 +23,28 @@ class Scan {
         arrive: json["arrive"],
         leave: json["leave"]
       );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "key": key,
+        "classKey": classKey,
+        "admin": admin,
+        "arrive": arrive,
+        "leave": leave
+      };
+
+  String arriveTimePart() {
+    List<String> datetime = arrive.split("T");
+    List<String> dateParts =datetime[0].split("-");
+    List<String> timeParts =datetime[1].split(":");
+    return "${dateParts[2]}/${dateParts[1]} at ${timeParts[0]}:${timeParts[1]}";
+  }
+
+  String leaveTimePart() {
+    if(leave==null) return "";
+    List<String> datetime = leave.split("T");
+    List<String> dateParts =datetime[0].split("-");
+    List<String> timeParts =datetime[1].split(":");
+    return "${dateParts[2]}/${dateParts[1]} at ${timeParts[0]}:${timeParts[1]}";
+  }
 }

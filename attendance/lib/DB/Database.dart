@@ -58,6 +58,20 @@ class DBProvider {
     return list;
   }
 
+  addLeave(Scan scan) async {
+    final db = await database;
+    Scan edited = Scan(
+        id: scan.id,
+        key: scan.key,
+        classKey: scan.classKey,
+        admin: scan.admin,
+        arrive: scan.arrive,
+        leave: scan.leave);
+    var res = await db.update("Scan", edited.toMap(),
+        where: "id = ?", whereArgs: [scan.id]);
+    return res;
+  }
+
   deleteScan(int id) async {
     final db = await database;
     return db.delete("Scan", where: "id = ?", whereArgs: [id]);

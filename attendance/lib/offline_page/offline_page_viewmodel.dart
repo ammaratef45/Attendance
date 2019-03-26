@@ -13,7 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
 abstract class OfflinePageViewModel extends State<OfflinePage> {
-  String scanResult;
+  String scanResult = 'Scan Error: Make sure you\'re scanning the right code';
   List<Scan> scanedList=[];
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser mUser;
@@ -61,9 +61,9 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
         setState(() => this.scanResult = 'Unknown error: $e');
       }
     } on FormatException{
-      setState(() => this.scanResult = 'Scan cancelled');
+      setState(() => print('Scan Cancelled'));
     } catch (e) {
-      setState(() => this.scanResult = 'Unknown error: $e');
+      setState(() => print('Unknown error: $e'));
     }
     showMessageDialog("scan", this.scanResult);
   }

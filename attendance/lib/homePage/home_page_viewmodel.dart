@@ -11,7 +11,7 @@ import '../scan_exceptions.dart';
 
 
 abstract class HomePageViewModel extends State<HomePage> {
-  String scanResult = "";
+  String scanResult = 'Scan Error: Make sure you\'re scanning the right code';
   List<AttendModel> litems = [];
   List<AttendModel> uitems = [];
   final auth = FirebaseAuth.instance;
@@ -75,13 +75,13 @@ abstract class HomePageViewModel extends State<HomePage> {
         setState(() => this.scanResult = 'Unknown error: $e');
       }
     } on FormatException{
-      setState(() => this.scanResult = 'Scan cancelled');
+      setState(() => print('Scan Cancelled'));
     } on AlreadyScannedSessionException catch(e){
       setState(() {
         this.scanResult = e.cause;
       });
     } catch (e) {
-      setState(() => this.scanResult = 'Unknown error: $e');
+      setState(() => print('Unknown error: $e'));
     }
   }
 

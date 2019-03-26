@@ -11,7 +11,7 @@ import '../scan_exceptions.dart';
 
 
 abstract class HomePageViewModel extends State<HomePage> {
-  String scanResult = 'Scan Error: Make sure you\'re scanning the right code';
+  String scanResult = "Scan Error: Make sure you're scanning the right code";
   List<AttendModel> litems = [];
   List<AttendModel> uitems = [];
   final auth = FirebaseAuth.instance;

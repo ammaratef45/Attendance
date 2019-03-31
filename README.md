@@ -4,6 +4,7 @@
 
 [![PDD status](http://www.0pdd.com/svg?name=ammaratef45/Attendance)](http://www.0pdd.com/p?name=ammaratef45/Attendance)
 [![CircleCI](https://circleci.com/gh/ammaratef45/Attendance/tree/master.svg?style=svg)](https://circleci.com/gh/ammaratef45/Attendance/tree/master)
+[![Codemagic build status](https://api.codemagic.io/apps/5ca0a581581a2d000dec8080/5ca0a581581a2d000dec807f/status_badge.svg)](https://codemagic.io/apps/5ca0a581581a2d000dec8080/5ca0a581581a2d000dec807f/latest_build)
 
 # Attendance
 Hello! 

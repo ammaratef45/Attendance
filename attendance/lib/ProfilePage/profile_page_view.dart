@@ -144,7 +144,9 @@ class ProfilePageView extends ProfilePageViewModel {
                       data: ThemeData(hintColor: Colors.lightBlueAccent),
                       child: TextField(
                         controller: controller,
-                        onChanged: (text) => print("First text field: $text"),
+                        onChanged: (text) {
+                          //TODO: Update..
+                        },
                         keyboardType: type == InputType.NUMBER
                             ? TextInputType.number
                             : TextInputType.text,

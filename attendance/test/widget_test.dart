@@ -10,11 +10,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:attendance/main.dart';
 
-
-/*
-* @todo #1:100m/DEV learn how to use test and write unit tests
-*/
-
 void main() {
   /*testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.

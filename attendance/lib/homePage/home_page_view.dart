@@ -72,6 +72,10 @@ class HomePageView extends HomePageViewModel {
                   ListTile(
                     leading: Icon(Icons.account_circle),
                     title: Text('Profile'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed('/profile');
+                    },
                   ),
                   Divider(),
                   ListTile(

@@ -29,18 +29,14 @@ If you are willing to [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xcli
 
 # Ho to contribute
 
-## installation
-- Install Flutter
-- Switch to dev channel flutter channel dev
-- Upgrade flutter flutter upgrade
-- Run tests flutter test
-- Run app flutter run
 
-You can use docker image ammaratef45/flutter:latest
+## Installation ##
 
-## Install RVM (for pdd)
-- `curl -sSL https://get.rvm.io | bash -s stable --ruby`
-- `gem install pdd`
+  - Install [Android Studio](https://developer.android.com/studio) for building Android.
+  - Install [xCode](https://developer.apple.com/xcode/) for building iOS.
+  - Install Flutter, See [Getting Started with Flutter](#getting-started-with-flutter).
+  - Install PDD, [More about PDD here](https://github.com/yegor256/0pdd).
+  - We prefer using [VSCode](https://code.visualstudio.com/)
 
 ## Fingerprint
 To be able to use our firebase auth service, we must allow you.

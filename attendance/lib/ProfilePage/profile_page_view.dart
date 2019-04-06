@@ -19,7 +19,6 @@ class ProfilePageView extends ProfilePageViewModel {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    print("PRESSED");
                     Navigator.pop(context);
                   }),
               margin: EdgeInsets.only(top: 35.0, left: 8.0),
@@ -189,7 +188,11 @@ class ProfilePageView extends ProfilePageViewModel {
                             "Save",
                             style: TextStyle(color: Colors.lightBlueAccent),
                           ),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            // @todo #21 Send data entered in dialog (native name/phone number)to API
+
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0))))
                 ],

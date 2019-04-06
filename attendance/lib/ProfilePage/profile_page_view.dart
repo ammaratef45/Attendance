@@ -11,9 +11,25 @@ class ProfilePageView extends ProfilePageViewModel {
               child: Container(color: Colors.lightBlueAccent.withOpacity(0.5)),
               clipper: ClipPainter(),
             ),
+            Container(
+              child: IconButton(
+                  iconSize: 30.0,
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    print("PRESSED");
+                    Navigator.pop(context);
+                  }),
+              margin: EdgeInsets.only(top: 35.0, left: 8.0),
+            ),
             Positioned(
                 width: 350.0,
-                top: MediaQuery.of(context).size.height / 5,
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 5,
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -22,8 +38,10 @@ class ProfilePageView extends ProfilePageViewModel {
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             image: DecorationImage(
-                                image: NetworkImage(imageUrl), fit: BoxFit.cover),
-                            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                                image: NetworkImage(imageUrl),
+                                fit: BoxFit.cover),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(75.0)),
                             boxShadow: [
                               BoxShadow(blurRadius: 3.0, color: Colors.black)
                             ])),
@@ -86,11 +104,12 @@ class ProfilePageView extends ProfilePageViewModel {
                                       style:
                                       TextStyle(color: Colors.lightBlueAccent),
                                     ),
-                                    onPressed: () => popupEditDialog(
-                                        nativeNameController,
-                                        20,
-                                        InputType.TEXT,
-                                        TextDirection.RTL),
+                                    onPressed: () =>
+                                        popupEditDialog(
+                                            nativeNameController,
+                                            20,
+                                            InputType.TEXT,
+                                            TextDirection.RTL),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                         BorderRadius.circular(20.0)))),
@@ -108,11 +127,12 @@ class ProfilePageView extends ProfilePageViewModel {
                                       style:
                                       TextStyle(color: Colors.lightBlueAccent),
                                     ),
-                                    onPressed: () => popupEditDialog(
-                                        phoneNumberController,
-                                        11,
-                                        InputType.NUMBER,
-                                        TextDirection.LTR),
+                                    onPressed: () =>
+                                        popupEditDialog(
+                                            phoneNumberController,
+                                            11,
+                                            InputType.NUMBER,
+                                            TextDirection.LTR),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                         BorderRadius.circular(20.0)))),

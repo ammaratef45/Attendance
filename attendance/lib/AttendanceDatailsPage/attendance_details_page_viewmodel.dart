@@ -46,7 +46,7 @@ abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPag
       SessionModel session = SessionModel(barcode);
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
       String uid = user.uid;
-      DatabaseReference attendanceRef =  await FirebaseDatabase.instance.reference().child("attendances").child(model.key);
+      DatabaseReference attendanceRef = FirebaseDatabase.instance.reference().child("attendances").child(model.key);
       DataSnapshot oldModel = await attendanceRef.once();
       if(oldModel.value["session"] != session.key) throw InvalidSessionException("this is not the same session code");
       var now = new DateTime.now();
@@ -82,10 +82,6 @@ abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPag
     } catch (e) {
       setState(() => this.scanResult = 'Unknown error: $e');
     }
-  }
-
-  bool ismySession(SessionModel session) {
-    
   }
 
 }

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import '../model/session_model.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import '../scan_exceptions.dart';
+import 'dart:async';
 
 
 abstract class HomePageViewModel extends State<HomePage> {

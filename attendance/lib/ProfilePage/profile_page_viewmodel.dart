@@ -1,3 +1,4 @@
+import 'package:attendance/BackEnd/user.dart';
 import 'package:attendance/ProfilePage/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,6 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
   FirebaseUser mUser;
   String imageUrl = "";
   String name = "";
-  String nativeName = "";
-  String phoneNumber = "";
   final nativeNameController = TextEditingController();
   final phoneNumberController = TextEditingController();
 
@@ -37,12 +36,12 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
   }
 
   _updateNativeName() {
-    nativeName = nativeNameController.text;
+    User.instance().rename(nativeNameController.text);
     print("Native name is: : ${nativeNameController.text}");
   }
 
   _updatephoneNumber() {
-    phoneNumber = phoneNumberController.text;
+    User.instance().changePhone(phoneNumberController.text);
     print("Native name is: : ${phoneNumberController.text}");
   }
 }

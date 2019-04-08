@@ -1,3 +1,4 @@
+import 'package:attendance/BackEnd/user.dart';
 import 'package:attendance/ProfilePage/profile_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
@@ -64,7 +65,7 @@ class ProfilePageView extends ProfilePageViewModel {
                               child: Text(
                                 nativeNameController.text.isEmpty
                                     ? "Native name (Arabic)"
-                                    : nativeName,
+                                    : User.instance().nativeName,
                                 style: TextStyle(
                                     fontSize: 17.0,
                                     fontStyle: FontStyle.italic,
@@ -77,7 +78,7 @@ class ProfilePageView extends ProfilePageViewModel {
                               child: Text(
                                 phoneNumberController.text.isEmpty
                                     ? "+20 " + "1xxxxxxxxxxx"
-                                    : "+20 " + phoneNumber,
+                                    : "+20 " + User.instance().phone,
                                 style: TextStyle(
                                     fontSize: 17.0,
                                     fontStyle: FontStyle.italic,
@@ -164,7 +165,6 @@ class ProfilePageView extends ProfilePageViewModel {
                       child: TextField(
                         controller: controller,
                         onChanged: (text) {
-                          // @todo #21 Update..
                         },
                         keyboardType: type == InputType.NUMBER
                             ? TextInputType.number
@@ -190,7 +190,7 @@ class ProfilePageView extends ProfilePageViewModel {
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-                            // @todo #21 Send data entered in dialog (native name/phone number)to API
+                            User.instance().save();
 
                           },
                           shape: RoundedRectangleBorder(

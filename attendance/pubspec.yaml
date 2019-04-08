@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_auth: 0.5.8
+  http: 0.12.0+1
   google_sign_in:
   fluttertoast:
   firebase_database: 1.0.3

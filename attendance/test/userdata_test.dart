@@ -9,12 +9,25 @@ void main() {
   String jsonBody =
       '{' + '"nativeName":"$perfectName",' + '"phone":"$perfectPhone"' + '}';
 
-  test('user object init correctly', () {
-    expect(testUser, isNotNull);
+  group('object inistantiation', () {
+    test('object should not be null', () {
+      expect(testUser, isNotNull);
+    });
+
+    test('singleton should not leak ', () {
+      User instance1 = new User();
+      User instance2 = new User();
+
+      expect(instance1.hashCode, equals(instance2.hashCode));
+    });
   });
 
   group('Rename', () {
     test('should has no default values', () {
+      expect(testUser.nativeName, isNull);
+    });
+
+    test('should accept empty string', () {
       testUser.rename('');
 
       expect(testUser.nativeName, isEmpty);
@@ -26,7 +39,16 @@ void main() {
       expect(testUser.nativeName, 'someName');
     });
 
-    test('should be no longer than 20 chars', () {
+    test('should reject names longer than 20 chars', () {
+      testUser.rename('This is a very long name');
+      bool isFit;
+      testUser.nativeName.length < 21 ? isFit = true : isFit = false;
+
+      expect(isFit, true);
+    });
+
+    test('should accept names shorter than 21 chars', () {
+      testUser.rename(perfectName);
       bool isFit;
       testUser.nativeName.length < 21 ? isFit = true : isFit = false;
 
@@ -36,12 +58,25 @@ void main() {
 
   group('changePhone', () {
     test('should has no default values', () {
+      expect(testUser.phone, isNull);
+    });
+    test('should accept empty string', () {
       testUser.changePhone('');
 
       expect(testUser.phone, isEmpty);
     });
 
-    test('should not start with leading zero ', () {
+    test('should reject numbers start with leading zero ', () {
+      testUser.changePhone('0123456789');
+      bool hasLeadingZero;
+      testUser.phone.substring(0, 1) != '0'
+          ? hasLeadingZero = false
+          : hasLeadingZero = true;
+
+      expect(hasLeadingZero, false);
+    });
+
+    test('should accept numbers start with non-leading zero ', () {
       testUser.changePhone(perfectPhone);
       bool hasLeadingZero;
       testUser.phone.substring(0, 1) != '0'
@@ -51,7 +86,21 @@ void main() {
       expect(hasLeadingZero, false);
     });
 
-    test('should not start with country code ', () {
+    test('should reject numbers start with country code ', () {
+      testUser.changePhone('+2012345678');
+      bool hasCountryCode;
+      testUser.phone.substring(0, 1) != '+'
+          ? hasCountryCode = false
+          : hasCountryCode = true;
+      testUser.phone.substring(0, 2) != '00'
+          ? hasCountryCode = false
+          : hasCountryCode = true;
+
+      expect(hasCountryCode, false);
+    });
+
+    test('should accept numbers start with no country code ', () {
+      testUser.changePhone(perfectPhone);
       bool hasCountryCode;
       testUser.phone.substring(0, 1) != '+'
           ? hasCountryCode = false
@@ -67,7 +116,16 @@ void main() {
       expect(testUser.phone, '1234567890');
     });
 
-    test('should be no longer than 10 chars', () {
+    test('should reject numbers longer than 10 chars', () {
+      testUser.changePhone('123456789123456789');
+      bool isFit;
+      testUser.phone.length < 11 ? isFit = true : isFit = false;
+
+      expect(isFit, true);
+    });
+
+    test('should accept numbers shorter than 11 chars', () {
+      testUser.changePhone(perfectPhone);
       bool isFit;
       testUser.phone.length < 11 ? isFit = true : isFit = false;
 

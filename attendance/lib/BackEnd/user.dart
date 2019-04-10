@@ -31,5 +31,8 @@ class User {
 
   // @todo #25 save the model to the API and save locally if failed to connect to the API
   void save() {}
+
+// @todo #29 validate native name and phone number format
+// @todo #30 check Singleton potential leak
   
 }

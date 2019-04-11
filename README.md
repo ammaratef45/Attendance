@@ -22,12 +22,12 @@ iOS beta version coming soon
 No stable version submitted yet!
 
 ## Donation
-We pay money to keep this app available and to keep developing it.
-Only sources of money is small ads that will be added later and it will not a bothering or heavy ads so it's not expected to save a be a lot of money.
+We pay money to keep the development wheel running and to make it always FREE for everyone. 
+The only source of money is some small Ads that will be added later. We planned them to be light-weight Ads, So we cannot really expect them to afford our work.
 
 If you are willing to [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6NJRDMCD3ET2&source=url), That will help the project.
 
-# Ho to contribute
+# How to contribute
 
 
 ## Installation ##
@@ -42,10 +42,14 @@ If you are willing to [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xcli
 To be able to use our firebase auth service, we must allow you.
 Run `keytool -exportcert -alias your-key-name -keystore /path/to/your/keystore/file -list -v` and send me the SHA-1
 
-## contribution
+## Contribution
 - Make a fork.
 - Pick an issue you want to solve, or implement a feature.
 - Run the following commands before make a PR and make sure no one fails.
+
+## Performance
+We highly encourage our contributors to benchmark their code performance using [Dart DevTools](https://flutter.github.io/devtools/).
+
 ```
 flutter packages get
 flutter test

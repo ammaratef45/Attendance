@@ -42,14 +42,13 @@ If you are willing to [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xcli
 To be able to use our firebase auth service, we must allow you.
 Run `keytool -exportcert -alias your-key-name -keystore /path/to/your/keystore/file -list -v` and send me the SHA-1
 
+## Performance
+We highly encourage our contributors to benchmark their code performance using [Dart DevTools](https://flutter.github.io/devtools/).
+
 ## Contribution
 - Make a fork.
 - Pick an issue you want to solve, or implement a feature.
 - Run the following commands before make a PR and make sure no one fails.
-
-## Performance
-We highly encourage our contributors to benchmark their code performance using [Dart DevTools](https://flutter.github.io/devtools/).
-
 ```
 flutter packages get
 flutter test

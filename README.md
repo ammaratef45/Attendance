@@ -22,7 +22,7 @@ iOS beta version coming soon
 No stable version submitted yet!
 
 ## Donation
-We pay money to keep the development wheel running and to make it always FREE for everyone. 
+We pay money to keep the development wheel running and to make the App always FREE for everyone. 
 The only source of money is some small Ads that will be added later. We planned them to be light-weight Ads, So we cannot really expect them to afford our work.
 
 If you are willing to [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6NJRDMCD3ET2&source=url), That will help the project.

@@ -65,7 +65,9 @@ class ProfilePageView extends ProfilePageViewModel {
                               child: Text(
                                 nativeNameController.text.isEmpty
                                     ? "Native name (Arabic)"
-                                    : User.instance().nativeName,
+                                    : User
+                                    .instance()
+                                    .nativeName,
                                 style: TextStyle(
                                     fontSize: 17.0,
                                     fontStyle: FontStyle.italic,
@@ -78,7 +80,9 @@ class ProfilePageView extends ProfilePageViewModel {
                               child: Text(
                                 phoneNumberController.text.isEmpty
                                     ? "+20 " + "1xxxxxxxxxxx"
-                                    : "+20 " + User.instance().phone,
+                                    : "+20 " + User
+                                    .instance()
+                                    .phone,
                                 style: TextStyle(
                                     fontSize: 17.0,
                                     fontStyle: FontStyle.italic,
@@ -164,8 +168,7 @@ class ProfilePageView extends ProfilePageViewModel {
                       data: ThemeData(hintColor: Colors.lightBlueAccent),
                       child: TextField(
                         controller: controller,
-                        onChanged: (text) {
-                        },
+                        onChanged: (text) {},
                         keyboardType: type == InputType.NUMBER
                             ? TextInputType.number
                             : TextInputType.text,
@@ -191,7 +194,6 @@ class ProfilePageView extends ProfilePageViewModel {
                           onPressed: () {
                             Navigator.pop(context);
                             User.instance().save();
-
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0))))

@@ -41,20 +41,17 @@ void main() {
       expect(testUser.nativeName, 'someName');
     });
 
-    /*test('should reject names longer than 20 chars', () {
+    test('should reject names longer than 20 chars', () {
+      testUser.rename('');
       testUser.rename('This is a very long name');
-      bool isFit;
-      testUser.nativeName.length < 21 ? isFit = true : isFit = false;
 
-      expect(isFit, true);
-    });*/
+      expect(testUser.nativeName, isEmpty);
+    });
 
     test('should accept names shorter than 21 chars', () {
       testUser.rename(perfectName);
-      bool isFit;
-      testUser.nativeName.length < 21 ? isFit = true : isFit = false;
 
-      expect(isFit, true);
+      expect(testUser.nativeName, perfectName);
     });
   });
 
@@ -68,70 +65,46 @@ void main() {
       expect(testUser.phone, isEmpty);
     });
 
-    /* test('should reject numbers start with leading zero ', () {
+    test('should reject numbers start with leading zero ', () {
       testUser.changePhone('0123456789');
-      bool hasLeadingZero;
-      testUser.phone.substring(0, 1) != '0'
-          ? hasLeadingZero = false
-          : hasLeadingZero = true;
 
-      expect(hasLeadingZero, false);
-    });*/
+      expect(testUser.phone, isEmpty);
+    });
 
     test('should accept numbers start with non-leading zero ', () {
       testUser.changePhone(perfectPhone);
-      bool hasLeadingZero;
-      testUser.phone.substring(0, 1) != '0'
-          ? hasLeadingZero = false
-          : hasLeadingZero = true;
 
-      expect(hasLeadingZero, false);
+      expect(testUser.phone, perfectPhone);
     });
 
-    /* test('should reject numbers start with country code ', () {
+    test('should reject numbers start with country code ', () {
+      testUser.changePhone('');
       testUser.changePhone('+2012345678');
-      bool hasCountryCode;
-      testUser.phone.substring(0, 1) != '+'
-          ? hasCountryCode = false
-          : hasCountryCode = true;
-      testUser.phone.substring(0, 2) != '00'
-          ? hasCountryCode = false
-          : hasCountryCode = true;
 
-      expect(hasCountryCode, false);
-    });*/
+      expect(testUser.phone, isEmpty);
+    });
 
     test('should accept numbers start with no country code ', () {
       testUser.changePhone(perfectPhone);
-      bool hasCountryCode;
-      testUser.phone.substring(0, 1) != '+'
-          ? hasCountryCode = false
-          : hasCountryCode = true;
-      testUser.phone.substring(0, 2) != '00'
-          ? hasCountryCode = false
-          : hasCountryCode = true;
 
-      expect(hasCountryCode, false);
+      expect(testUser.phone, perfectPhone);
     });
 
     test('should be matched ', () {
       expect(testUser.phone, '1234567890');
     });
 
-    /*test('should reject numbers longer than 10 chars', () {
+    test('should reject numbers longer than 10 chars', () {
+      testUser.changePhone('');
       testUser.changePhone('123456789123456789');
-      bool isFit;
-      testUser.phone.length < 11 ? isFit = true : isFit = false;
 
-      expect(isFit, true);
-    });*/
+      expect(testUser.phone, isEmpty);
+    });
 
     test('should accept numbers shorter than 11 chars', () {
       testUser.changePhone(perfectPhone);
-      bool isFit;
-      testUser.phone.length < 11 ? isFit = true : isFit = false;
 
-      expect(isFit, true);
+      expect(testUser.phone, perfectPhone);
     });
   });
 

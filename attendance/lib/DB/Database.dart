@@ -15,16 +15,18 @@ class DBProvider {
   Database _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) {
+      return _database;
+    }
     // if _database is null we instantiate it
     _database = await initDB();
     return _database;
   }
 
-  initDB() async {
+  Future<Database> initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "TestDB.db");
-    return await openDatabase(path, version: 1, onOpen: (db) {},
+    return await openDatabase(path, version: 1, onOpen: (Database db) {},
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE Scan ("
           "id INTEGER PRIMARY KEY,"
@@ -37,29 +39,35 @@ class DBProvider {
     });
   }
 
-  newScan(Scan newScan) async {
-    final db = await database;
+  Future<int> newScan(Scan newScan) async {
+    final Database db = await database;
     //get the biggest id in the table
-    var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Scan");
+    List<Map<String, dynamic>> table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Scan");
     int id = table.first["id"];
     //insert to the table using the new id
-    var raw = await db.rawInsert(
+    List<dynamic> values = List<dynamic>(5);
+    values.add(id);
+    values.add(newScan.key);
+    values.add(newScan.classKey);
+    values.add(newScan.admin);
+    values.add(newScan.arrive);
+    int raw = await db.rawInsert(
         "INSERT Into Scan (id,key,classKey,admin,arrive)"
         " VALUES (?,?,?,?,?)",
-        [id, newScan.key, newScan.classKey, newScan.admin, newScan.arrive]);
+        values);
     return raw;
   }
 
   Future<List<Scan>> getAllScans() async {
-    final db = await database;
-    var res = await db.query("Scan");
+    final Database db = await database;
+    List<Map<String, dynamic>> res = await db.query("Scan");
     List<Scan> list =
-        res.isNotEmpty ? res.map((c) => Scan.fromMap(c)).toList() : [];
+        res.isNotEmpty ? res.map((Map<String, dynamic>c) => Scan.fromMap(c)).toList() : List<Scan>();
     return list;
   }
 
-  addLeave(Scan scan) async {
-    final db = await database;
+  Future<int> addLeave(Scan scan) async {
+    final Database db = await database;
     Scan edited = Scan(
         id: scan.id,
         key: scan.key,
@@ -67,18 +75,21 @@ class DBProvider {
         admin: scan.admin,
         arrive: scan.arrive,
         leave: scan.leave);
-    var res = await db.update("Scan", edited.toMap(),
-        where: "id = ?", whereArgs: [scan.id]);
+    List<dynamic> args = List<dynamic>(1);
+    args.add(scan.id);
+    int res = await db.update("Scan", edited.toMap(),
+        where: "id = ?", whereArgs: args);
     return res;
   }
 
-  deleteScan(int id) async {
-    final db = await database;
-    return db.delete("Scan", where: "id = ?", whereArgs: [id]);
+  Future<int> deleteScan(int id) async {
+    final Database db = await database;
+    List<dynamic> args = List<dynamic>();
+    return db.delete("Scan", where: "id = ?", whereArgs: args);
   }
 
-  deleteAll() async {
-    final db = await database;
-    db.rawDelete("Delete * from Scan");
+  Future<int> deleteAll() async {
+    final Database db = await database;
+    return db.rawDelete("Delete * from Scan");
   }
 }

@@ -37,7 +37,9 @@ abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPag
     session = model.date;
     arriveDate = "Arrived: " + model.arriveDate;
     leaveDate = "Leaved: " + model.leaveDate;
-    if(model.leaveDate == "NULL") isLeaved = false;
+    if(model.leaveDate == "NULL") {
+      isLeaved = false;
+    }
   }
 
    void scan() async {
@@ -48,16 +50,18 @@ abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPag
       String uid = user.uid;
       DatabaseReference attendanceRef = FirebaseDatabase.instance.reference().child("attendances").child(model.key);
       DataSnapshot oldModel = await attendanceRef.once();
-      if(oldModel.value["session"] != session.key) throw InvalidSessionException("this is not the same session code");
-      var now = new DateTime.now();
-      await attendanceRef.set({
-        "session": session.key,
-        "sessionClass": session.classKey,
-        "sessionAdmin": session.admin,
-        "user": uid,
-        "arriveTime": model.arriveDate,
-        "leaveTime": now.toIso8601String()
-      });
+      if(oldModel.value["session"] != session.key) {
+        throw InvalidSessionException("this is not the same session code");
+      }
+      DateTime now = new DateTime.now();
+      Map<String, dynamic> map = Map<String, dynamic>();
+      map["session"] = session.key;
+      map["sessionClass"] = session.classKey;
+      map["sessionAdmin"] = session.admin;
+      map["user"] = uid;
+      map["arriveTime"] = model.arriveDate;
+      map["leaveTime"] = now.toIso8601String();
+      await attendanceRef.set(map);
       await FirebaseDatabase.instance.reference().child(uid).child("attended").push().set(attendanceRef.key);
       setState(() {
         isLeaved = true;
@@ -79,7 +83,7 @@ abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPag
       setState(() {
         this.scanResult = e.cause;
       });
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() => this.scanResult = 'Unknown error: $e');
     }
   }

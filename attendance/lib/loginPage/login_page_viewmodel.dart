@@ -11,7 +11,7 @@ abstract class LoginPageViewModel extends State<LoginPage> {
   final GoogleSignIn googleSignIn = new GoogleSignIn();
 
   LoginPageViewModel() {
-    auth.currentUser().then((user) {
+    auth.currentUser().then((FirebaseUser user) {
       if (user != null) {
         handleUser(user);
       }

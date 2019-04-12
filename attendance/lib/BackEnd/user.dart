@@ -55,9 +55,13 @@ class User {
   }
 
   String requestBody() {
-    Map body = Map();
-    if (_nativeName != null) body['nativeName'] = _nativeName;
-    if (_phone != null) body['phone'] = _phone;
+    Map<String, dynamic> body = Map<String, dynamic>();
+    if (_nativeName != null) {
+      body['nativeName'] = _nativeName;
+    }
+    if (_phone != null) {
+      body['phone'] = _phone;
+    }
     return json.encode(body);
   }
 

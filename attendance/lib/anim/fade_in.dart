@@ -22,7 +22,7 @@ class _FadeInState extends State<FadeIn> with TickerProviderStateMixin {
 
     _animController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1000));
-    final curve =
+    final CurvedAnimation curve =
         CurvedAnimation(curve: Curves.decelerate, parent: _animController);
     _animOffset =
         Tween<Offset>(begin: const Offset(0.0, 0.35), end: Offset.zero)

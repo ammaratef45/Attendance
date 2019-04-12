@@ -35,6 +35,63 @@ class HomePageView extends HomePageViewModel {
     return result;
   }
 
+  List<Tab> tabs() {
+    List<Tab> tabs = List<Tab>(3);
+    tabs.add(Tab(icon: Icon(Icons.access_time)));
+    tabs.add(Tab(icon: Icon(Icons.all_inclusive)));
+    tabs.add(Tab(icon: Icon(Icons.add_circle)));
+    return tabs;
+  }
+
+  List<Widget> bodyItems() {
+    List<Widget> widgs = List<Widget>();
+    widgs.add(
+      ListView.builder(
+        itemCount: uitems.length,
+        itemBuilder: (BuildContext ctxt, int index) =>
+          buildBody(ctxt, index, true)
+      )
+    );
+    widgs.add(
+      ListView.builder(
+        itemCount: litems.length,
+        itemBuilder: (BuildContext ctxt, int index) =>
+          buildBody(ctxt, index, false)
+      )
+    );
+    widgs.add(
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 8.0),
+              child: RaisedButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  splashColor: Colors.blueGrey,
+                  onPressed: () {
+                    scan();
+                  },
+                  child: const Text('START CAMERA SCAN')),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 8.0),
+              child: Text(
+                scanResult,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+    return widgs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -42,11 +99,7 @@ class HomePageView extends HomePageViewModel {
         child: Scaffold(
             appBar: AppBar(
               bottom: TabBar(
-                tabs: [
-                  Tab(icon: Icon(Icons.access_time)),
-                  Tab(icon: Icon(Icons.all_inclusive)),
-                  Tab(icon: Icon(Icons.add_circle)),
-                ],
+                tabs: tabs(),
               ),
               title: Text("Home"),
             ),
@@ -90,44 +143,7 @@ class HomePageView extends HomePageViewModel {
               ),
             ),
             body: TabBarView(
-              children: [
-                ListView.builder(
-                    itemCount: uitems.length,
-                    itemBuilder: (BuildContext ctxt, int index) =>
-                        buildBody(ctxt, index, true)),
-                ListView.builder(
-                    itemCount: litems.length,
-                    itemBuilder: (BuildContext ctxt, int index) =>
-                        buildBody(ctxt, index, false)),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: RaisedButton(
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            splashColor: Colors.blueGrey,
-                            onPressed: () {
-                              scan();
-                            },
-                            child: const Text('START CAMERA SCAN')),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: Text(
-                          scanResult,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              children: bodyItems(),
             )));
   }
 }

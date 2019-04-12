@@ -14,7 +14,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 
 abstract class OfflinePageViewModel extends State<OfflinePage> {
   String scanResult = "Scan Error: Make sure you're scanning the right code";
-  List<Scan> scanedList=[];
+  List<Scan> scanedList = List<Scan>();
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser mUser;
   BannerAd myBanner = BannerAd(
@@ -35,19 +35,19 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     getScans();
   }
 
-  showMessageDialog(String title, String message) {}
+  void showMessageDialog(String title, String message) {}
 
-  getScans() async {
+  void getScans() async {
     scanedList.clear();
     scanedList.addAll(await DBProvider.db.getAllScans());
     setState(() {
     });
   }
-  Future scan() async {
+  Future<void> scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
       SessionModel session = SessionModel(barcode);
-      var now = new DateTime.now();
+      DateTime now = new DateTime.now();
       Scan scan =Scan(key: session.key, classKey: session.classKey, admin: session.admin, arrive: now.toIso8601String());
       DBProvider.db.newScan(scan);
       getScans();
@@ -62,18 +62,20 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       }
     } on FormatException{
       setState(() => print('Scan Cancelled'));
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() => print('Unknown error: $e'));
     }
     showMessageDialog("scan", this.scanResult);
   }
 
-  Future scanLeave(int index) async {
+  Future<void> scanLeave(int index) async {
     try {
       String barcode = await BarcodeScanner.scan();
       SessionModel session = SessionModel(barcode);
-      if(session.key!=scanedList[index].key) throw InvalidSessionException("This is not the same session you attended");
-      var now = new DateTime.now();
+      if(session.key!=scanedList[index].key) {
+        throw InvalidSessionException("This is not the same session you attended");
+      }
+      DateTime now = new DateTime.now();
       scanedList[index].leave = now.toIso8601String();
       DBProvider.db.addLeave(scanedList[index]);
       getScans();
@@ -90,20 +92,20 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       setState(() => this.scanResult = 'Scan cancelled');
     } on InvalidSessionException {
       setState(() => this.scanResult = "This is not the same session you attended");
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() => this.scanResult = 'Unknown error: $e');
     }
     showMessageDialog("scan", this.scanResult);
   }
 
-  deleteItem(int index) {
+  void deleteItem(int index) {
     DBProvider.db.deleteScan(scanedList[index].id);
     getScans();
   }
 
-  testConnection() async {
+  void testConnection() async {
     String message = "You are not connected to internet";
-    var connectivityResult = await (Connectivity().checkConnectivity());
+    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
       message = "You are connected to mobile data";
     } else if (connectivityResult == ConnectivityResult.wifi) {
@@ -112,7 +114,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     showMessageDialog("test", message);
   }
 
-  registerMe(int index) async {
+  void registerMe(int index) async {
     String message = "";
     if(!(await isLoggedIn())) {
       message = "Not loggedin, login first";
@@ -122,14 +124,14 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       DatabaseReference attendanceRef =  FirebaseDatabase.instance.reference().child("attendances").push();
       DatabaseReference sessionRef = FirebaseDatabase.instance.reference().child(scanedList[index].admin).child("classes")
               .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);
-      await attendanceRef.set({
-        "session": scanedList[index].key,
-        "sessionClass": scanedList[index].classKey,
-        "sessionAdmin": scanedList[index].admin,
-        "user": mUser.uid,
-        "arriveTime": scanedList[index].arrive,
-        "leaveTime": scanedList[index].leave==null?"NULL":scanedList[index].leave
-      });
+      Map<String, dynamic> map = Map<String, dynamic>();
+      map["session"] = scanedList[index].key;
+      map["sessionClass"] = scanedList[index].classKey;
+      map["sessionAdmin"] = scanedList[index].admin;
+      map["user"] = mUser.uid;
+      map["arriveTime"] = scanedList[index].arrive;
+      map["leaveTime"] = scanedList[index].leave==null?"NULL":scanedList[index].leave;
+      await attendanceRef.set(map);
       sessionRef.child("attended").push().set(attendanceRef.key);
       await FirebaseDatabase.instance.reference().child(mUser.uid).child("attended").push().set(attendanceRef.key);
       DBProvider.db.deleteScan(scanedList[index].id);
@@ -149,8 +151,10 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
               .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);
     DataSnapshot attendencies = await session.child("attended").once();
     Map<dynamic, dynamic> value = attendencies.value;
-    if(value==null || value.isEmpty) return false;
-    for(var key in value.keys) {
+    if(value==null || value.isEmpty) {
+      return false;
+    }
+    for(String key in value.keys) {
       DataSnapshot ref = await FirebaseDatabase.instance.reference().child("attendances").child(value[key]).once();
       if(ref.value["user"] == mUser.uid) {
         debugPrint(mUser.uid);

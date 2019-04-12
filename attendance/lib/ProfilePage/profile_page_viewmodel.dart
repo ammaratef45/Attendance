@@ -4,19 +4,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 abstract class ProfilePageViewModel extends State<ProfilePage> {
-  final auth = FirebaseAuth.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser mUser;
   String imageUrl = "";
   String name = "";
-  final nativeNameController = TextEditingController();
-  final phoneNumberController = TextEditingController();
+  TextEditingController nativeNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
 
   ProfilePageViewModel() {
-    auth.currentUser().then((user) {
+    auth.currentUser().then((FirebaseUser user) {
       mUser = user;
       setState(() {
-        if (mUser.displayName != null) name = mUser.displayName;
-        if (mUser.photoUrl != null) imageUrl = mUser.photoUrl;
+        if (mUser.displayName != null) {
+          name = mUser.displayName;
+        }
+        if (mUser.photoUrl != null) {
+          imageUrl = mUser.photoUrl;
+        }
       });
     });
   }
@@ -35,12 +39,12 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
     phoneNumberController.dispose();
   }
 
-  _updateNativeName() {
+  void _updateNativeName() {
     User.instance().rename(nativeNameController.text);
     print("Native name is: : ${nativeNameController.text}");
   }
 
-  _updatephoneNumber() {
+  void _updatephoneNumber() {
     User.instance().changePhone(phoneNumberController.text);
     print("Native name is: : ${phoneNumberController.text}");
   }

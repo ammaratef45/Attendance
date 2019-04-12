@@ -4,8 +4,8 @@ import './offline_page_viewmodel.dart';
 class OfflinePageView extends OfflinePageViewModel {
 
   @override
-  showMessageDialog(String title, String message) {
-    showDialog(
+  void showMessageDialog(String title, String message) {
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

@@ -6,7 +6,7 @@ class AttendModel {
   String key;
 
   static AttendModel selected;
-  AttendModel(key, cName, sDate, aDate, lDate) {
+  AttendModel(String key, String cName, String sDate, String aDate, String lDate) {
     this.key = key;
     this.date = sDate;
     this.arriveDate = aDate;

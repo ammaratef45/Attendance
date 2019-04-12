@@ -3,48 +3,55 @@ import 'package:attendance/ProfilePage/profile_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePageView extends ProfilePageViewModel {
+
+  List<BoxShadow> boxshadows() {
+    List<BoxShadow> shadows = List<BoxShadow>();
+    shadows.add(BoxShadow(blurRadius: 3.0, color: Colors.black));
+    return shadows;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        body: new Stack(
-          children: <Widget>[
-            ClipPath(
-              child: Container(color: Colors.lightBlueAccent.withOpacity(0.5)),
-              clipper: ClipPainter(),
-            ),
-            Container(
-              child: IconButton(
-                  iconSize: 30.0,
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
-              margin: EdgeInsets.only(top: 35.0, left: 8.0),
-            ),
-            Positioned(
-                width: 350.0,
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 5,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                        width: 150.0,
-                        height: 150.0,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            image: DecorationImage(
-                                image: NetworkImage(imageUrl),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(75.0)),
-                            boxShadow: [
-                              BoxShadow(blurRadius: 3.0, color: Colors.black)
-                            ])),
+    BoxDecoration boxDecoration = BoxDecoration(
+    color: Colors.blue,
+    image: DecorationImage(
+        image: NetworkImage(imageUrl),
+        fit: BoxFit.cover),
+    borderRadius: BorderRadius.all(
+        Radius.circular(75.0)),
+    boxShadow: boxshadows()
+  );
+        return new Scaffold(
+            body: new Stack(
+              children: <Widget>[
+                ClipPath(
+                  child: Container(color: Colors.lightBlueAccent.withOpacity(0.5)),
+                  clipper: ClipPainter(),
+                ),
+                Container(
+                  child: IconButton(
+                      iconSize: 30.0,
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  margin: EdgeInsets.only(top: 35.0, left: 8.0),
+                ),
+                Positioned(
+                    width: 350.0,
+                    top: MediaQuery
+                        .of(context)
+                        .size
+                        .height / 5,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            width: 150.0,
+                            height: 150.0,
+                            decoration: boxDecoration),
                     SizedBox(height: 60.0),
                     Text(
                       name,
@@ -152,7 +159,7 @@ class ProfilePageView extends ProfilePageViewModel {
 
   void popupEditDialog(TextEditingController controller, int max,
       InputType type, TextDirection dir) {
-    showDialog(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) => Dialog(
             child: Container(
@@ -168,7 +175,7 @@ class ProfilePageView extends ProfilePageViewModel {
                       data: ThemeData(hintColor: Colors.lightBlueAccent),
                       child: TextField(
                         controller: controller,
-                        onChanged: (text) {},
+                        onChanged: (String text) {},
                         keyboardType: type == InputType.NUMBER
                             ? TextInputType.number
                             : TextInputType.text,
@@ -209,7 +216,7 @@ enum TextDirection { RTL, LTR }
 class ClipPainter extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    var path = new Path();
+    Path path = new Path();
 
     path.lineTo(0.0, size.height / 1.9);
     path.lineTo(size.width + 125, 0.0);

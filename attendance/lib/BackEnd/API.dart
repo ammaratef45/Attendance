@@ -14,14 +14,15 @@ class API {
   }
 
   Future<String> setUserInfo(String token, User user) async {
-    var headers =  {"x-token": token};
-    final url = "${BASE_URL}verify";
-    final request = http.Request('POST', Uri.parse(url));
+    Map<String, dynamic> headers =  Map<String, dynamic>();
+    headers["x-token"] = token;
+    final String url = "${BASE_URL}verify";
+    final http.Request request = http.Request('POST', Uri.parse(url));
     request.headers.addAll(headers);
     request.body = user.requestBody();
     request.followRedirects = false;
     http.StreamedResponse response = await client.send(request);
-    final statusCode = response.statusCode;
+    final int statusCode = response.statusCode;
     String responseData = await response.stream.transform(utf8.decoder).join();
     if(statusCode == 200) {
       return responseData;

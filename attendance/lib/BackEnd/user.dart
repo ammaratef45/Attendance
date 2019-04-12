@@ -27,6 +27,8 @@ class User {
   void rename(String newName) {
     if (isValidName(newName)) {
       _nativeName = newName;
+    } else {
+      throw new FormatException("invalid native name format");
     }
   }
 
@@ -47,6 +49,8 @@ class User {
   void changePhone(String newPhone) {
     if (isValidNumber(newPhone)) {
       _phone = newPhone;
+    } else {
+      throw new FormatException("invalid phone number format");
     }
   }
 

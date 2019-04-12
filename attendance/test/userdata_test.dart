@@ -10,8 +10,7 @@ void main() {
       '{' + '"nativeName":"$perfectName",' + '"phone":"$perfectPhone"' + '}';
 
   // @todo #31 activate commented tests after implementing validation methods
-  // @todo #33 Fix commented unit tests to expect exceptions
-
+  
   group('object inistantiation', () {
     test('object should not be null', () {
       expect(testUser, isNotNull);
@@ -42,12 +41,13 @@ void main() {
       expect(testUser.nativeName, 'someName');
     });
 
-    /*test('should reject names longer than 20 chars', () {
-      testUser.rename('');
-      testUser.rename('This is a very long name');
-
-      expect(testUser.nativeName, isEmpty);
-    });*/
+    test('should reject names longer than 20 chars', () {
+      try {
+        testUser.rename('This is a very long name');
+      } catch (ex) {
+        expect(ex.message, 'invalid native name format');
+      }
+    });
 
     test('should accept names shorter than 21 chars', () {
       testUser.rename(perfectName);
@@ -66,11 +66,13 @@ void main() {
       expect(testUser.phone, isEmpty);
     });
 
-    /*test('should reject numbers start with leading zero ', () {
-      testUser.changePhone('0123456789');
-
-      expect(testUser.phone, isEmpty);
-    });*/
+    test('should reject numbers start with leading zero ', () {
+      try {
+        testUser.changePhone('0123456789');
+      } catch (ex) {
+        expect(ex.message, 'invalid phone number format');
+      }
+    });
 
     test('should accept numbers start with non-leading zero ', () {
       testUser.changePhone(perfectPhone);
@@ -78,12 +80,13 @@ void main() {
       expect(testUser.phone, perfectPhone);
     });
 
-    /*test('should reject numbers start with country code ', () {
-      testUser.changePhone('');
-      testUser.changePhone('+2012345678');
-
-      expect(testUser.phone, isEmpty);
-    });*/
+    test('should reject numbers start with country code ', () {
+      try {
+        testUser.changePhone('+012345678');
+      } catch (ex) {
+        expect(ex.message, 'invalid phone number format');
+      }
+    });
 
     test('should accept numbers start with no country code ', () {
       testUser.changePhone(perfectPhone);
@@ -95,12 +98,13 @@ void main() {
       expect(testUser.phone, '1234567890');
     });
 
-    /*test('should reject numbers longer than 10 chars', () {
-      testUser.changePhone('');
-      testUser.changePhone('123456789123456789');
-
-      expect(testUser.phone, isEmpty);
-    });*/
+    test('should reject numbers longer than 10 chars', () {
+      try {
+        testUser.changePhone('01234567890123456789');
+      } catch (ex) {
+        expect(ex.message, 'invalid phone number format');
+      }
+    });
 
     test('should accept numbers shorter than 11 chars', () {
       testUser.changePhone(perfectPhone);

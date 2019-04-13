@@ -1,12 +1,12 @@
-import './attendance_details_page.dart';
+import 'package:attendance/AttendanceDatailsPage/attendance_details_page.dart';
 import 'package:flutter/material.dart';
-import '../model/attend_model.dart';
-import '../model/session_model.dart';
+import 'package:attendance/model/attend_model.dart';
+import 'package:attendance/model/session_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import '../scan_exceptions.dart';
+import 'package:attendance/scan_exceptions.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
 abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPage> {
@@ -42,7 +42,7 @@ abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPag
     }
   }
 
-   void scan() async {
+   Future<void> scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
       SessionModel session = SessionModel(barcode);

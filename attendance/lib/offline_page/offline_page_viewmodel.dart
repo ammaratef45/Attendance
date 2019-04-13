@@ -37,9 +37,10 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
 
   void showMessageDialog(String title, String message) {}
 
-  void getScans() async {
-    scanedList.clear();
-    scanedList.addAll(await DBProvider.db.getAllScans());
+  Future<void> getScans() async {
+    scanedList
+    ..clear()
+    ..addAll(await DBProvider.db.getAllScans());
     setState(() {
     });
   }
@@ -103,7 +104,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     getScans();
   }
 
-  void testConnection() async {
+  Future<void> testConnection() async {
     String message = "You are not connected to internet";
     ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
@@ -114,7 +115,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     showMessageDialog("test", message);
   }
 
-  void registerMe(int index) async {
+  Future<void> registerMe(int index) async {
     String message = "";
     if(!(await isLoggedIn())) {
       message = "Not loggedin, login first";

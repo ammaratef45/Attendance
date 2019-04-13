@@ -42,7 +42,7 @@ abstract class HomePageViewModel extends State<HomePage> {
     Navigator.of(context).pushReplacementNamed('/login');
   }
 
-  void openDetails(AttendModel model) async {
+  Future<void> openDetails(AttendModel model) async {
     AttendModel.selected = model;
     await Navigator.of(context).pushNamed('/details');
     fillData();

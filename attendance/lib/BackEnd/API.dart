@@ -18,10 +18,10 @@ class API {
     headers["x-token"] = await user.token();
     headers['Content-Type'] = 'application/json';
     final String url = "${BASE_URL}verify";
-    final http.Request request = http.Request('POST', Uri.parse(url));
-    request.headers.addAll(headers);
-    request.body = user.requestBody();
-    request.followRedirects = false;
+    final http.Request request = http.Request('POST', Uri.parse(url))
+    ..headers.addAll(headers)
+    ..body = user.requestBody()
+    ..followRedirects = false;
     http.StreamedResponse response = await client.send(request);
     final int statusCode = response.statusCode;
     String responseData = await response.stream.transform(utf8.decoder).join();

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class ProfilePageView extends ProfilePageViewModel {
 
   List<BoxShadow> boxshadows() {
-    List<BoxShadow> shadows = List<BoxShadow>();
-    shadows.add(BoxShadow(blurRadius: 3.0, color: Colors.black));
+    List<BoxShadow> shadows = List<BoxShadow>()
+    ..add(BoxShadow(blurRadius: 3.0, color: Colors.black));
     return shadows;
   }
 
@@ -119,8 +119,8 @@ class ProfilePageView extends ProfilePageViewModel {
                                         popupEditDialog(
                                             nativeNameController,
                                             20,
-                                            InputType.TEXT,
-                                            TextDirection.RTL),
+                                            InputType.text,
+                                            TextDirection.rtl),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                         BorderRadius.circular(20.0)))),
@@ -142,8 +142,8 @@ class ProfilePageView extends ProfilePageViewModel {
                                         popupEditDialog(
                                             phoneNumberController,
                                             11,
-                                            InputType.NUMBER,
-                                            TextDirection.LTR),
+                                            InputType.number,
+                                            TextDirection.ltr),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                         BorderRadius.circular(20.0)))),
@@ -176,10 +176,10 @@ class ProfilePageView extends ProfilePageViewModel {
                       child: TextField(
                         controller: controller,
                         onChanged: (String text) {},
-                        keyboardType: type == InputType.NUMBER
+                        keyboardType: type == InputType.number
                             ? TextInputType.number
                             : TextInputType.text,
-                        textAlign: dir == TextDirection.RTL
+                        textAlign: dir == TextDirection.rtl
                             ? TextAlign.right
                             : TextAlign.left,
                         decoration:
@@ -210,17 +210,16 @@ class ProfilePageView extends ProfilePageViewModel {
   }
 }
 
-enum InputType { NUMBER, TEXT }
-enum TextDirection { RTL, LTR }
+enum InputType { number, text }
+enum TextDirection { rtl, ltr }
 
 class ClipPainter extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = new Path();
-
-    path.lineTo(0.0, size.height / 1.9);
-    path.lineTo(size.width + 125, 0.0);
-    path.close();
+    Path path = new Path()
+    ..lineTo(0.0, size.height / 1.9)
+    ..lineTo(size.width + 125, 0.0)
+    ..close();
     return path;
   }
 

@@ -4,7 +4,7 @@ import './home_page_viewmodel.dart';
 import '../model/attend_model.dart';
 
 class HomePageView extends HomePageViewModel {
-  Widget buildBody(BuildContext ctxt, int index, bool filterForUnLeaved) {
+  Widget buildBody(BuildContext ctxt, int index, {bool filterForUnLeaved=false}) {
     AttendModel model = filterForUnLeaved ? uitems[index] : litems[index];
     Widget result = new Center(
       child: new Card(
@@ -36,30 +36,30 @@ class HomePageView extends HomePageViewModel {
   }
 
   List<Tab> tabs() {
-    List<Tab> tabs = List<Tab>();
-    tabs.add(Tab(icon: Icon(Icons.access_time)));
-    tabs.add(Tab(icon: Icon(Icons.all_inclusive)));
-    tabs.add(Tab(icon: Icon(Icons.add_circle)));
+    List<Tab> tabs = List<Tab>()
+    ..add(Tab(icon: Icon(Icons.access_time)))
+    ..add(Tab(icon: Icon(Icons.all_inclusive)))
+    ..add(Tab(icon: Icon(Icons.add_circle)));
     return tabs;
   }
 
   List<Widget> bodyItems() {
-    List<Widget> widgs = List<Widget>();
-    widgs.add(
+    List<Widget> widgs = List<Widget>()
+    ..add(
       ListView.builder(
         itemCount: uitems.length,
         itemBuilder: (BuildContext ctxt, int index) =>
-          buildBody(ctxt, index, true)
+          buildBody(ctxt, index, filterForUnLeaved: true)
       )
-    );
-    widgs.add(
+    )
+    ..add(
       ListView.builder(
         itemCount: litems.length,
         itemBuilder: (BuildContext ctxt, int index) =>
-          buildBody(ctxt, index, false)
+          buildBody(ctxt, index, filterForUnLeaved: false)
       )
-    );
-    widgs.add(
+    )
+    ..add(
       Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

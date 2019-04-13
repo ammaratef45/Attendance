@@ -45,12 +45,12 @@ class DBProvider {
     List<Map<String, dynamic>> table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Scan");
     int id = table.first["id"];
     //insert to the table using the new id
-    List<dynamic> values = List<dynamic>(5);
-    values.add(id);
-    values.add(newScan.key);
-    values.add(newScan.classKey);
-    values.add(newScan.admin);
-    values.add(newScan.arrive);
+    List<dynamic> values = List<dynamic>(5)
+    ..add(id)
+    ..add(newScan.key)
+    ..add(newScan.classKey)
+    ..add(newScan.admin)
+    ..add(newScan.arrive);
     int raw = await db.rawInsert(
         "INSERT Into Scan (id,key,classKey,admin,arrive)"
         " VALUES (?,?,?,?,?)",
@@ -75,8 +75,8 @@ class DBProvider {
         admin: scan.admin,
         arrive: scan.arrive,
         leave: scan.leave);
-    List<dynamic> args = List<dynamic>(1);
-    args.add(scan.id);
+    List<dynamic> args = List<dynamic>(1)
+    ..add(scan.id);
     int res = await db.update("Scan", edited.toMap(),
         where: "id = ?", whereArgs: args);
     return res;

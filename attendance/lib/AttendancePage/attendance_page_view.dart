@@ -1,4 +1,4 @@
-import './attendance_page_viewmodel.dart';
+import 'package:attendance/AttendancePage/attendance_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class AttendancePageView extends AttendancePageViewModel{

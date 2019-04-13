@@ -44,7 +44,7 @@ void main() {
     test('should reject names longer than 20 chars', () {
       try {
         testUser.rename('This is a very long name');
-      } catch (ex) {
+      } on FormatException catch (ex) {
         expect(ex.message, 'invalid native name format');
       }
     });
@@ -69,7 +69,7 @@ void main() {
     test('should reject numbers start with leading zero ', () {
       try {
         testUser.changePhone('0123456789');
-      } catch (ex) {
+      } on FormatException catch (ex) {
         expect(ex.message, 'invalid phone number format');
       }
     });
@@ -83,7 +83,7 @@ void main() {
     test('should reject numbers start with country code ', () {
       try {
         testUser.changePhone('+012345678');
-      } catch (ex) {
+      } on FormatException catch (ex) {
         expect(ex.message, 'invalid phone number format');
       }
     });
@@ -101,7 +101,7 @@ void main() {
     test('should reject numbers longer than 10 chars', () {
       try {
         testUser.changePhone('01234567890123456789');
-      } catch (ex) {
+      } on FormatException catch (ex) {
         expect(ex.message, 'invalid phone number format');
       }
     });

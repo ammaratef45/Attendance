@@ -6,7 +6,7 @@ import 'dart:async';
 
 class API {
 
-  static const String BASE_URL = "https://attendance-app-api.herokuapp.com/";
+  static const String baseUrl = "https://attendance-app-api.herokuapp.com/";
   http.Client client;
 
   API() {
@@ -17,7 +17,7 @@ class API {
     Map<String, String> headers =  Map<String, String>();
     headers["x-token"] = await user.token();
     headers['Content-Type'] = 'application/json';
-    final String url = "${BASE_URL}verify";
+    final String url = "${baseUrl}verify";
     final http.Request request = http.Request('POST', Uri.parse(url))
     ..headers.addAll(headers)
     ..body = user.requestBody()

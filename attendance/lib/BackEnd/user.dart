@@ -94,7 +94,4 @@ class User {
   void _persist() {}
 
   void _markSaved() {}
-
-// @todo #30 check Singleton potential leak
-
 }

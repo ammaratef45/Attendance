@@ -1,9 +1,13 @@
 import 'dart:convert';
 
+import 'package:attendance/BackEnd/API.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class User {
   String _nativeName;
   String _phone;
   static User _user;
+  final API api = API();
 
   static User instance() {
     if (_user == null) {
@@ -16,7 +20,26 @@ class User {
 
   String get nativeName => _nativeName;
 
-  bool isValidName(String name) {
+  // @todo #26 trim the inputs before validation for rename and changePhone
+  void rename(String newName) {
+    if (_isValidName(newName)) {
+      _nativeName = newName;
+    } else {
+      throw new FormatException("invalid native name format");
+    }
+  }
+
+  void changePhone(String newPhone) {
+    if (_isValidNumber(newPhone)) {
+      _phone = newPhone;
+    } else {
+      throw new FormatException("invalid phone number format");
+    }
+  }
+
+
+
+  bool _isValidName(String name) {
     if (name.length < 21) {
       return true;
     } else {
@@ -24,15 +47,7 @@ class User {
     }
   }
 
-  void rename(String newName) {
-    if (isValidName(newName)) {
-      _nativeName = newName;
-    } else {
-      throw new FormatException("invalid native name format");
-    }
-  }
-
-  bool isValidNumber(String number) {
+  bool _isValidNumber(String number) {
     if (number.isNotEmpty) {
       String firstDigit = number.substring(0, 1);
 
@@ -46,16 +61,8 @@ class User {
     }
   }
 
-  void changePhone(String newPhone) {
-    if (isValidNumber(newPhone)) {
-      _phone = newPhone;
-    } else {
-      throw new FormatException("invalid phone number format");
-    }
-  }
-
   String requestBody() {
-    Map<String, dynamic> body = Map<String, dynamic>();
+    Map<String, String> body = Map<String, String>();
     if (_nativeName != null) {
       body['nativeName'] = _nativeName;
     }
@@ -65,8 +72,30 @@ class User {
     return json.encode(body);
   }
 
-  // @todo #25 save the model to the API and save locally if failed to connect to the API
-  void save() {}
+  Future<String> token() async {
+    return (await FirebaseAuth.instance.currentUser()).getIdToken(refresh: true);
+  }
+
+  // @todo #26 Implement persist so that it saves the user to local db with
+  //  a flag called saved detects if it's sent to api.
+  // @todo #26 Implement markSaved so that it changes the falg saved to true.
+  void save() {
+    _persist();
+    try {
+      api.setUserInfo(this);
+      _markSaved();
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _persist() {
+
+  }
+
+  void _markSaved() {
+
+  }
 
 // @todo #30 check Singleton potential leak
 

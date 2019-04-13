@@ -3,6 +3,9 @@ import 'package:attendance/ProfilePage/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// @todo #26 add country field.
+// @todo #26 show error below the entry field if failed to
+//  set the value to the user object.
 abstract class ProfilePageViewModel extends State<ProfilePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser mUser;
@@ -41,11 +44,9 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
 
   void _updateNativeName() {
     User.instance().rename(nativeNameController.text);
-    print("Native name is: : ${nativeNameController.text}");
   }
 
   void _updatephoneNumber() {
     User.instance().changePhone(phoneNumberController.text);
-    print("Native name is: : ${phoneNumberController.text}");
   }
 }

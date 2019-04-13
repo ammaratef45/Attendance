@@ -36,7 +36,7 @@ class HomePageView extends HomePageViewModel {
   }
 
   List<Tab> tabs() {
-    List<Tab> tabs = List<Tab>(3);
+    List<Tab> tabs = List<Tab>();
     tabs.add(Tab(icon: Icon(Icons.access_time)));
     tabs.add(Tab(icon: Icon(Icons.all_inclusive)));
     tabs.add(Tab(icon: Icon(Icons.add_circle)));

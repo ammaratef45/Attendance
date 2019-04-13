@@ -13,9 +13,10 @@ class API {
     client = http.Client();
   }
 
-  Future<String> setUserInfo(String token, User user) async {
-    Map<String, dynamic> headers =  Map<String, dynamic>();
-    headers["x-token"] = token;
+  Future<String> setUserInfo(User user) async {
+    Map<String, String> headers =  Map<String, String>();
+    headers["x-token"] = await user.token();
+    headers['Content-Type'] = 'application/json';
     final String url = "${BASE_URL}verify";
     final http.Request request = http.Request('POST', Uri.parse(url));
     request.headers.addAll(headers);

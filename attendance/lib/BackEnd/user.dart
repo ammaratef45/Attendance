@@ -6,13 +6,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 class User {
   String _nativeName;
   String _phone;
-  static User _user;
+  static final User _user = new User._internal();
   final API api = API();
 
+  factory User() {
+    return _user;
+  }
+
+  User._internal();
+
   static User instance() {
-    if (_user == null) {
-      _user = User();
-    }
     return _user;
   }
 
@@ -36,8 +39,6 @@ class User {
       throw new FormatException("invalid phone number format");
     }
   }
-
-
 
   bool _isValidName(String name) {
     if (name.length < 21) {
@@ -73,7 +74,8 @@ class User {
   }
 
   Future<String> token() async {
-    return (await FirebaseAuth.instance.currentUser()).getIdToken(refresh: true);
+    return (await FirebaseAuth.instance.currentUser())
+        .getIdToken(refresh: true);
   }
 
   // @todo #26 Implement persist so that it saves the user to local db with
@@ -89,13 +91,9 @@ class User {
     }
   }
 
-  void _persist() {
+  void _persist() {}
 
-  }
-
-  void _markSaved() {
-
-  }
+  void _markSaved() {}
 
 // @todo #30 check Singleton potential leak
 

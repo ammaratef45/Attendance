@@ -6,22 +6,22 @@ void main() {
   String perfectName = 'someName';
   String perfectPhone = '1234567890';
 
+  // @todo #42 Use Map object to create a testing json body
   String jsonBody =
       '{' + '"nativeName":"$perfectName",' + '"phone":"$perfectPhone"' + '}';
 
-  // @todo #31 activate commented tests after implementing validation methods
-  
+
   group('object inistantiation', () {
     test('object should not be null', () {
       expect(testUser, isNotNull);
     });
-/*
+
     test('singleton should not leak ', () {
       User instance1 = new User();
       User instance2 = new User();
 
       expect(instance1.hashCode, equals(instance2.hashCode));
-    });*/
+    });
   });
 
   group('Rename', () {

@@ -1,0 +1,3 @@
+-See the history of sessions attended.
+-See details of any session.
+-Scan for session leaving is possible now.

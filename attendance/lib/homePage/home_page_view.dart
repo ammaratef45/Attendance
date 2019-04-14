@@ -1,11 +1,11 @@
-import './home_page_viewmodel.dart';
 import 'package:flutter/material.dart';
+
+import './home_page_viewmodel.dart';
 import '../model/attend_model.dart';
 
-class HomePageView extends HomePageViewModel{
-
-  Widget buildBody(BuildContext ctxt, int index, bool filterForUnLeaved) {
-    AttendModel model = filterForUnLeaved?uitems[index]:litems[index];
+class HomePageView extends HomePageViewModel {
+  Widget buildBody(BuildContext ctxt, int index, {bool filterForUnLeaved=false}) {
+    AttendModel model = filterForUnLeaved ? uitems[index] : litems[index];
     Widget result = new Center(
       child: new Card(
         elevation: 8.0,
@@ -20,17 +20,11 @@ class HomePageView extends HomePageViewModel{
               children: <Widget>[
                 Text(
                   model.className,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white
-                  ),
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
                 Text(
                   model.date,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white
-                  ),
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
               ],
             ),
@@ -41,58 +35,115 @@ class HomePageView extends HomePageViewModel{
     return result;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
-                tabs: [
-                  Tab(icon: Icon(Icons.access_time)),
-                  Tab(icon: Icon(Icons.all_inclusive)),
-                  Tab(icon: Icon(Icons.add_circle)),
-                ],
-          ),
-          title: Text("Home"),
-        ),
-        body: TabBarView(
-          children: [
-            ListView.builder(
-              itemCount: uitems.length,
-              itemBuilder: (BuildContext ctxt, int index) => buildBody(ctxt, index, true)
+  List<Tab> tabs() {
+    List<Tab> tabs = List<Tab>()
+    ..add(Tab(icon: Icon(Icons.access_time)))
+    ..add(Tab(icon: Icon(Icons.all_inclusive)))
+    ..add(Tab(icon: Icon(Icons.add_circle)));
+    return tabs;
+  }
+
+  List<Widget> bodyItems() {
+    List<Widget> widgs = List<Widget>()
+    ..add(
+      ListView.builder(
+        itemCount: uitems.length,
+        itemBuilder: (BuildContext ctxt, int index) =>
+          buildBody(ctxt, index, filterForUnLeaved: true)
+      )
+    )
+    ..add(
+      ListView.builder(
+        itemCount: litems.length,
+        itemBuilder: (BuildContext ctxt, int index) =>
+          buildBody(ctxt, index, filterForUnLeaved: false)
+      )
+    )
+    ..add(
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 8.0),
+              child: RaisedButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  splashColor: Colors.blueGrey,
+                  onPressed: () {
+                    scan();
+                  },
+                  child: const Text('START CAMERA SCAN')),
             ),
-            ListView.builder(
-              itemCount: litems.length,
-              itemBuilder: (BuildContext ctxt, int index) => buildBody(ctxt, index, false)
-            ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: RaisedButton(
-                        color: Colors.blue,
-                        textColor: Colors.white,
-                        splashColor: Colors.blueGrey,
-                        onPressed: (){
-                          scan();
-                        },
-                        child: const Text('START CAMERA SCAN')
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: Text(scanResult, textAlign: TextAlign.center,),
-                  ),
-                ],
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 8.0),
+              child: Text(
+                scanResult,
+                textAlign: TextAlign.center,
               ),
             ),
           ],
-        )
+        ),
       )
     );
+    return widgs;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+            appBar: AppBar(
+              bottom: TabBar(
+                tabs: tabs(),
+              ),
+              title: Text("Home"),
+            ),
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    accountName: Text(name),
+                    accountEmail: Text(mail),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundImage: NetworkImage(imageUrl),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.cloud_off),
+                    title: Text('Offline scan'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed('/offline');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.account_circle),
+                    title: Text('Profile'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed('/profile');
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.arrow_back),
+                    title: Text("Sign out"),
+                    onTap: () {
+                      Navigator.pop(context);
+                      signOut();
+                    },
+                  )
+                ],
+              ),
+            ),
+            body: TabBarView(
+              children: bodyItems(),
+            )));
   }
 }

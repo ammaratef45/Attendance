@@ -1,17 +1,24 @@
 architect:
   - ammaratef45
+docker:
+  as_root: true
+  image: adamantium/flutter
+
 install: |-
-  sudo gem install pdd
-  git clone https://github.com/flutter/flutter.git -b beta --depth 1
-  ./flutter/bin/flutter doctor
+  curl -sSL https://get.rvm.io | bash -s stable --ruby
+  source /usr/local/rvm/scripts/rvm
+  gem install pdd
+  
+decrypt:
+  repo/attendance/android/api-project.json: "repo/attendance/android/api-project.json.asc"
+  repo/attendance/android/key.properties: "repo/attendance/android/key.properties.asc"
+
 merge:
   script: |-
+    flutter doctor
     cd attendance
-    ../flutter/bin/flutter packages get
-    ../flutter/bin/flutter test
-    ../flutter/bin/flutter -v build apk
-    cd ../attendance_admin
-    ../flutter/bin/flutter packages get
-    ../flutter/bin/flutter test
-    ../flutter/bin/flutter -v build apk
+    flutter packages get
+    flutter test
+    flutter -v build apk
     pdd -f /dev/null -v
+    

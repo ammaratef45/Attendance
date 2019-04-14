@@ -25,11 +25,11 @@ class User {
   /// user's native name
   String get nativeName => _nativeName;
 
-  // @todo #26 trim the inputs before validation for rename and changePhone
   /// rename the user (change native name)
   void rename(String newName) {
-    if (_isValidName(newName)) {
-      _nativeName = newName;
+    final String trimmed = newName.trim();
+    if (_isValidName(trimmed)) {
+      _nativeName = trimmed;
     } else {
       throw const FormatException('invalid native name format');
     }
@@ -37,8 +37,9 @@ class User {
 
   /// change user's phone number
   void changePhone(String newPhone) {
-    if (_isValidNumber(newPhone)) {
-      _phone = newPhone;
+    final String trimmed = newPhone.trim();
+    if (_isValidNumber(trimmed)) {
+      _phone = trimmed;
     } else {
       throw const FormatException('invalid phone number format');
     }

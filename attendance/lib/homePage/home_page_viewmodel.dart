@@ -1,15 +1,14 @@
-import './home_page.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:attendance/homePage/home_page.dart';
+import 'package:attendance/model/attend_model.dart';
+import 'package:attendance/model/session_model.dart';
+import 'package:attendance/scan_exceptions.dart';
 import 'package:flutter/material.dart';
-import '../model/attend_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:convert';
 import 'package:flutter/services.dart';
-import '../model/session_model.dart';
 import 'package:barcode_scan/barcode_scan.dart';
-import '../scan_exceptions.dart';
-import 'dart:async';
-
 
 abstract class HomePageViewModel extends State<HomePage> {
   String scanResult = "Scan Error: Make sure you're scanning the right code";

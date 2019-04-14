@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import './attendance_page_view.dart';
 
+/// attendance page
 class AttendancePage extends StatefulWidget {
-  AttendancePage({Key key}) : super(key: key);
+  /// constructor
+  const AttendancePage({Key key}) : super(key: key);
 
   @override
-  AttendancePageView createState() => new AttendancePageView ();
+  AttendancePageView createState() => AttendancePageView();
 }

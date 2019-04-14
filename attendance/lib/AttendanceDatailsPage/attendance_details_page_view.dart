@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import './attendance_details_page_viewmodel.dart';
 
+/// view of attendance page
 class AttendanceDetailsPageView extends AttendanceDetailsPageViewModel {
 
   @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Details"),
+  Widget build(BuildContext context) =>
+    Scaffold(
+      appBar: AppBar(
+        title: const Text('Details'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 10.0)
+            const Padding(
+              padding: EdgeInsets.only(top: 10)
             ),
             Text(className),
             Text(session),
@@ -25,7 +26,7 @@ class AttendanceDetailsPageView extends AttendanceDetailsPageViewModel {
             ),
             Visibility(
               child: RaisedButton(
-                child: Text("Scan For Leaving"),
+                child: const Text('Scan For Leaving'),
                 onPressed: scan,
               ),
               visible: !isLeaved,
@@ -34,5 +35,5 @@ class AttendanceDetailsPageView extends AttendanceDetailsPageViewModel {
         ),
       ),
     );
-  }
+
 }

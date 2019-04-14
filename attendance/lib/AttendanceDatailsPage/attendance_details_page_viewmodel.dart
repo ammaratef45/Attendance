@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:attendance/AttendanceDatailsPage/attendance_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance/model/attend_model.dart';
@@ -8,83 +10,97 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:attendance/scan_exceptions.dart';
 import 'package:firebase_admob/firebase_admob.dart';
-
-abstract class AttendanceDetailsPageViewModel extends State<AttendanceDetailsPage> {
-   bool isLeaved = true;
-   AttendModel model;
-   String className;
-   String session;
-   String arriveDate;
-   String leaveDate;
-   String scanResult;
-   BannerAd myBanner = BannerAd(
-    adUnitId: "ca-app-pub-5308838739950508/6605562688",
-    size: AdSize.smartBanner,
-    listener: (MobileAdEvent event) {
-      print("BannerAd event is $event");
-    },
-  );
+/// view model of attendance page
+abstract class AttendanceDetailsPageViewModel
+extends State<AttendanceDetailsPage> {
+  /// constructor
   AttendanceDetailsPageViewModel() {
-    FirebaseAdMob.instance.initialize(appId: "ca-app-pub-5308838739950508~2647148134");
-    myBanner
+    FirebaseAdMob
+    .instance.initialize(appId: 'ca-app-pub-5308838739950508~2647148134');
+    _myBanner
       ..load()
       ..show(
-        anchorOffset: 60.0,
+        anchorOffset: 60,
         anchorType: AnchorType.bottom,
       );
-    model = AttendModel.selected;
-    className = model.className;
-    session = model.date;
-    arriveDate = "Arrived: " + model.arriveDate;
-    leaveDate = "Leaved: " + model.leaveDate;
-    if(model.leaveDate == "NULL") {
+    _model = AttendModel.selected;
+    className = _model.className;
+    session = _model.date;
+    arriveDate = 'Arrived: ${_model.arriveDate}';
+    leaveDate = 'Leaved: ${_model.leaveDate}';
+    if(_model.leaveDate == 'NULL') {
       isLeaved = false;
     }
   }
-
-   Future<void> scan() async {
+  /// check if session scanned for leaving
+  bool isLeaved = true;
+  AttendModel _model;
+  /// name of the current class
+  String className;
+  /// name of the current session
+  String session;
+  /// date of arriving
+  String arriveDate;
+  /// date of leaving
+  String leaveDate;
+  /// result of scanning
+  String scanResult;
+  final BannerAd _myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-5308838739950508/6605562688',
+    size: AdSize.smartBanner,
+    listener: (MobileAdEvent event) {
+      print('BannerAd event is $event');
+    },
+  );
+  
+  /// sacn
+  Future<void> scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
-      SessionModel session = SessionModel(barcode);
-      FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      String uid = user.uid;
-      DatabaseReference attendanceRef = FirebaseDatabase.instance.reference().child("attendances").child(model.key);
-      DataSnapshot oldModel = await attendanceRef.once();
-      if(oldModel.value["session"] != session.key) {
-        throw InvalidSessionException("this is not the same session code");
+      final String barcode = await BarcodeScanner.scan();
+      final SessionModel session = SessionModel(barcode);
+      final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      final String uid = user.uid;
+      final DatabaseReference attendanceRef =
+        FirebaseDatabase.instance
+        .reference().child('attendances').child(_model.key);
+      final DataSnapshot oldModel = await attendanceRef.once();
+      if(oldModel.value['session'] != session.key) {
+        throw InvalidSessionException('this is not the same session code');
       }
-      DateTime now = new DateTime.now();
-      Map<String, dynamic> map = Map<String, dynamic>();
-      map["session"] = session.key;
-      map["sessionClass"] = session.classKey;
-      map["sessionAdmin"] = session.admin;
-      map["user"] = uid;
-      map["arriveTime"] = model.arriveDate;
-      map["leaveTime"] = now.toIso8601String();
+      final DateTime now = DateTime.now();
+      final Map<String, dynamic> map = <String, dynamic>{
+        'session' : session.key,
+        'sessionClass' : session.classKey,
+        'sessionAdmin' : session.admin,
+        'user' : uid,
+        'arriveTime' : _model.arriveDate,
+        'leaveTime' : now.toIso8601String()
+      };
       await attendanceRef.set(map);
-      await FirebaseDatabase.instance.reference().child(uid).child("attended").push().set(attendanceRef.key);
+      await FirebaseDatabase.instance
+        .reference().child(uid).child('attended').push().set(attendanceRef.key);
       setState(() {
-        isLeaved = true;
-        scanResult = "";
-        model.leaveDate = now.toIso8601String();
-        leaveDate = "Leaved: " + model.leaveDate;
+      isLeaved = true;
+      scanResult = '';
+      _model.leaveDate = now.toIso8601String();
+      leaveDate = 'Leaved: ${_model.leaveDate}';
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          this.scanResult = 'You did not grant the camera permission!';
+          scanResult = 'You did not grant the camera permission!';
         });
       } else {
-        setState(() => this.scanResult = 'Unknown error: $e');
+        setState(() => scanResult = 'Unknown error: $e');
       }
     } on FormatException{
-      setState(() => this.scanResult = 'Scan cancelled');
+      setState(() => scanResult = 'Scan cancelled');
     } on InvalidSessionException catch(e){
       setState(() {
-        this.scanResult = e.cause;
+        scanResult = e.cause;
       });
     } on Exception catch (e) {
-      setState(() => this.scanResult = 'Unknown error: $e');
+      setState(() => scanResult = 'Unknown error: $e');
     }
   }
 

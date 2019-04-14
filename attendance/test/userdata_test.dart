@@ -1,4 +1,4 @@
-import 'package:attendance/BackEnd/user.dart';
+import 'package:attendance/backend/user.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,12 +1,13 @@
 import 'package:attendance/AttendancePage/attendance_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
+/// view of attendance page
 class AttendancePageView extends AttendancePageViewModel{
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) =>
+    Scaffold(
       appBar: AppBar(
-        title: Text("Details"),
+        title: const Text('Details'),
       ),
       body:Center(
         child: Column(
@@ -14,7 +15,7 @@ class AttendancePageView extends AttendancePageViewModel{
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: RaisedButton(
                   color: Colors.blue,
                   textColor: Colors.white,
@@ -29,5 +30,5 @@ class AttendancePageView extends AttendancePageViewModel{
         ),
       ),
     );
-  }
+
 }

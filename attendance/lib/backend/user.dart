@@ -1,42 +1,46 @@
 import 'dart:convert';
 
-import 'package:attendance/BackEnd/API.dart';
+import 'package:attendance/backend/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// User class
 class User {
-  String _nativeName;
-  String _phone;
-  static final User _user = new User._internal();
-  final API api = API();
+  /// initialization factory
+  factory User() => _user;
 
-  factory User() {
-    return _user;
-  }
-
+  /// private initialization
   User._internal();
 
-  static User instance() {
-    return _user;
-  }
+  String _nativeName;
+  String _phone;
+  static final User _user = User._internal();
+  final API _api = API();
 
+  /// instance getter
+  static User instance() => _user;
+
+  /// user's phone number
   String get phone => _phone;
 
+  /// user's native name
   String get nativeName => _nativeName;
 
   // @todo #26 trim the inputs before validation for rename and changePhone
+  /// rename the user (change native name)
   void rename(String newName) {
     if (_isValidName(newName)) {
       _nativeName = newName;
     } else {
-      throw new FormatException("invalid native name format");
+      throw const FormatException('invalid native name format');
     }
   }
 
+  /// change user's phone number
   void changePhone(String newPhone) {
     if (_isValidNumber(newPhone)) {
       _phone = newPhone;
     } else {
-      throw new FormatException("invalid phone number format");
+      throw const FormatException('invalid phone number format');
     }
   }
 
@@ -50,7 +54,7 @@ class User {
 
   bool _isValidNumber(String number) {
     if (number.isNotEmpty) {
-      String firstDigit = number.substring(0, 1);
+      final String firstDigit = number.substring(0, 1);
 
       if (number.length < 11 && firstDigit != '0' && firstDigit != '+') {
         return true;
@@ -62,8 +66,9 @@ class User {
     }
   }
 
+  /// get payload of request when saving the info
   String requestBody() {
-    Map<String, String> body = Map<String, String>();
+    final Map<String, String> body = <String, String>{};
     if (_nativeName != null) {
       body['nativeName'] = _nativeName;
     }
@@ -73,18 +78,19 @@ class User {
     return json.encode(body);
   }
 
-  Future<String> token() async {
-    return (await FirebaseAuth.instance.currentUser())
+  /// get the id token
+  Future<String> token() async =>
+    (await FirebaseAuth.instance.currentUser())
         .getIdToken(refresh: true);
-  }
 
   // @todo #26 Implement persist so that it saves the user to local db with
   //  a flag called saved detects if it's sent to api.
   // @todo #26 Implement markSaved so that it changes the falg saved to true.
+  /// save data to api and local storage
   void save() {
     _persist();
     try {
-      api.setUserInfo(this);
+      _api.setUserInfo(this);
       _markSaved();
     } on Exception catch (e) {
       print(e.toString());

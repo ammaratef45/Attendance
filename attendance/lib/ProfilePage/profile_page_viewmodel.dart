@@ -1,4 +1,4 @@
-import 'package:attendance/BackEnd/user.dart';
+import 'package:attendance/backend/user.dart';
 import 'package:attendance/ProfilePage/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

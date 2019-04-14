@@ -1,7 +1,7 @@
+import 'package:attendance/homePage/home_page_viewmodel.dart';
+import 'package:attendance/model/attend_model.dart';
 import 'package:flutter/material.dart';
 
-import './home_page_viewmodel.dart';
-import '../model/attend_model.dart';
 
 class HomePageView extends HomePageViewModel {
   Widget buildBody(BuildContext ctxt, int index, {bool filterForUnLeaved=false}) {

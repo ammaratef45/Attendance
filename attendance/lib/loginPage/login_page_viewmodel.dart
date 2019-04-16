@@ -36,6 +36,7 @@ abstract class LoginPageViewModel extends State<LoginPage> {
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1);
     } else {
+      // @todo #9 just update the user class and call save
       FirebaseDatabase.instance
           .reference()
           .child(user.uid)

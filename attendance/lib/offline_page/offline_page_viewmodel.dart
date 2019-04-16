@@ -115,6 +115,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     showMessageDialog("test", message);
   }
 
+  // @todo #9 use /newsession instead of database as in online
   Future<void> registerMe(int index) async {
     String message = "";
     if(!(await isLoggedIn())) {
@@ -147,6 +148,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     return mUser!=null;
   }
 
+  // @todo #9 shouldn't need isscanned (verification happens in the backend)
   Future<bool> isScanned(int index) async {
     DatabaseReference session = FirebaseDatabase.instance.reference().child(scanedList[index].admin).child("classes")
               .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);

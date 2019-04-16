@@ -47,38 +47,45 @@ abstract class HomePageViewModel extends State<HomePage> {
     fillData();
   }
 
+  /// sacn
   Future<void> scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
-      String uid = mUser.uid;
-      SessionModel session = SessionModel(barcode);
-      DatabaseReference sessionRef = FirebaseDatabase.instance.reference().child(session.admin).child("classes")
-              .child(session.classKey).child("sessions").child(session.key);
+      final String barcode = await BarcodeScanner.scan();
+      final String uid = mUser.uid;
+      final SessionModel session = SessionModel(barcode);
+      // @todo #9 save locally and call api /newsession instead of using firebase database
+      final DatabaseReference sessionRef = FirebaseDatabase.instance
+        .reference().child(session.admin).child('classes')
+        .child(session.classKey).child('sessions').child(session.key);
       if(await isScanned(sessionRef, mUser)) {
-        throw new AlreadyScannedSessionException("already scanned atendance to this session");
+        throw AlreadyScannedSessionException(
+          'already scanned atendance to this session'
+        );
       }
-      DatabaseReference attendanceRef =  FirebaseDatabase.instance.reference().child("attendances").push();
-      DateTime now = new DateTime.now();
-      Map<String, dynamic> map = Map<String, dynamic>();
-      map["session"] = session.key;
-      map["sessionClass"] = session.classKey;
-      map["sessionAdmin"] = session.admin;
-      map["user"] = uid;
-      map["arriveTime"] = now.toIso8601String();
-      map["leaveTime"] = "NULL";
+      final DatabaseReference attendanceRef =  
+        FirebaseDatabase.instance.reference().child('attendances').push();
+      final DateTime now = DateTime.now();
+      final Map<String, dynamic> map = <String, dynamic>{};
+      map['session'] = session.key;
+      map['sessionClass'] = session.classKey;
+      map['sessionAdmin'] = session.admin;
+      map['user'] = uid;
+      map['arriveTime'] = now.toIso8601String();
+      map['leaveTime'] = 'NULL';
       await attendanceRef.set(map);
-      sessionRef.child("attended").push().set(attendanceRef.key);
-      await FirebaseDatabase.instance.reference().child(uid).child("attended").push().set(attendanceRef.key);
+      await sessionRef.child('attended').push().set(attendanceRef.key);
+      await FirebaseDatabase.instance.reference()
+        .child(uid).child('attended').push().set(attendanceRef.key);
       setState(() {
-        this.scanResult = "scanned successfully";
+        scanResult = 'scanned successfully';
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          this.scanResult = 'You did not grant the camera permission!';
+          scanResult = 'You did not grant the camera permission!';
         });
       } else {
-        setState(() => this.scanResult = 'Unknown error: $e');
+        setState(() => scanResult = 'Unknown error: $e');
       }
     } on FormatException{
       setState(() => print('Scan Cancelled'));
@@ -91,6 +98,7 @@ abstract class HomePageViewModel extends State<HomePage> {
     }
   }
 
+  // @todo #9 delete this (checking will be performed in the backend)
   Future<bool> isScanned(DatabaseReference session, FirebaseUser user) async {
     DataSnapshot attendencies = await session.child("attended").once();
     Map<dynamic, dynamic> value = attendencies.value;
@@ -108,6 +116,7 @@ abstract class HomePageViewModel extends State<HomePage> {
     return false;
   }
 
+  // @todo #9 get data from api /getInfo and save in user class (add more endpoints if needed)
   Future<void> fillData() async {
     litems.clear();
     uitems.clear();

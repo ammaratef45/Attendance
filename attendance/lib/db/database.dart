@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:attendance/backend/user.dart';
 import 'package:attendance/model/scan_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,6 +11,23 @@ import 'package:sqflite/sqflite.dart';
 /// provider of database.
 class DBProvider {
   DBProvider._();
+
+  static const String _userTableV2 = 
+    'CREATE TABLE USER ('
+    'id INTEGER PRIMARY KEY,'
+    'nativeName TEXT'
+    'phone TEXT'
+    'apiSynced int'
+    ')';
+  static const String _scanTableV2 = 
+    'CREATE TABLE Scan ('
+    'id INTEGER PRIMARY KEY,'
+    'key TEXT,'
+    'classKey TEXT,'
+    'admin TEXT,'
+    'arrive TEXT,'
+    'leave TEXT'
+    ')';
 
   /// singelton instance
   static final DBProvider db = DBProvider._();
@@ -30,19 +48,28 @@ class DBProvider {
     final Directory documentsDirectory =
       await getApplicationDocumentsDirectory();
     final String path = join(documentsDirectory.path, 'TestDB.db');
-    return openDatabase(path, version: 1, onOpen: (Database db) {},
-        onCreate: (Database db, int version) async {
-      await db.execute(
-        'CREATE TABLE Scan ('
-        'id INTEGER PRIMARY KEY,'
-        'key TEXT,'
-        'classKey TEXT,'
-        'admin TEXT,'
-        'arrive TEXT,'
-        'leave TEXT'
-        ')'
-      );
-    });
+    return openDatabase(path, version: 2, onOpen: (Database db) {},
+      onCreate: (Database db, int version) async {
+        await db.execute(_scanTableV2);
+        await _initUser(db);
+      },
+      onUpgrade: (Database db, int oldVersion, int newVersion) async {
+        // upgrade from 1 to 2
+        if(oldVersion==1 && newVersion==2) {
+          await _initUser(db);
+        }
+      }
+    );
+  }
+
+  Future<int> _initUser(Database db) async {
+    await db.execute(_userTableV2);
+    final int raw = await db.rawInsert(
+      'INSERT Into USER (id,nativeName,phone,apiSynced)'
+      ' VALUES (?,?,?,?,?)',
+      <dynamic>[1, '', '', 0]
+    );
+    return raw;
   }
 
   /// insert new scan
@@ -80,7 +107,7 @@ class DBProvider {
   }
 
   /// add leave time to a scan
-  Future<int> addLeave(Scan scan) async {
+  Future<int> addLeaveToScan(Scan scan) async {
     final Database db = await database;
     final Scan edited = Scan(
       id: scan.id,
@@ -104,8 +131,26 @@ class DBProvider {
   }
 
   /// delete everything in scan table
-  Future<int> deleteAll() async {
+  Future<int> deleteAllScans() async {
     final Database db = await database;
     return db.rawDelete('Delete * from Scan');
   }
+
+  /// Save the user
+  Future<int> saveUser(User user) async {
+    final Database db = await database;
+    final Map<String, dynamic> args = user.toMap();
+    args['apiSynced'] = 0;
+    final int res = await db.update('User', args,
+        where: 'id = ?', whereArgs: <dynamic>[1]);
+    return res;
+  }
+
+  /// mark user as synced with db
+  Future<int> userIsSynced() async {
+    final Database db = await database;
+    return db.update('User', <String, dynamic>{'apiSynced':1},
+        where: 'id = ?', whereArgs: <dynamic>[1]);
+  }
+
 }

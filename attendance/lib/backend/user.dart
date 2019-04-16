@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:attendance/backend/api.dart';
+import 'package:attendance/db/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /// User class
@@ -79,14 +80,19 @@ class User {
     return json.encode(body);
   }
 
+  /// return body as a map
+  Map<String, dynamic> toMap() =>
+    <String, dynamic> {
+      'nativeName': _nativeName,
+      'phone': _phone
+    };
+
   /// get the id token
   Future<String> token() async =>
     (await FirebaseAuth.instance.currentUser())
         .getIdToken(refresh: true);
 
-  // @todo #26 Implement persist so that it saves the user to local db with
-  //  a flag called saved detects if it's sent to api.
-  // @todo #26 Implement markSaved so that it changes the falg saved to true.
+  
   /// save data to api and local storage
   void save() {
     _persist();
@@ -98,7 +104,11 @@ class User {
     }
   }
 
-  void _persist() {}
+  void _persist() {
+    DBProvider.db.saveUser(this);
+  }
 
-  void _markSaved() {}
+  void _markSaved() {
+    DBProvider.db.userIsSynced();
+  }
 }

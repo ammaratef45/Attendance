@@ -78,7 +78,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       }
       DateTime now = new DateTime.now();
       scanedList[index].leave = now.toIso8601String();
-      DBProvider.db.addLeave(scanedList[index]);
+      DBProvider.db.addLeaveToScan(scanedList[index]);
       getScans();
       this.scanResult = "Scanned Successfully";
     } on PlatformException catch (e) {

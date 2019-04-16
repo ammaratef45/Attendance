@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  codecov: codecov/codecov@1.0.2
 jobs:
   build:
     docker:
@@ -8,3 +10,5 @@ jobs:
       - run: flutter doctor
       - run: cd attendance && flutter packages get && dartanalyzer --options analysis_options.yaml .
       - run: cd attendance && flutter test --coverage
+      - codecov/upload:
+          file: coverage/Icov.info

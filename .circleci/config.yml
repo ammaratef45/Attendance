@@ -7,4 +7,4 @@ jobs:
       - checkout
       - run: flutter doctor
       - run: cd attendance && flutter packages get && dartanalyzer --options analysis_options.yaml .
-      - run: cd attendance && flutter test 
+      - run: cd attendance && flutter test --coverage

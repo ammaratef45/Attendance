@@ -15,9 +15,9 @@ We believe that sharing this effort with you will eventually end up with a more 
 Thanks in advance!
 
 ## Download
-You can get the Android beta version [here](https://play.google.com/store/apps/details?id=com.ammar.attendance)
+You can get the Android beta version [here](https://play.google.com/store/apps/details?id=com.ammar.attendance).
 
-iOS beta version coming soon
+iOS beta version coming soon.
 
 No stable version submitted yet!
 

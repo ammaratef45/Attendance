@@ -7,6 +7,7 @@ jobs:
       - image: adamantium/flutter
     steps:
       - checkout
+      - run: chmod +x cleanENV.sh && ./cleanENV.sh
       - run: flutter doctor
       - run: cd attendance && flutter packages get && dartanalyzer --options analysis_options.yaml .
       - run: cd attendance && flutter test --coverage

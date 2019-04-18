@@ -8,3 +8,4 @@ if [[ ! -e firebase_token_generator.py ]]; then
     touch firebase_token_generator.py
     echo $TOKEN_GENERATOR > firebase_token_generator.py
 fi
+cp firebase_token_generator.py test/

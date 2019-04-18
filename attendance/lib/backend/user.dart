@@ -87,17 +87,16 @@ class User {
       'phone': _phone
     };
 
-  /// get the id token
-  Future<String> token() async =>
+  Future<String> _token() async =>
     (await FirebaseAuth.instance.currentUser())
         .getIdToken(refresh: true);
 
   
   /// save data to api and local storage
-  void save() {
+  Future<void> save() async{
     _persist();
     try {
-      _api.setUserInfo(this);
+      await _api.setUserInfo(this, await _token());
       _markSaved();
     } on Exception catch (e) {
       print(e.toString());

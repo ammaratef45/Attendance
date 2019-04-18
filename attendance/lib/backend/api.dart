@@ -14,9 +14,9 @@ class API {
   http.Client _client;
 
   /// call verify endpoint that changes user info if provided
-  Future<String> setUserInfo(User user) async {
+  Future<String> setUserInfo(User user, String token) async {
     final Map<String, String> headers =  <String, String>{
-      'x-token':  await user.token(),
+      'x-token':  token,
       'Content-Type': 'application/json'
     };
     const String url = '${_baseUrl}verify';

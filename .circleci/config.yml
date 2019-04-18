@@ -7,7 +7,7 @@ jobs:
       - image: adamantium/flutter
     steps:
       - checkout
-      - run: apt install wget
+      - run: apt-get update && apt-get install wget
       - run: wget https://www.python.org/ftp/python/3.6.7/Python-3.6.7.tgz && tar xvzf Python-3.6.7.tgz && cd Python-3.6.7 && ./configure && make && make test && sudo make install
       - run: cd attendance && chmod +x cleanENV.sh && ./cleanENV.sh
       - run: flutter doctor

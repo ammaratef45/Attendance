@@ -2,29 +2,34 @@ import 'package:attendance/homePage/home_page_viewmodel.dart';
 import 'package:attendance/model/attend_model.dart';
 import 'package:flutter/material.dart';
 
-
+/// The view of the home page
 class HomePageView extends HomePageViewModel {
-  Widget buildBody(BuildContext ctxt, int index, {bool filterForUnLeaved=false}) {
-    AttendModel model = filterForUnLeaved ? uitems[index] : litems[index];
-    Widget result = new Center(
-      child: new Card(
-        elevation: 8.0,
-        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-        child: new GestureDetector(
+  /// build the body of the page
+  Widget buildBody(
+    BuildContext ctxt,
+    int index,
+    {bool filterForUnLeaved=false}
+  ) {
+    final AttendModel model = filterForUnLeaved ? uitems[index] : litems[index];
+    final Widget result = Center(
+      child: Card(
+        elevation: 8,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        child: GestureDetector(
           onTap: () => openDetails(model),
-          child: new Container(
+          child: Container(
             decoration: BoxDecoration(color: Colors.blue),
-            alignment: Alignment(0, 0),
-            child: new Column(
+            alignment: const Alignment(0, 0),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
                   model.className,
-                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 Text(
                   model.date,
-                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
             ),
@@ -35,16 +40,18 @@ class HomePageView extends HomePageViewModel {
     return result;
   }
 
+  /// get the tabs
   List<Tab> tabs() {
-    List<Tab> tabs = List<Tab>()
-    ..add(Tab(icon: Icon(Icons.access_time)))
-    ..add(Tab(icon: Icon(Icons.all_inclusive)))
-    ..add(Tab(icon: Icon(Icons.add_circle)));
+    final List<Tab> tabs = <Tab>[]
+    ..add(const Tab(icon: Icon(Icons.access_time)))
+    ..add(const Tab(icon: Icon(Icons.all_inclusive)))
+    ..add(const Tab(icon: Icon(Icons.add_circle)));
     return tabs;
   }
 
+  /// get the items of the body
   List<Widget> bodyItems() {
-    List<Widget> widgs = List<Widget>()
+    final List<Widget> widgs = <Widget>[]
     ..add(
       ListView.builder(
         itemCount: uitems.length,
@@ -66,20 +73,18 @@ class HomePageView extends HomePageViewModel {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 8),
               child: RaisedButton(
                   color: Colors.blue,
                   textColor: Colors.white,
                   splashColor: Colors.blueGrey,
-                  onPressed: () {
-                    scan();
-                  },
+                  onPressed: scan,
                   child: const Text('START CAMERA SCAN')),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 8),
               child: Text(
                 scanResult,
                 textAlign: TextAlign.center,
@@ -93,15 +98,15 @@ class HomePageView extends HomePageViewModel {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
+  Widget build(BuildContext context) =>
+    DefaultTabController(
         length: 3,
         child: Scaffold(
             appBar: AppBar(
               bottom: TabBar(
                 tabs: tabs(),
               ),
-              title: Text("Home"),
+              title: const Text('Home'),
             ),
             drawer: Drawer(
               child: ListView(
@@ -115,16 +120,16 @@ class HomePageView extends HomePageViewModel {
                     ),
                   ),
                   ListTile(
-                    leading: Icon(Icons.cloud_off),
-                    title: Text('Offline scan'),
+                    leading: const Icon(Icons.cloud_off),
+                    title: const Text('Offline scan'),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).pushNamed('/offline');
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.account_circle),
-                    title: Text('Profile'),
+                    leading: const Icon(Icons.account_circle),
+                    title: const Text('Profile'),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context).pushNamed('/profile');
@@ -132,8 +137,8 @@ class HomePageView extends HomePageViewModel {
                   ),
                   Divider(),
                   ListTile(
-                    leading: Icon(Icons.arrow_back),
-                    title: Text("Sign out"),
+                    leading: const Icon(Icons.arrow_back),
+                    title: const Text('Sign out'),
                     onTap: () {
                       Navigator.pop(context);
                       signOut();
@@ -145,5 +150,5 @@ class HomePageView extends HomePageViewModel {
             body: TabBarView(
               children: bodyItems(),
             )));
-  }
+
 }

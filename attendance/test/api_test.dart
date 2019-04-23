@@ -13,7 +13,10 @@ Future<String> token() async{
         'GUfzhtGu1vVFJaYIvxi1yIa49Oy1'
       ]
     );
-    return p.stdout.toString().trim();
+    final String t = p.stdout.toString().trim();
+    print(t);
+    print(p.stderr.toString());
+    return t;
 }
 
 void main() {

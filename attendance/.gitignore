@@ -71,4 +71,4 @@ build/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 adminsdk.json
-firebase_token_generator.py
+# firebase_token_generator.py

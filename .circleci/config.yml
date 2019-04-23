@@ -4,7 +4,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: ammaratef45/flutter:v2
+      - image: ammaratef45/flutter:v3
     steps:
       - checkout
       - run: flutter doctor

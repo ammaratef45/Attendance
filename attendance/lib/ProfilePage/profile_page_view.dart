@@ -1,66 +1,62 @@
-import 'package:attendance/backend/user.dart';
 import 'package:attendance/ProfilePage/profile_page_viewmodel.dart';
+import 'package:attendance/backend/user.dart';
 import 'package:flutter/material.dart';
 
+///Draw the profile page
 class ProfilePageView extends ProfilePageViewModel {
-
-  List<BoxShadow> boxshadows() {
-    List<BoxShadow> shadows = List<BoxShadow>()
-    ..add(BoxShadow(blurRadius: 3.0, color: Colors.black));
+  ///Draw round shadow around the profile pic
+  List<BoxShadow> boxShadows() {
+    final List<BoxShadow> shadows = <BoxShadow>[]
+      ..add(BoxShadow(blurRadius: 3, color: Colors.black));
     return shadows;
   }
 
   @override
   Widget build(BuildContext context) {
-    BoxDecoration boxDecoration = BoxDecoration(
-    color: Colors.blue,
-    image: DecorationImage(
-        image: NetworkImage(imageUrl),
-        fit: BoxFit.cover),
-    borderRadius: BorderRadius.all(
-        Radius.circular(75.0)),
-    boxShadow: boxshadows()
-  );
-        return new Scaffold(
-            body: new Stack(
-              children: <Widget>[
-                ClipPath(
-                  child: Container(color: Colors.lightBlueAccent.withOpacity(0.5)),
-                  clipper: ClipPainter(),
-                ),
-                Container(
-                  child: IconButton(
-                      iconSize: 30.0,
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                  margin: EdgeInsets.only(top: 35.0, left: 8.0),
-                ),
-                Positioned(
-                    width: 350.0,
-                    top: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 5,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                            width: 150.0,
-                            height: 150.0,
-                            decoration: boxDecoration),
-                    SizedBox(height: 60.0),
+    final BoxDecoration boxDecoration = BoxDecoration(
+        color: Colors.blue,
+        image:
+        DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.cover),
+        borderRadius: const BorderRadius.all(Radius.circular(75)),
+        boxShadow: boxShadows());
+    return Scaffold(
+        body: Stack(
+          children: <Widget>[
+            ClipPath(
+              child: Container(color: Colors.lightBlueAccent.withOpacity(0.5)),
+              clipper: ClipPainter(),
+            ),
+            Container(
+              child: IconButton(
+                  iconSize: 30,
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              margin: const EdgeInsets.only(top: 35, left: 8),
+            ),
+            Positioned(
+                width: 350,
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 5,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        width: 150, height: 150, decoration: boxDecoration),
+                    const SizedBox(height: 60),
                     Text(
                       name,
                       style: TextStyle(
-                          fontSize: 30.0,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Montserrat'),
                     ),
-                    SizedBox(height: 40.0),
+                    const SizedBox(height: 40),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -68,50 +64,50 @@ class ProfilePageView extends ProfilePageViewModel {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 30.0),
+                              margin: const EdgeInsets.only(left: 30),
                               child: Text(
                                 nativeNameController.text.isEmpty
-                                    ? "Native name (Arabic)"
+                                    ? 'Native name (Arabic)'
                                     : User
                                     .instance()
                                     .nativeName,
                                 style: TextStyle(
-                                    fontSize: 17.0,
+                                    fontSize: 17,
                                     fontStyle: FontStyle.italic,
                                     fontFamily: 'Montserrat'),
                               ),
                             ),
-                            SizedBox(height: 25.0),
+                            const SizedBox(height: 25),
                             Container(
-                              margin: EdgeInsets.only(left: 30.0),
+                              margin: const EdgeInsets.only(left: 30),
                               child: Text(
                                 phoneNumberController.text.isEmpty
-                                    ? "+20 " + "1xxxxxxxxxxx"
-                                    : "+20 " + User
+                                    ? '+20 ' '1xxxxxxxxxxx'
+                                    : '+20   ${User
                                     .instance()
-                                    .phone,
+                                    .phone}',
                                 style: TextStyle(
-                                    fontSize: 17.0,
+                                    fontSize: 17,
                                     fontStyle: FontStyle.italic,
                                     fontFamily: 'Montserrat'),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 25.0),
+                        const SizedBox(height: 25),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Container(
-                                margin: EdgeInsets.only(left: 40.0),
-                                height: 30.0,
-                                width: 70.0,
+                                margin: const EdgeInsets.only(left: 40),
+                                height: 30,
+                                width: 70,
                                 child: OutlineButton(
                                     splashColor: Colors.lightBlueAccent,
                                     borderSide:
                                     BorderSide(color: Colors.lightBlueAccent),
                                     child: Text(
-                                      "Edit",
+                                      'Edit',
                                       style:
                                       TextStyle(color: Colors.lightBlueAccent),
                                     ),
@@ -119,22 +115,22 @@ class ProfilePageView extends ProfilePageViewModel {
                                         popupEditDialog(
                                             nativeNameController,
                                             20,
-                                            InputType.text,
-                                            TextDirection.rtl),
+                                            _InputType.text,
+                                            _TextDirection.rtl),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(20.0)))),
-                            SizedBox(height: 25.0),
+                                        borderRadius: BorderRadius.circular(
+                                            20)))),
+                            const SizedBox(height: 25),
                             Container(
-                                margin: EdgeInsets.only(left: 40.0),
-                                height: 30.0,
-                                width: 70.0,
+                                margin: const EdgeInsets.only(left: 40),
+                                height: 30,
+                                width: 70,
                                 child: OutlineButton(
                                     splashColor: Colors.lightBlueAccent,
                                     borderSide:
                                     BorderSide(color: Colors.lightBlueAccent),
                                     child: Text(
-                                      "Edit",
+                                      'Edi',
                                       style:
                                       TextStyle(color: Colors.lightBlueAccent),
                                     ),
@@ -142,11 +138,11 @@ class ProfilePageView extends ProfilePageViewModel {
                                         popupEditDialog(
                                             phoneNumberController,
                                             11,
-                                            InputType.number,
-                                            TextDirection.ltr),
+                                            _InputType.number,
+                                            _TextDirection.ltr),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(20.0)))),
+                                        borderRadius: BorderRadius.circular(
+                                            20)))),
                           ],
                         )
                       ],
@@ -157,29 +153,30 @@ class ProfilePageView extends ProfilePageViewModel {
         ));
   }
 
+  ///Controlling dialog
   void popupEditDialog(TextEditingController controller, int max,
-      InputType type, TextDirection dir) {
+      _InputType type, _TextDirection dir) {
     showDialog<void>(
         context: context,
         builder: (BuildContext context) => Dialog(
             child: Container(
-              height: 150.0,
+              height: 150,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     width: 250,
-                    margin: EdgeInsets.only(top: 10.0),
+                    margin: const EdgeInsets.only(top: 10),
                     child: Theme(
                       data: ThemeData(hintColor: Colors.lightBlueAccent),
                       child: TextField(
                         controller: controller,
                         onChanged: (String text) {},
-                        keyboardType: type == InputType.number
+                        keyboardType: type == _InputType.number
                             ? TextInputType.number
                             : TextInputType.text,
-                        textAlign: dir == TextDirection.rtl
+                        textAlign: dir == _TextDirection.rtl
                             ? TextAlign.right
                             : TextAlign.left,
                         decoration:
@@ -188,14 +185,14 @@ class ProfilePageView extends ProfilePageViewModel {
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 10.0),
-                      height: 30.0,
-                      width: 70.0,
+                      margin: const EdgeInsets.only(top: 10),
+                      height: 30,
+                      width: 70,
                       child: OutlineButton(
                           splashColor: Colors.lightBlueAccent,
                           borderSide: BorderSide(color: Colors.lightBlueAccent),
                           child: Text(
-                            "Save",
+                            'Save',
                             style: TextStyle(color: Colors.lightBlueAccent),
                           ),
                           onPressed: () {
@@ -203,28 +200,26 @@ class ProfilePageView extends ProfilePageViewModel {
                             User.instance().save();
                           },
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0))))
+                              borderRadius: BorderRadius.circular(20))))
                 ],
               ),
             )));
   }
 }
 
-enum InputType { number, text }
-enum TextDirection { rtl, ltr }
+enum _InputType { number, text }
+enum _TextDirection { rtl, ltr }
 
+///Draw background path
 class ClipPainter extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = new Path()
-    ..lineTo(0.0, size.height / 1.9)
-    ..lineTo(size.width + 125, 0.0)
-    ..close();
+    final Path path = Path()
+      ..lineTo(0, size.height / 1.9)..lineTo(size.width + 125, 0)
+      ..close();
     return path;
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
-  }
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }

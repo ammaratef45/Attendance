@@ -1,5 +1,5 @@
-import 'package:attendance/backend/user.dart';
 import 'package:attendance/ProfilePage/profile_page.dart';
+import 'package:attendance/backend/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +32,7 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
   void initState() {
     super.initState();
     nativeNameController.addListener(_updateNativeName);
-    phoneNumberController.addListener(_updatephoneNumber);
+    phoneNumberController.addListener(_updatePhoneNumber);
   }
 
   @override
@@ -46,7 +46,7 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
     User.instance().rename(nativeNameController.text);
   }
 
-  void _updatephoneNumber() {
+  void _updatePhoneNumber() {
     User.instance().changePhone(phoneNumberController.text);
   }
 }

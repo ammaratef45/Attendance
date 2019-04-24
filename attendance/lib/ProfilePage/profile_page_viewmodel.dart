@@ -5,28 +5,37 @@ import 'package:flutter/material.dart';
 
 // @todo #26 add country field.
 // @todo #26 show error below the entry field if failed to
-//  set the value to the user object.
+///  set the value to the user object.
 abstract class ProfilePageViewModel extends State<ProfilePage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseUser mUser;
-  String imageUrl = "";
-  String name = "";
-  TextEditingController nativeNameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-
+  ///Construct ProfileViewModel
   ProfilePageViewModel() {
-    auth.currentUser().then((FirebaseUser user) {
-      mUser = user;
+    _auth.currentUser().then((FirebaseUser user) {
+      _mUser = user;
       setState(() {
-        if (mUser.displayName != null) {
-          name = mUser.displayName;
+        if (_mUser.displayName != null) {
+          name = _mUser.displayName;
         }
-        if (mUser.photoUrl != null) {
-          imageUrl = mUser.photoUrl;
+        if (_mUser.photoUrl != null) {
+          imageUrl = _mUser.photoUrl;
         }
       });
     });
   }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseUser _mUser;
+
+  ///Profile image URL
+  String imageUrl = '';
+
+  ///Profile Username
+  String name = '';
+
+  ///Native name field controller
+  TextEditingController nativeNameController = TextEditingController();
+
+  ///Native name field controller
+  TextEditingController phoneNumberController = TextEditingController();
 
   @override
   void initState() {

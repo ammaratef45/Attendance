@@ -9,6 +9,6 @@ jobs:
       - checkout
       - run: flutter doctor
       - run: cd attendance && flutter packages get && dartanalyzer --options analysis_options.yaml .
-      - run: cd attendance && chmod +x cleanENV.sh && ./cleanENV.sh && pip install firebase-admin && flutter test --coverage
+      - run: cd attendance && chmod +x cleanENV.sh && ./cleanENV.sh && flutter test --coverage
       - codecov/upload:
           file: 'attendance/coverage/lcov.info'

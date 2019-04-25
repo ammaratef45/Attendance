@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 Future<String> token() async{
   final ProcessResult p = 
     await Process.run(
-      'python',
+      '/usr/bin/python',
       <String>[
         'firebase_token_generator.py',
         'GUfzhtGu1vVFJaYIvxi1yIa49Oy1'

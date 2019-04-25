@@ -14,8 +14,6 @@ Future<String> token() async{
       ]
     );
     final String t = p.stdout.toString().trim();
-    print(t);
-    print(p.stderr.toString());
     return t;
 }
 

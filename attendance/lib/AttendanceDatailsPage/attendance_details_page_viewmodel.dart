@@ -59,7 +59,8 @@ extends State<AttendanceDetailsPage> {
     try {
       final String barcode = await BarcodeScanner.scan();
       final Session session = Session.fromMap(json.decode(barcode));
-      // @todo #9 save locally and call api /sessionleave instead of using firebase database
+      // @todo #51 save locally and call api.leaveSession and
+      //  remove firebase admin usage
       final FirebaseUser user = await FirebaseAuth.instance.currentUser();
       final String uid = user.uid;
       final DatabaseReference attendanceRef =

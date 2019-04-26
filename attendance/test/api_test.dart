@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:attendance/backend/api.dart';
+import 'package:attendance/backend/session.dart';
 import 'package:attendance/backend/user.dart';
 import 'package:test/test.dart';
 
@@ -14,6 +15,7 @@ Future<String> token() async{
       ]
     );
     final String t = p.stdout.toString().trim();
+    print(p.stderr);
     return t;
 }
 
@@ -31,6 +33,18 @@ void main() {
         '{"success":"true","message":"You are a verified user","data":null}'
       );
     });
-    
   });
+
+  group('session calls', () {
+    final Future<String> t = token();
+    // @todo #51 mock a session for this test and make it work.
+    Session s;
+    test('leave success', () async {
+      final String res = await api.leaveSession(s, await t);
+      expect(
+        res,
+        '{"success":"true","message":"updated","data":null}'
+      );
+    });
+  }, skip: true);
 }

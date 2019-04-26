@@ -17,4 +17,8 @@ class Session {
   String get classKey => _classKey;
   /// UID of the session's admin
   String get adminUID => _adminUID;
+
+  // @todo #51 implement this methos
+  /// get the body of the API request for leave session
+  String leaveRequestBody() => 'what?';
 }

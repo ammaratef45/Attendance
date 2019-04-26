@@ -29,7 +29,7 @@ class User {
   /// rename the user (change native name)
   void rename(String newName) {
     final String trimmed = newName.trim();
-    if (_isValidName(trimmed)) {
+    if (isValidName(trimmed)) {
       _nativeName = trimmed;
     } else {
       throw const FormatException('invalid native name format');
@@ -39,14 +39,15 @@ class User {
   /// change user's phone number
   void changePhone(String newPhone) {
     final String trimmed = newPhone.trim();
-    if (_isValidNumber(trimmed)) {
+    if (isValidNumber(trimmed)) {
       _phone = trimmed;
     } else {
       throw const FormatException('invalid phone number format');
     }
   }
 
-  bool _isValidName(String name) {
+  ///Check name format
+  bool isValidName(String name) {
     if (name.length < 21) {
       return true;
     } else {
@@ -54,7 +55,8 @@ class User {
     }
   }
 
-  bool _isValidNumber(String number) {
+  ///Check phone format
+  bool isValidNumber(String number) {
     if (number.isNotEmpty) {
       final String firstDigit = number.substring(0, 1);
 
@@ -82,18 +84,13 @@ class User {
 
   /// return body as a map
   Map<String, dynamic> toMap() =>
-    <String, dynamic> {
-      'nativeName': _nativeName,
-      'phone': _phone
-    };
+      <String, dynamic>{'nativeName': _nativeName, 'phone': _phone};
 
   Future<String> _token() async =>
-    (await FirebaseAuth.instance.currentUser())
-        .getIdToken(refresh: true);
+      (await FirebaseAuth.instance.currentUser()).getIdToken(refresh: true);
 
-  
   /// save data to api and local storage
-  Future<void> save() async{
+  Future<void> save() async {
     _persist();
     try {
       await _api.setUserInfo(this, await _token());

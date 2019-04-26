@@ -46,5 +46,34 @@ void main() {
         '{"success":"true","message":"updated","data":null}'
       );
     });
+    test('leave fails due to forgetting token', () async {
+      try {
+        await api.leaveSession(s, '');
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e,
+          '{"success":"false",'
+          '"message":"Token is not provided in x-token header",'
+          '"data":null}'
+        );
+      }
+    });
+    test('leave fails due to wrong token', () async {
+      try {
+        await api.leaveSession(s, 'superSecretToken');
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e,
+          contains(
+            'status code is not 200\n'
+            '{"success":"false",'
+          )
+        );
+      }
+    });
   }, skip: true);
 }

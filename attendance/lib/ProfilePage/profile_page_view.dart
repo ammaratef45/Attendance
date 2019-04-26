@@ -222,7 +222,6 @@ class ProfilePageView extends ProfilePageViewModel {
 
   String _phoneValidator(String number) {
     if (User.instance().isValidNumber(number)) {
-      print(number);
       return null;
     } else {
       return 'Invalid phone number format';

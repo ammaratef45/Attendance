@@ -213,18 +213,20 @@ class ProfilePageView extends ProfilePageViewModel {
   }
 
   String _nameValidator(String name) {
-    if (User.instance().isValidName(name)) {
-      return null;
-    } else {
-      return 'Invalid name format';
+    try {
+      User.instance().rename(name);
+      return '';
+    } on FormatException catch (message) {
+      return message.toString();
     }
   }
 
   String _phoneValidator(String number) {
-    if (User.instance().isValidNumber(number)) {
-      return null;
-    } else {
-      return 'Invalid phone number format';
+    try {
+      User.instance().changePhone(number);
+      return '';
+    } on FormatException catch (message) {
+      return message.toString();
     }
   }
 

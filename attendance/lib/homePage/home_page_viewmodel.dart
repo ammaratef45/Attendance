@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:attendance/homePage/home_page.dart';
-import 'package:attendance/model/attend_model.dart';
-import 'package:attendance/model/session_model.dart';
+import 'package:attendance/backend/attend_model.dart';
+import 'package:attendance/backend/session_model.dart';
 import 'package:attendance/scan_exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';

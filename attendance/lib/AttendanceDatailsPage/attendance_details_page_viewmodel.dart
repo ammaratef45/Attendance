@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:attendance/AttendanceDatailsPage/attendance_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance/backend/attend_model.dart';
-import 'package:attendance/backend/session_model.dart';
+import 'package:attendance/backend/session.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,7 +58,7 @@ extends State<AttendanceDetailsPage> {
   Future<void> scan() async {
     try {
       final String barcode = await BarcodeScanner.scan();
-      final SessionModel session = SessionModel(barcode);
+      final Session session = Session.fromMap(json.decode(barcode));
       // @todo #9 save locally and call api /sessionleave instead of using firebase database
       final FirebaseUser user = await FirebaseAuth.instance.currentUser();
       final String uid = user.uid;
@@ -72,7 +73,7 @@ extends State<AttendanceDetailsPage> {
       final Map<String, dynamic> map = <String, dynamic>{
         'session' : session.key,
         'sessionClass' : session.classKey,
-        'sessionAdmin' : session.admin,
+        'sessionAdmin' : session.adminUID,
         'user' : uid,
         'arriveTime' : _model.arriveDate,
         'leaveTime' : now.toIso8601String()

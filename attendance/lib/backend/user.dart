@@ -29,7 +29,7 @@ class User {
   /// rename the user (change native name)
   void rename(String newName) {
     final String trimmed = newName.trim();
-    if (isValidName(trimmed)) {
+    if (_isValidName(trimmed)) {
       _nativeName = trimmed;
     } else {
       throw const FormatException('invalid native name format');
@@ -39,15 +39,14 @@ class User {
   /// change user's phone number
   void changePhone(String newPhone) {
     final String trimmed = newPhone.trim();
-    if (isValidNumber(trimmed)) {
+    if (_isValidNumber(trimmed)) {
       _phone = trimmed;
     } else {
       throw const FormatException('invalid phone number format');
     }
   }
 
-  ///Check name format
-  bool isValidName(String name) {
+  bool _isValidName(String name) {
     if (name.length < 21) {
       return true;
     } else {
@@ -55,8 +54,7 @@ class User {
     }
   }
 
-  ///Check phone format
-  bool isValidNumber(String number) {
+  bool _isValidNumber(String number) {
     if (number.isNotEmpty) {
       final String firstDigit = number.substring(0, 1);
 

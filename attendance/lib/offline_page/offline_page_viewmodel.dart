@@ -57,7 +57,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     try {
       final String barcode = await BarcodeScanner.scan();
       Session session = Session.fromMap(json.decode(barcode));
-      DateTime now = new DateTime.now();
+      DateTime now = DateTime.now();
       Scan scan =Scan(key: session.key, classKey: session.classKey, admin: session.adminUID, arrive: now.toIso8601String());
       DBProvider.db.newScan(scan);
       getScans();
@@ -85,7 +85,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       if(session.key!=scanedList[index].key) {
         throw InvalidSessionException("This is not the same session you attended");
       }
-      DateTime now = new DateTime.now();
+      DateTime now = DateTime.now();
       scanedList[index].leave = now.toIso8601String();
       DBProvider.db.addLeaveToScan(scanedList[index]);
       getScans();

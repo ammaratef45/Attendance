@@ -82,18 +82,13 @@ class User {
 
   /// return body as a map
   Map<String, dynamic> toMap() =>
-    <String, dynamic> {
-      'nativeName': _nativeName,
-      'phone': _phone
-    };
+      <String, dynamic>{'nativeName': _nativeName, 'phone': _phone};
 
   Future<String> _token() async =>
-    (await FirebaseAuth.instance.currentUser())
-        .getIdToken(refresh: true);
+      (await FirebaseAuth.instance.currentUser()).getIdToken(refresh: true);
 
-  
   /// save data to api and local storage
-  Future<void> save() async{
+  Future<void> save() async {
     _persist();
     try {
       await _api.setUserInfo(this, await _token());

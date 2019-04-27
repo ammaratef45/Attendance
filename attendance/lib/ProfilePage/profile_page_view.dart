@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 
 ///Draw the profile page
 class ProfilePageView extends ProfilePageViewModel {
+  final GlobalKey<FormState> _key = GlobalKey();
+  bool _validate = false;
+
   ///Draw round shadow around the profile pic
   List<BoxShadow> boxShadows() {
     final List<BoxShadow> shadows = <BoxShadow>[]
@@ -169,20 +172,26 @@ class ProfilePageView extends ProfilePageViewModel {
                     width: 250,
                     margin: const EdgeInsets.only(top: 10),
                     child: Theme(
-                      data: ThemeData(hintColor: Colors.lightBlueAccent),
-                      child: TextField(
-                        controller: controller,
-                        onChanged: (String text) {},
-                        keyboardType: type == _InputType.number
-                            ? TextInputType.number
-                            : TextInputType.text,
-                        textAlign: dir == _TextDirection.rtl
-                            ? TextAlign.right
-                            : TextAlign.left,
-                        decoration:
-                        InputDecoration(border: OutlineInputBorder()),
-                      ),
-                    ),
+                        data: ThemeData(hintColor: Colors.lightBlueAccent),
+                        child: Form(
+                          key: _key,
+                          autovalidate: _validate,
+                          child: TextFormField(
+                            validator: type == _InputType.number
+                                ? _phoneValidator
+                                : _nameValidator,
+                            controller: controller,
+                            onSaved: (String text) {},
+                            keyboardType: type == _InputType.number
+                                ? TextInputType.number
+                                : TextInputType.text,
+                            textAlign: dir == _TextDirection.rtl
+                                ? TextAlign.right
+                                : TextAlign.left,
+                            decoration:
+                            InputDecoration(border: OutlineInputBorder()),
+                          ),
+                        )),
                   ),
                   Container(
                       margin: const EdgeInsets.only(top: 10),
@@ -195,15 +204,42 @@ class ProfilePageView extends ProfilePageViewModel {
                             'Save',
                             style: TextStyle(color: Colors.lightBlueAccent),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            User.instance().save();
-                          },
+                          onPressed: () => _saveValidData,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20))))
                 ],
               ),
             )));
+  }
+
+  String _nameValidator(String name) {
+    try {
+      User.instance().rename(name);
+      return '';
+    } on FormatException catch (message) {
+      return message.toString();
+    }
+  }
+
+  String _phoneValidator(String number) {
+    try {
+      User.instance().changePhone(number);
+      return '';
+    } on FormatException catch (message) {
+      return message.toString();
+    }
+  }
+
+  void _saveValidData() {
+    if (_key.currentState.validate()) {
+      _key.currentState.save();
+      User.instance().save();
+      Navigator.pop(context);
+    } else {
+      setState(() {
+        _validate = true;
+      });
+    }
   }
 }
 

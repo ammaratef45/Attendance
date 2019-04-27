@@ -120,7 +120,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     String message = "";
     if(!(await isLoggedIn())) {
       message = "Not loggedin, login first";
-    } else if(await isScanned(index)) {
+    } else if(true /*isScanned(index)*/) {
       message = "You already registered this session, Delete this record";
     } else {
       DatabaseReference attendanceRef =  FirebaseDatabase.instance.reference().child("attendances").push();
@@ -147,26 +147,5 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     mUser = await auth.currentUser();
     return mUser!=null;
   }
-
-  // @todo #9 shouldn't need isscanned (verification happens in the backend)
-  Future<bool> isScanned(int index) async {
-    DatabaseReference session = FirebaseDatabase.instance.reference().child(scanedList[index].admin).child("classes")
-              .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);
-    DataSnapshot attendencies = await session.child("attended").once();
-    Map<dynamic, dynamic> value = attendencies.value;
-    if(value==null || value.isEmpty) {
-      return false;
-    }
-    for(String key in value.keys) {
-      DataSnapshot ref = await FirebaseDatabase.instance.reference().child("attendances").child(value[key]).once();
-      if(ref.value["user"] == mUser.uid) {
-        debugPrint(mUser.uid);
-        debugPrint(ref.value["user"]);
-        return true;
-      }
-    }
-    return false;
-  }
-
   
 }

@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // @todo #26 add country field.
-// @todo #26 show error below the entry field if failed to
 ///  set the value to the user object.
 abstract class ProfilePageViewModel extends State<ProfilePage> {
   ///Construct ProfileViewModel

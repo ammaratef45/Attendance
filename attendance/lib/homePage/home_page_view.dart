@@ -2,6 +2,8 @@ import 'package:attendance/backend/attend_model.dart';
 import 'package:attendance/homePage/home_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
+//@todo #62 create a dialog to show scan result
+
 /// The view of the home page
 class HomePageView extends HomePageViewModel {
   /// build the body of the page
@@ -41,8 +43,7 @@ class HomePageView extends HomePageViewModel {
   List<Tab> tabs() {
     final List<Tab> tabs = <Tab>[]..add(
         const Tab(icon: Icon(Icons.access_time)))..add(
-        const Tab(icon: Icon(Icons.all_inclusive)))..add(
-        const Tab(icon: Icon(Icons.add_circle)));
+        const Tab(icon: Icon(Icons.all_inclusive)));
     return tabs;
   }
 
@@ -55,40 +56,17 @@ class HomePageView extends HomePageViewModel {
         ListView.builder(
             itemCount: litems.length,
             itemBuilder: (BuildContext ctxt, int index) =>
-                buildBody(ctxt, index, filterForUnLeaved: false)))..add(Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: RaisedButton(
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  splashColor: Colors.blueGrey,
-                  onPressed: scan,
-                  child: const Text('START CAMERA SCAN')),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                scanResult,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-    ));
+                buildBody(ctxt, index, filterForUnLeaved: false)));
     return widgs;
   }
 
   @override
   Widget build(BuildContext context) =>
       DefaultTabController(
-          length: 3,
+          length: 2,
           child: Scaffold(
               floatingActionButton: FloatingActionButton.extended(
-                  onPressed: () {},
+                  onPressed: scan,
                   icon: const Icon(Icons.camera_alt),
                   label: const Text('Scan')),
               appBar: AppBar(

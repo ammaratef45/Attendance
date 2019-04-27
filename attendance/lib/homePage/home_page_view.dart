@@ -1,5 +1,5 @@
 import 'package:attendance/homePage/home_page_viewmodel.dart';
-import 'package:attendance/model/attend_model.dart';
+import 'package:attendance/backend/attend_model.dart';
 import 'package:flutter/material.dart';
 
 /// The view of the home page

@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:attendance/db/database.dart';
-import 'package:attendance/model/scan_model.dart';
-import 'package:attendance/model/session_model.dart';
+import 'package:attendance/backend/scan_model.dart';
+import 'package:attendance/backend/session.dart';
 import 'package:attendance/offline_page/offline_page.dart';
 import 'package:attendance/scan_exceptions.dart';
 import 'package:flutter/material.dart';
@@ -55,9 +56,9 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
   Future<void> scan() async {
     try {
       final String barcode = await BarcodeScanner.scan();
-      SessionModel session = SessionModel(barcode);
-      DateTime now = new DateTime.now();
-      Scan scan =Scan(key: session.key, classKey: session.classKey, admin: session.admin, arrive: now.toIso8601String());
+      Session session = Session.fromMap(json.decode(barcode));
+      DateTime now = DateTime.now();
+      Scan scan =Scan(key: session.key, classKey: session.classKey, admin: session.adminUID, arrive: now.toIso8601String());
       DBProvider.db.newScan(scan);
       getScans();
       this._scanResult = "Scanned Successfully";
@@ -80,11 +81,11 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
   Future<void> scanLeave(int index) async {
     try {
       String barcode = await BarcodeScanner.scan();
-      SessionModel session = SessionModel(barcode);
+      Session session = Session.fromMap(json.decode(barcode));
       if(session.key!=scanedList[index].key) {
         throw InvalidSessionException("This is not the same session you attended");
       }
-      DateTime now = new DateTime.now();
+      DateTime now = DateTime.now();
       scanedList[index].leave = now.toIso8601String();
       DBProvider.db.addLeaveToScan(scanedList[index]);
       getScans();

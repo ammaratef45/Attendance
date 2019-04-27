@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:attendance/backend/user.dart';
-import 'package:attendance/model/scan_model.dart';
+import 'package:attendance/backend/scan_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';

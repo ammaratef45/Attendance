@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:attendance/homePage/home_page.dart';
-import 'package:attendance/model/attend_model.dart';
-import 'package:attendance/model/session_model.dart';
+import 'package:attendance/backend/attend_model.dart';
+import 'package:attendance/backend/session.dart';
 import 'package:attendance/scan_exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -52,10 +52,10 @@ abstract class HomePageViewModel extends State<HomePage> {
     try {
       final String barcode = await BarcodeScanner.scan();
       final String uid = mUser.uid;
-      final SessionModel session = SessionModel(barcode);
+      final Session session = Session.fromMap(json.decode(barcode));
       // @todo #9 save locally and call api /newsession instead of using firebase database
       final DatabaseReference sessionRef = FirebaseDatabase.instance
-        .reference().child(session.admin).child('classes')
+        .reference().child(session.adminUID).child('classes')
         .child(session.classKey).child('sessions').child(session.key);
       if(await isScanned(sessionRef, mUser)) {
         throw AlreadyScannedSessionException(
@@ -68,7 +68,7 @@ abstract class HomePageViewModel extends State<HomePage> {
       final Map<String, dynamic> map = <String, dynamic>{};
       map['session'] = session.key;
       map['sessionClass'] = session.classKey;
-      map['sessionAdmin'] = session.admin;
+      map['sessionAdmin'] = session.adminUID;
       map['user'] = uid;
       map['arriveTime'] = now.toIso8601String();
       map['leaveTime'] = 'NULL';

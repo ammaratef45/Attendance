@@ -17,5 +17,6 @@ merge:
     flutter packages get
     flutter test
     flutter -v build apk
+    . /etc/profile.d/rvm.sh
     pdd -f /dev/null -v
     

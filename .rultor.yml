@@ -2,21 +2,18 @@ architect:
   - ammaratef45
 docker:
   as_root: true
-  image: adamantium/flutter
-
-install: |-
-  curl -sSL https://get.rvm.io | bash -s stable --ruby
-  source /usr/local/rvm/scripts/rvm
-  gem install pdd
+  image: ammaratef45/flutter:v3
   
 decrypt:
   repo/attendance/android/api-project.json: "repo/attendance/android/api-project.json.asc"
   repo/attendance/android/key.properties: "repo/attendance/android/key.properties.asc"
+  repo/attendance/exportEnvVars.sh: "repo/attendance/exportEnvVars.sh.asc"
 
 merge:
   script: |-
     flutter doctor
     cd attendance
+    chmod +x cleanENV.sh && ./cleanENV.sh
     flutter packages get
     flutter test
     flutter -v build apk

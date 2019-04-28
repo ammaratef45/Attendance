@@ -11,6 +11,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:attendance/dialogs.dart';
+
 ///Business logic
 abstract class HomePageViewModel extends State<HomePage> {
   ///Construct Home page Viewmodel
@@ -31,9 +33,6 @@ abstract class HomePageViewModel extends State<HomePage> {
       });
     });
   }
-
-  ///scan message
-  String scanResult = "Scan Error: Make sure you're scanning the right code";
 
   ///l items
   List<AttendModel> litems = <AttendModel>[];
@@ -70,6 +69,7 @@ abstract class HomePageViewModel extends State<HomePage> {
 
   /// perform scan
   Future<void> scan() async {
+    String scanResult = "Scan Error: Make sure you're scanning the right code";
     try {
       final String barcode = await BarcodeScanner.scan();
       final String uid = _mUser.uid;
@@ -109,21 +109,18 @@ abstract class HomePageViewModel extends State<HomePage> {
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          scanResult = 'You did not grant the camera permission!';
-        });
+        scanResult = 'You did not grant the camera permission!';
       } else {
-        setState(() => scanResult = 'Unknown error: $e');
+        scanResult = 'Unknown error: $e';
       }
     } on FormatException {
-      setState(() => print('Scan Cancelled'));
+      print('Scan Cancelled');
     } on AlreadyScannedSessionException catch (e) {
-      setState(() {
-        scanResult = e.cause;
-      });
+      scanResult = e.cause;
     } on Exception catch (e) {
-      setState(() => print('Unknown error: $e'));
+      scanResult = 'Unknown error: $e';
     }
+    await Dialogs.messageDialog(context, 'result', scanResult);
   }
 
   // @todo #9 delete this (checking will be performed in the backend)

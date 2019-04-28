@@ -2,7 +2,7 @@ import 'package:attendance/backend/attend_model.dart';
 import 'package:attendance/homePage/home_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
-//@todo #62 create a dialog to show scan result
+// @todo #62 create a dialog to show scan result
 
 /// The view of the home page
 class HomePageView extends HomePageViewModel {

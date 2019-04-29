@@ -28,6 +28,7 @@ class API {
     ..followRedirects = false;
 
   static const String _baseUrl = 'https://attendance-app-api.herokuapp.com/';
+  //static const String _baseUrl = 'http://localhost:3000/';
   http.Client _client;
 
   /// call verify endpoint that changes user info if provided
@@ -62,7 +63,7 @@ class API {
 
   /// call verify endpoint that changes user info if provided
   Future<String> addSession(Session session, String token) async {
-    const String url = '${_baseUrl}sessionleave';
+    const String url = '${_baseUrl}newSession';
     final http.Request request =
       _buildRequest(url, token, session.sessionBody());
     final http.StreamedResponse response = await _client.send(request);
@@ -72,7 +73,8 @@ class API {
     if(statusCode == 200) {
       return responseData;
     }
-    throw Exception('status code is not 200\n$responseData');
+    return statusCode.toString() + responseData;
+    //throw Exception('status code is not 200\n$responseData');
   }
   
 }

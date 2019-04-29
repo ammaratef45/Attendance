@@ -73,8 +73,7 @@ class API {
     if(statusCode == 200) {
       return responseData;
     }
-    return statusCode.toString() + responseData;
-    //throw Exception('status code is not 200\n$responseData');
+    throw Exception('status code is not 200\n$responseData');
   }
   
 }

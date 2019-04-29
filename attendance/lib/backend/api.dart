@@ -59,5 +59,20 @@ class API {
     }
     throw Exception('status code is not 200\n$responseData');
   }
+
+  /// call verify endpoint that changes user info if provided
+  Future<String> addSession(Session session, String token) async {
+    const String url = '${_baseUrl}sessionleave';
+    final http.Request request =
+      _buildRequest(url, token, session.sessionBody());
+    final http.StreamedResponse response = await _client.send(request);
+    final int statusCode = response.statusCode;
+    final String responseData =
+      await response.stream.transform(utf8.decoder).join();
+    if(statusCode == 200) {
+      return responseData;
+    }
+    throw Exception('status code is not 200\n$responseData');
+  }
   
 }

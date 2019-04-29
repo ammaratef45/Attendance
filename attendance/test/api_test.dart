@@ -76,4 +76,44 @@ void main() {
       }
     });
   }, skip: true);
+
+  group('test adding session', () {
+    final Future<String> t = token();
+    // @todo #48 mock data of the session.
+    Session s = Session();
+    test('test added session', () {
+      
+    });
+    test('leave fails due to forgetting token', () async {
+      try {
+        await api.addSession(s, '');
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e.toString(),
+          contains(
+            '{"success":"false",'
+            '"message":"Token is not provided in x-token header",'
+            '"data":null}'
+          )
+        );
+      }
+    });
+    test('leave fails due to wrong token', () async {
+      try {
+        await api.addSession(s, 'superSecretToken');
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e.toString(),
+          contains(
+            'status code is not 200\n'
+            '{"success":"false",'
+          )
+        );
+      }
+    });
+  });
 }

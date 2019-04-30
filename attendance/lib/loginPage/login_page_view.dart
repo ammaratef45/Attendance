@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import './login_page_viewmodel.dart';
-
+// @todo #67 solve all remaining 195 lint errors.
 class LoginPageView extends LoginPageViewModel {
   @override
   Widget build(BuildContext context) {

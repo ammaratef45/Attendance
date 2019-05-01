@@ -1,4 +1,4 @@
-import 'package:attendance/backend/attend_model.dart';
+import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/homePage/home_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 

@@ -8,6 +8,8 @@ decrypt:
   repo/attendance/android/api-project.json: "repo/attendance/android/api-project.json.asc"
   repo/attendance/android/key.properties: "repo/attendance/android/key.properties.asc"
   repo/attendance/exportEnvVars.sh: "repo/attendance/exportEnvVars.sh.asc"
+  repo/attendance/adminsdk.json: "repo/attendance/adminsdk.json.asc"
+
 
 merge:
   script: |-

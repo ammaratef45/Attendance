@@ -56,12 +56,19 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
   Future<void> scan() async {
     try {
       final String barcode = await BarcodeScanner.scan();
-      Session session = Session.fromMap(json.decode(barcode));
-      DateTime now = DateTime.now();
-      Scan scan =Scan(key: session.key, classKey: session.classKey, admin: session.adminUID, arrive: now.toIso8601String());
-      DBProvider.db.newScan(scan);
-      getScans();
-      this._scanResult = "Scanned Successfully";
+      final Session session = Session.fromMap(json.decode(barcode));
+      final DateTime now = DateTime.now();
+      final Scan scan =Scan.fromMap(
+        <String, dynamic> {
+          'key': session.key,
+          'classKey': session.classKey,
+          'admin': session.adminUID,
+          'arrive': now.toIso8601String()
+        }
+      );
+      await DBProvider.db.newScan(scan);
+      await getScans();
+      _scanResult = 'Scanned Successfully';
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
@@ -86,8 +93,8 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
         throw InvalidSessionException("This is not the same session you attended");
       }
       DateTime now = DateTime.now();
-      scanedList[index].leave = now.toIso8601String();
-      DBProvider.db.addLeaveToScan(scanedList[index]);
+      scanedList[index].leavedAt(now.toIso8601String());
+      DBProvider.db.updateScan(scanedList[index]);
       getScans();
       this._scanResult = "Scanned Successfully";
     } on PlatformException catch (e) {

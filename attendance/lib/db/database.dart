@@ -107,18 +107,10 @@ class DBProvider {
   }
 
   /// add leave time to a scan
-  Future<int> addLeaveToScan(Scan scan) async {
+  Future<int> updateScan(Scan scan) async {
     final Database db = await database;
-    final Scan edited = Scan(
-      id: scan.id,
-      key: scan.key,
-      classKey: scan.classKey,
-      admin: scan.admin,
-      arrive: scan.arrive,
-      leave: scan.leave
-    );
     final List<dynamic> args = <dynamic>[scan.id];
-    final int res = await db.update('Scan', edited.toMap(),
+    final int res = await db.update('Scan', scan.toMap(),
         where: 'id = ?', whereArgs: args);
     return res;
   }

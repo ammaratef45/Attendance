@@ -17,7 +17,7 @@ merge:
     cd attendance
     chmod +x cleanENV.sh && ./cleanENV.sh
     flutter packages get
-    . exportEnvVars.sh
+    . exportEnvVars.sh >/dev/null
     flutter test
     flutter -v build apk
     . /etc/profile.d/rvm.sh

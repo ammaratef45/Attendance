@@ -74,7 +74,7 @@ abstract class HomePageViewModel extends State<HomePage> {
       final String barcode = await BarcodeScanner.scan();
       final String uid = _mUser.uid;
       final Session session = Session.fromMap(json.decode(barcode));
-      // @todo #9 save locally and call api /newsession instead of using firebase database
+      // @todo #48 save locally and call api /newsession instead of using firebase database
       final DatabaseReference sessionRef = FirebaseDatabase.instance
           .reference()
           .child(session.adminUID)

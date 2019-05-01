@@ -5,7 +5,7 @@
 [![PDD status](http://www.0pdd.com/svg?name=ammaratef45/Attendance)](http://www.0pdd.com/p?name=ammaratef45/Attendance)
 [![CircleCI](https://circleci.com/gh/ammaratef45/Attendance/tree/master.svg?style=svg)](https://circleci.com/gh/ammaratef45/Attendance/tree/master)
 [![codecov](https://codecov.io/gh/ammaratef45/Attendance/branch/master/graph/badge.svg)](https://codecov.io/gh/ammaratef45/Attendance)
-[![Hits-of-Code](https://hitsofcode.com/github.com/ammaratef45/attendance)](https://hitsofcode.com/view/github.com/ammaratef45/attendance)
+[![Hits-of-Code](https://hitsofcode.com/github/ammaratef45/attendance)](https://hitsofcode.com/view/github/ammaratef45/attendance)
 [![Codemagic build status](https://api.codemagic.io/apps/5ca0a581581a2d000dec8080/5ca0a581581a2d000dec807f/status_badge.svg)](https://codemagic.io/apps/5ca0a581581a2d000dec8080/5ca0a581581a2d000dec807f/latest_build)
 
 [![MIT License](https://img.shields.io/github/license/ammaratef45/Attendance.svg)](https://github.com/ammaratef45/Attendance/blob/master/LICENSE)

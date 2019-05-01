@@ -1,4 +1,3 @@
-// @todo #67 rename the file to scan.
 /// model that represents the scan.
 class Scan {
   /// constructor

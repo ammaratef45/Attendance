@@ -1,4 +1,3 @@
-// @todo #67 rename the model to Attendance
 /// model of the attendance.
 class AttendModel {
   // @todo #67 refactor to take a map

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:attendance/db/database.dart';
-import 'package:attendance/backend/scan_model.dart';
+import 'package:attendance/backend/scan.dart';
 import 'package:attendance/backend/session.dart';
 import 'package:attendance/offline_page/offline_page.dart';
 import 'package:attendance/scan_exceptions.dart';

@@ -35,10 +35,10 @@ abstract class HomePageViewModel extends State<HomePage> {
   }
 
   ///l items
-  List<AttendModel> litems = <AttendModel>[];
+  List<Attendance> litems = <Attendance>[];
 
   ///u items
-  List<AttendModel> uitems = <AttendModel>[];
+  List<Attendance> uitems = <Attendance>[];
 
   ///FB Auth object
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -61,8 +61,8 @@ abstract class HomePageViewModel extends State<HomePage> {
   }
 
   ///open details
-  Future<void> openDetails(AttendModel model) async {
-    AttendModel.selected = model;
+  Future<void> openDetails(Attendance model) async {
+    Attendance.selected = model;
     await Navigator.of(context).pushNamed('/details');
     await _fillData();
   }
@@ -172,8 +172,16 @@ abstract class HomePageViewModel extends State<HomePage> {
       final String attendTime = item.value['arriveTime'];
       final String leaveTime = item.value['leaveTime'];
       setState(() {
-        AttendModel m;
-        m = AttendModel(key, name, date, attendTime, leaveTime);
+        Attendance m;
+        m = Attendance.fromMap(
+          <String, dynamic> {
+            'key': key,
+            'className': name,
+            'sessionDate': date,
+            'arriveDate': attendTime,
+            'leaveDate' :leaveTime
+          }
+        );
         if (m.leaveDate == 'NULL') {
           uitems.add(m);
         } else {

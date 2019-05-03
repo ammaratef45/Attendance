@@ -7,7 +7,7 @@ class HomePageView extends HomePageViewModel {
   /// build the body of the page
   Widget buildBody(BuildContext ctxt, int index,
       {bool filterForUnLeaved = false}) {
-    final AttendModel model = filterForUnLeaved ? uitems[index] : litems[index];
+    final Attendance model = filterForUnLeaved ? uitems[index] : litems[index];
     final Widget result = Center(
       child: Card(
         elevation: 8,

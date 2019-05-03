@@ -24,7 +24,7 @@ extends State<AttendanceDetailsPage> {
         anchorOffset: 60,
         anchorType: AnchorType.bottom,
       );
-    _model = AttendModel.selected;
+    _model = Attendance.selected;
     className = _model.className;
     session = _model.date;
     arriveDate = 'Arrived: ${_model.arriveDate}';
@@ -35,7 +35,7 @@ extends State<AttendanceDetailsPage> {
   }
   /// check if session scanned for leaving
   bool isLeaved = true;
-  AttendModel _model;
+  Attendance _model;
   /// name of the current class
   String className;
   /// name of the current session

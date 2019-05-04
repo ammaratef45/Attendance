@@ -85,7 +85,7 @@ extends State<AttendanceDetailsPage> {
       setState(() {
       isLeaved = true;
       scanResult = '';
-      _model.leaveDate = now.toIso8601String();
+      _model.leave(now.toIso8601String());
       leaveDate = 'Leaved: ${_model.leaveDate}';
       });
     } on PlatformException catch (e) {

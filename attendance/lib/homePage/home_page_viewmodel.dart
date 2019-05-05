@@ -62,8 +62,7 @@ abstract class HomePageViewModel extends State<HomePage> {
 
   ///open details
   Future<void> openDetails(Attendance model) async {
-    Attendance.selected = model;
-    await Navigator.of(context).pushNamed('/details');
+    await Navigator.of(context).pushNamed('/details', arguments: model);
     await _fillData();
   }
 

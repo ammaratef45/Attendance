@@ -24,28 +24,11 @@ extends State<AttendanceDetailsPage> {
         anchorOffset: 60,
         anchorType: AnchorType.bottom,
       );
-    _model = Attendance.selected;
-    className = _model.className;
-    session = _model.date;
-    arriveDate = 'Arrived: ${_model.arriveDate}';
-    leaveDate = 'Leaved: ${_model.leaveDate}';
-    if(_model.leaveDate == 'NULL') {
-      isLeaved = false;
-    }
   }
-  /// check if session scanned for leaving
-  bool isLeaved = true;
-  Attendance _model;
-  /// name of the current class
-  String className;
-  /// name of the current session
-  String session;
-  /// date of arriving
-  String arriveDate;
-  /// date of leaving
-  String leaveDate;
+  
   /// result of scanning
   String scanResult;
+
   final BannerAd _myBanner = BannerAd(
     adUnitId: 'ca-app-pub-5308838739950508/6605562688',
     size: AdSize.smartBanner,
@@ -65,7 +48,7 @@ extends State<AttendanceDetailsPage> {
       final String uid = user.uid;
       final DatabaseReference attendanceRef =
         FirebaseDatabase.instance
-        .reference().child('attendances').child(_model.key);
+        .reference().child('attendances').child(widget.model.key);
       final DataSnapshot oldModel = await attendanceRef.once();
       if(oldModel.value['session'] != session.key) {
         throw InvalidSessionException('this is not the same session code');
@@ -76,17 +59,15 @@ extends State<AttendanceDetailsPage> {
         'sessionClass' : session.classKey,
         'sessionAdmin' : session.adminUID,
         'user' : uid,
-        'arriveTime' : _model.arriveDate,
+        'arriveTime' : widget.model.arriveDate,
         'leaveTime' : now.toIso8601String()
       };
       await attendanceRef.set(map);
       await FirebaseDatabase.instance
         .reference().child(uid).child('attended').push().set(attendanceRef.key);
       setState(() {
-      isLeaved = true;
       scanResult = '';
-      _model.leave(now.toIso8601String());
-      leaveDate = 'Leaved: ${_model.leaveDate}';
+      widget.model.leave(now.toIso8601String());
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {

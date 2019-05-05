@@ -25,7 +25,7 @@ class Attendance {
   /// get the key
   String get key => _key;
   /// check if the session is scanned for leaving
-  bool isLeaved() => _leaveDate==null;
+  bool isLeaved() => _leaveDate != 'NULL';
 
   /// set the leave date
   void leave(String date) {
@@ -35,6 +35,4 @@ class Attendance {
     _leaveDate = date;
   }
 
-  // @todo #67 use DB persistance or anyway to pass without the need of this.
-  static Attendance selected;
 }

@@ -20,13 +20,27 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: _myHome,
+      onGenerateRoute: _getRoute,
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => LoginPage(),
         '/home': (BuildContext context) => HomePage(),
-        '/details': (BuildContext context) => const AttendanceDetailsPage(),
         '/offline': (BuildContext context) => OfflinePage(),
         '/profile': (BuildContext context) => const ProfilePage()
       },
     );
 
+  Route<dynamic>  _getRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case '/details':
+        return _buildRoute(settings, AttendanceDetailsPage(settings.arguments));
+    }
+    return null;
+  }
+
+  MaterialPageRoute<dynamic>
+  _buildRoute(RouteSettings settings, Widget builder) =>
+    MaterialPageRoute<dynamic>(
+        settings: settings,
+        builder: (BuildContext ctx) => builder,
+    );
 }

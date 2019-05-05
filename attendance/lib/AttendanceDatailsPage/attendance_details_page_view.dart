@@ -1,5 +1,5 @@
+import 'package:attendance/AttendanceDatailsPage/attendance_details_page_viewmodel.dart';
 import 'package:flutter/material.dart';
-import './attendance_details_page_viewmodel.dart';
 
 /// view of attendance page
 class AttendanceDetailsPageView extends AttendanceDetailsPageViewModel {
@@ -17,19 +17,19 @@ class AttendanceDetailsPageView extends AttendanceDetailsPageViewModel {
             const Padding(
               padding: EdgeInsets.only(top: 10)
             ),
-            Text(className),
-            Text(session),
-            Text(arriveDate),
+            Text(widget.model.className),
+            Text(widget.model.date),
+            Text('Arrived: ${widget.model.arriveDate}'),
             Visibility(
-              child: Text(leaveDate),
-              visible: isLeaved,
+              child: Text('Leaved: ${widget.model.leaveDate}'),
+              visible: widget.model.isLeaved(),
             ),
             Visibility(
               child: RaisedButton(
                 child: const Text('Scan For Leaving'),
                 onPressed: scan,
               ),
-              visible: !isLeaved,
+              visible: !widget.model.isLeaved(),
             ),
           ],
         ),

@@ -39,80 +39,80 @@ class HomePageView extends HomePageViewModel {
 
   /// get the tabs
   List<Tab> tabs() {
-    final List<Tab> tabs = <Tab>[]..add(
-        const Tab(icon: Icon(Icons.access_time)))..add(
-        const Tab(icon: Icon(Icons.all_inclusive)));
+    final List<Tab> tabs = <Tab>[]
+      ..add(const Tab(icon: Icon(Icons.access_time)))
+      ..add(const Tab(icon: Icon(Icons.all_inclusive)));
     return tabs;
   }
 
   /// get the items of the body
   List<Widget> bodyItems() {
-    final List<Widget> widgs = <Widget>[]..add(ListView.builder(
-        itemCount: uitems.length,
-        itemBuilder: (BuildContext ctxt, int index) =>
-            buildBody(ctxt, index, filterForUnLeaved: true)))..add(
-        ListView.builder(
-            itemCount: litems.length,
-            itemBuilder: (BuildContext ctxt, int index) =>
-                buildBody(ctxt, index, filterForUnLeaved: false)));
+    final List<Widget> widgs = <Widget>[]
+      ..add(ListView.builder(
+          itemCount: uitems.length,
+          itemBuilder: (BuildContext ctxt, int index) =>
+              buildBody(ctxt, index, filterForUnLeaved: true)))
+      ..add(ListView.builder(
+          itemCount: litems.length,
+          itemBuilder: (BuildContext ctxt, int index) =>
+              buildBody(ctxt, index, filterForUnLeaved: false)));
     return widgs;
   }
 
   @override
-  Widget build(BuildContext context) =>
-      DefaultTabController(
-          length: 2,
-          child: Scaffold(
-              floatingActionButton: FloatingActionButton.extended(
-                  onPressed: scan,
-                  icon: const Icon(Icons.camera_alt),
-                  label: const Text('Scan')),
-              appBar: AppBar(
-                bottom: TabBar(
-                  tabs: tabs(),
+  Widget build(BuildContext context) => DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+              onPressed: scan,
+              icon: const Icon(Icons.camera_alt),
+              label: const Text('Scan')),
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: tabs(),
+            ),
+            title: const Text('Home'),
+          ),
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountName: Text(name),
+                  accountEmail: Text(mail),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: NetworkImage(imageUrl),
+                  ),
                 ),
-                title: const Text('Home'),
-              ),
-              drawer: Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: <Widget>[
-                    UserAccountsDrawerHeader(
-                      accountName: Text(name),
-                      accountEmail: Text(mail),
-                      currentAccountPicture: CircleAvatar(
-                        backgroundImage: NetworkImage(imageUrl),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.cloud_off),
-                      title: const Text('Offline scan'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed('/offline');
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.account_circle),
-                      title: const Text('Profile'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed('/profile');
-                      },
-                    ),
-                    Divider(),
-                    ListTile(
-                      leading: const Icon(Icons.arrow_back),
-                      title: const Text('Sign out'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        signOut();
-                      },
-                    )
-                  ],
+                ListTile(
+                  leading: const Icon(Icons.cloud_off),
+                  title: const Text('Offline scan'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushNamed('/offline');
+                  },
                 ),
-              ),
-              body: TabBarView(
-                children: bodyItems(),
-              )));
+                ListTile(
+                  leading: const Icon(Icons.account_circle),
+                  title: const Text('Profile'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushNamed('/profile');
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  leading: const Icon(Icons.arrow_back),
+                  title: const Text('Sign out'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    signOut();
+                  },
+                )
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: bodyItems(),
+          )));
 }

@@ -17,9 +17,8 @@ import 'package:firebase_admob/firebase_admob.dart';
 abstract class OfflinePageViewModel extends State<OfflinePage> {
   /// constructor
   OfflinePageViewModel() {
-    FirebaseAdMob.instance.initialize(
-      appId: 'ca-app-pub-5308838739950508~2647148134'
-    );
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-5308838739950508~2647148134');
     _myBanner
       ..load()
       ..show(
@@ -29,6 +28,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     getScans();
   }
   String _scanResult = "Scan Error: Make sure you're scanning the right code";
+
   /// List of offline scans that aren't registered
   List<Scan> scanedList = <Scan>[];
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -47,25 +47,23 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
   /// load scans form database
   Future<void> getScans() async {
     scanedList
-    ..clear()
-    ..addAll(await DBProvider.db.getAllScans());
-    setState(() {
-    });
+      ..clear()
+      ..addAll(await DBProvider.db.getAllScans());
+    setState(() {});
   }
+
   /// scan a QR code.
   Future<void> scan() async {
     try {
       final String barcode = await BarcodeScanner.scan();
       final Session session = Session.fromMap(json.decode(barcode));
       final DateTime now = DateTime.now();
-      final Scan scan =Scan.fromMap(
-        <String, dynamic> {
-          'key': session.key,
-          'classKey': session.classKey,
-          'admin': session.adminUID,
-          'arrive': now.toIso8601String()
-        }
-      );
+      final Scan scan = Scan.fromMap(<String, dynamic>{
+        'key': session.key,
+        'classKey': session.classKey,
+        'admin': session.adminUID,
+        'arrive': now.toIso8601String()
+      });
       await DBProvider.db.newScan(scan);
       await getScans();
       _scanResult = 'Scanned Successfully';
@@ -77,7 +75,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       } else {
         setState(() => this._scanResult = 'Unknown error: $e');
       }
-    } on FormatException{
+    } on FormatException {
       setState(() => print('Scan Cancelled'));
     } on Exception catch (e) {
       setState(() => print('Unknown error: $e'));
@@ -89,8 +87,9 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     try {
       String barcode = await BarcodeScanner.scan();
       Session session = Session.fromMap(json.decode(barcode));
-      if(session.key!=scanedList[index].key) {
-        throw InvalidSessionException("This is not the same session you attended");
+      if (session.key != scanedList[index].key) {
+        throw InvalidSessionException(
+            "This is not the same session you attended");
       }
       DateTime now = DateTime.now();
       scanedList[index].leavedAt(now.toIso8601String());
@@ -105,10 +104,11 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
       } else {
         setState(() => this._scanResult = 'Unknown error: $e');
       }
-    } on FormatException{
+    } on FormatException {
       setState(() => this._scanResult = 'Scan cancelled');
     } on InvalidSessionException {
-      setState(() => this._scanResult = "This is not the same session you attended");
+      setState(
+          () => this._scanResult = "This is not the same session you attended");
     } on Exception catch (e) {
       setState(() => this._scanResult = 'Unknown error: $e');
     }
@@ -122,7 +122,8 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
 
   Future<void> testConnection() async {
     String message = "You are not connected to internet";
-    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+    ConnectivityResult connectivityResult =
+        await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
       message = "You are connected to mobile data";
     } else if (connectivityResult == ConnectivityResult.wifi) {
@@ -134,24 +135,36 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
   // @todo #9 use /newsession instead of database as in online
   Future<void> registerMe(int index) async {
     String message = "";
-    if(!(await isLoggedIn())) {
+    if (!(await isLoggedIn())) {
       message = "Not loggedin, login first";
-    } else if(true /*isScanned(index)*/) {
+    } else if (true /*isScanned(index)*/) {
       message = "You already registered this session, Delete this record";
     } else {
-      DatabaseReference attendanceRef =  FirebaseDatabase.instance.reference().child("attendances").push();
-      DatabaseReference sessionRef = FirebaseDatabase.instance.reference().child(scanedList[index].admin).child("classes")
-              .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);
+      DatabaseReference attendanceRef =
+          FirebaseDatabase.instance.reference().child("attendances").push();
+      DatabaseReference sessionRef = FirebaseDatabase.instance
+          .reference()
+          .child(scanedList[index].admin)
+          .child("classes")
+          .child(scanedList[index].classKey)
+          .child("sessions")
+          .child(scanedList[index].key);
       Map<String, dynamic> map = Map<String, dynamic>();
       map["session"] = scanedList[index].key;
       map["sessionClass"] = scanedList[index].classKey;
       map["sessionAdmin"] = scanedList[index].admin;
       map["user"] = _mUser.uid;
       map["arriveTime"] = scanedList[index].arrive;
-      map["leaveTime"] = scanedList[index].leave==null?"NULL":scanedList[index].leave;
+      map["leaveTime"] =
+          scanedList[index].leave == null ? "NULL" : scanedList[index].leave;
       await attendanceRef.set(map);
       sessionRef.child("attended").push().set(attendanceRef.key);
-      await FirebaseDatabase.instance.reference().child(_mUser.uid).child("attended").push().set(attendanceRef.key);
+      await FirebaseDatabase.instance
+          .reference()
+          .child(_mUser.uid)
+          .child("attended")
+          .push()
+          .set(attendanceRef.key);
       DBProvider.db.deleteScan(scanedList[index].id);
       message = "Synced with the cloud successfully";
       getScans();
@@ -161,7 +174,6 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
 
   Future<bool> isLoggedIn() async {
     _mUser = await _auth.currentUser();
-    return _mUser!=null;
+    return _mUser != null;
   }
-  
 }

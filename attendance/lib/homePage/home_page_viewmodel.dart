@@ -86,7 +86,7 @@ abstract class HomePageViewModel extends State<HomePage> {
             'already scanned atendance to this session');
       }
       final DatabaseReference attendanceRef =
-      FirebaseDatabase.instance.reference().child('attendances').push();
+          FirebaseDatabase.instance.reference().child('attendances').push();
       final DateTime now = DateTime.now();
       final Map<String, dynamic> map = <String, dynamic>{};
       map['session'] = session.key;
@@ -156,7 +156,7 @@ abstract class HomePageViewModel extends State<HomePage> {
         .listen((Event event) async {
       final String key = event.snapshot.value;
       final DatabaseReference itemRef =
-      FirebaseDatabase.instance.reference().child('attendances').child(key);
+          FirebaseDatabase.instance.reference().child('attendances').child(key);
       final DataSnapshot item = await itemRef.once();
       final DatabaseReference classRef = FirebaseDatabase.instance
           .reference()
@@ -166,21 +166,19 @@ abstract class HomePageViewModel extends State<HomePage> {
       final DataSnapshot classSnap = await classRef.once();
       final String name = classSnap.value['name'];
       final DataSnapshot sessionSnap =
-      await classRef.child('sessions').child(item.value['session']).once();
+          await classRef.child('sessions').child(item.value['session']).once();
       final String date = json.decode(sessionSnap.value['qrval'])['date'];
       final String attendTime = item.value['arriveTime'];
       final String leaveTime = item.value['leaveTime'];
       setState(() {
         Attendance m;
-        m = Attendance.fromMap(
-          <String, dynamic> {
-            'key': key,
-            'className': name,
-            'sessionDate': date,
-            'arriveDate': attendTime,
-            'leaveDate' :leaveTime
-          }
-        );
+        m = Attendance.fromMap(<String, dynamic>{
+          'key': key,
+          'className': name,
+          'sessionDate': date,
+          'arriveDate': attendTime,
+          'leaveDate': leaveTime
+        });
         if (m.leaveDate == 'NULL') {
           uitems.add(m);
         } else {

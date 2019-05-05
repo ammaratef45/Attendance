@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import './offline_page_viewmodel.dart';
 
 class OfflinePageView extends OfflinePageViewModel {
-
   @override
   void showMessageDialog(String title, String message) {
     showDialog<void>(
@@ -16,9 +15,7 @@ class OfflinePageView extends OfflinePageViewModel {
               child: new Text("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
-                setState(() {
-                  
-                });
+                setState(() {});
               },
             ),
           ],
@@ -33,65 +30,59 @@ class OfflinePageView extends OfflinePageViewModel {
         elevation: 8.0,
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
         child: GestureDetector(
-          onTap: (){
-            
-          },
+          onTap: () {},
           child: Container(
-            decoration: BoxDecoration(color: Colors.blue),
-            alignment: Alignment(0, 0),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        scanedList[index].arriveTimePart(),
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white
+              decoration: BoxDecoration(color: Colors.blue),
+              alignment: Alignment(0, 0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          scanedList[index].arriveTimePart(),
+                          style: TextStyle(fontSize: 20.0, color: Colors.white),
                         ),
                       ),
-                    ),
-                    Flexible(
-                      child: Visibility(
-                        child: RaisedButton(
-                          child: Text("Leave"),
-                          onPressed: (){
-                            scanLeave(index);
-                          },
+                      Flexible(
+                        child: Visibility(
+                          child: RaisedButton(
+                            child: Text("Leave"),
+                            onPressed: () {
+                              scanLeave(index);
+                            },
+                          ),
+                          visible: scanedList[index].leave == null,
                         ),
-                        visible: scanedList[index].leave==null,
                       ),
-                    ),
-                    Flexible(
-                      child: Visibility(
-                        child: Text(scanedList[index].leaveTimePart()),
-                        visible: scanedList[index].leave!=null,
+                      Flexible(
+                        child: Visibility(
+                          child: Text(scanedList[index].leaveTimePart()),
+                          visible: scanedList[index].leave != null,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text("Delete"),
-                      onPressed: ()=>deleteItem(index),
-                    ),
-                    RaisedButton(
-                      child: Text("Test"),
-                      onPressed: testConnection,
-                    ),
-                    RaisedButton(
-                      child: Text("Register"),
-                      onPressed: ()=>registerMe(index),
-                    ),
-                  ],
-                ),
-              ],
-            )
-          ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text("Delete"),
+                        onPressed: () => deleteItem(index),
+                      ),
+                      RaisedButton(
+                        child: Text("Test"),
+                        onPressed: testConnection,
+                      ),
+                      RaisedButton(
+                        child: Text("Register"),
+                        onPressed: () => registerMe(index),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
         ),
       ),
     );
@@ -105,9 +96,9 @@ class OfflinePageView extends OfflinePageViewModel {
         title: Text("Offline"),
       ),
       body: new ListView.builder(
-        itemCount: scanedList.length,
-        itemBuilder: (BuildContext ctxt, int index) => buildBody(ctxt, index)
-      ),
+          itemCount: scanedList.length,
+          itemBuilder: (BuildContext ctxt, int index) =>
+              buildBody(ctxt, index)),
       floatingActionButton: FloatingActionButton(
         onPressed: scan,
         tooltip: 'Add',
@@ -116,5 +107,4 @@ class OfflinePageView extends OfflinePageViewModel {
       ),
     );
   }
-  
 }

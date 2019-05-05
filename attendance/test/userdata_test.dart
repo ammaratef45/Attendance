@@ -13,7 +13,6 @@ void main() {
     'phone': _perfectPhone
   };
 
-
   group('object inistantiation', () {
     test('object should not be null', () {
       expect(_testUser, isNotNull);

@@ -5,5 +5,5 @@ class OfflinePage extends StatefulWidget {
   OfflinePage({Key key}) : super(key: key);
 
   @override
-  OfflinePageView createState() => new OfflinePageView ();
+  OfflinePageView createState() => new OfflinePageView();
 }

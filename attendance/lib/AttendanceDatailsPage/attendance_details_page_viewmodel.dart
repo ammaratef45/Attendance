@@ -11,13 +11,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:attendance/scan_exceptions.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+
 /// view model of attendance page
 abstract class AttendanceDetailsPageViewModel
-extends State<AttendanceDetailsPage> {
+    extends State<AttendanceDetailsPage> {
   /// constructor
   AttendanceDetailsPageViewModel() {
-    FirebaseAdMob
-    .instance.initialize(appId: 'ca-app-pub-5308838739950508~2647148134');
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-5308838739950508~2647148134');
     _myBanner
       ..load()
       ..show(
@@ -25,7 +26,7 @@ extends State<AttendanceDetailsPage> {
         anchorType: AnchorType.bottom,
       );
   }
-  
+
   /// result of scanning
   String scanResult;
 
@@ -36,7 +37,7 @@ extends State<AttendanceDetailsPage> {
       print('BannerAd event is $event');
     },
   );
-  
+
   /// sacn
   Future<void> scan() async {
     try {
@@ -46,28 +47,33 @@ extends State<AttendanceDetailsPage> {
       //  remove firebase admin usage
       final FirebaseUser user = await FirebaseAuth.instance.currentUser();
       final String uid = user.uid;
-      final DatabaseReference attendanceRef =
-        FirebaseDatabase.instance
-        .reference().child('attendances').child(widget.model.key);
+      final DatabaseReference attendanceRef = FirebaseDatabase.instance
+          .reference()
+          .child('attendances')
+          .child(widget.model.key);
       final DataSnapshot oldModel = await attendanceRef.once();
-      if(oldModel.value['session'] != session.key) {
+      if (oldModel.value['session'] != session.key) {
         throw InvalidSessionException('this is not the same session code');
       }
       final DateTime now = DateTime.now();
       final Map<String, dynamic> map = <String, dynamic>{
-        'session' : session.key,
-        'sessionClass' : session.classKey,
-        'sessionAdmin' : session.adminUID,
-        'user' : uid,
-        'arriveTime' : widget.model.arriveDate,
-        'leaveTime' : now.toIso8601String()
+        'session': session.key,
+        'sessionClass': session.classKey,
+        'sessionAdmin': session.adminUID,
+        'user': uid,
+        'arriveTime': widget.model.arriveDate,
+        'leaveTime': now.toIso8601String()
       };
       await attendanceRef.set(map);
       await FirebaseDatabase.instance
-        .reference().child(uid).child('attended').push().set(attendanceRef.key);
+          .reference()
+          .child(uid)
+          .child('attended')
+          .push()
+          .set(attendanceRef.key);
       setState(() {
-      scanResult = '';
-      widget.model.leave(now.toIso8601String());
+        scanResult = '';
+        widget.model.leave(now.toIso8601String());
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -77,9 +83,9 @@ extends State<AttendanceDetailsPage> {
       } else {
         setState(() => scanResult = 'Unknown error: $e');
       }
-    } on FormatException{
+    } on FormatException {
       setState(() => scanResult = 'Scan cancelled');
-    } on InvalidSessionException catch(e){
+    } on InvalidSessionException catch (e) {
       setState(() {
         scanResult = e.cause;
       });
@@ -87,5 +93,4 @@ extends State<AttendanceDetailsPage> {
       setState(() => scanResult = 'Unknown error: $e');
     }
   }
-
 }

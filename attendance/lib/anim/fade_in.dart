@@ -1,17 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 /// FadeIn view
 class FadeIn extends StatefulWidget {
   /// constructor
-  const FadeIn(
-    {
-      @required this.child,
-      this.delay
-    }
-  );
+  const FadeIn({@required this.child, this.delay});
+
   /// child of fadein
   final Widget child;
+
   /// the anount of delay
   final int delay;
 
@@ -31,9 +29,8 @@ class _FadeInState extends State<FadeIn> with TickerProviderStateMixin {
         vsync: this, duration: Duration(milliseconds: 1000));
     final CurvedAnimation curve =
         CurvedAnimation(curve: Curves.decelerate, parent: _animController);
-    _animOffset =
-        Tween<Offset>(begin: const Offset(0, 0.35), end: Offset.zero)
-            .animate(curve);
+    _animOffset = Tween<Offset>(begin: const Offset(0, 0.35), end: Offset.zero)
+        .animate(curve);
 
     if (widget.delay == null) {
       _animController.forward();
@@ -51,13 +48,11 @@ class _FadeInState extends State<FadeIn> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) =>
-    FadeTransition(
-      child: SlideTransition(
-        position: _animOffset,
-        child: widget.child,
-      ),
-      opacity: _animController,
-    );
-
+  Widget build(BuildContext context) => FadeTransition(
+        child: SlideTransition(
+          position: _animOffset,
+          child: widget.child,
+        ),
+        opacity: _animController,
+      );
 }

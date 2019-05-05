@@ -3,9 +3,9 @@ import 'package:test/test.dart';
 
 void main() {
   final Map<String, dynamic> sessionData = <String, dynamic>{
-    'classkey' : '-LXD9_P6tB6r-_RwAg01',
-    'myKey' : '-LXDEjd1md3CfRY6zkLw',
-    'admin' : 'GUfzhtGu1vVFJaYIvxi1yIa49Oy1'
+    'classkey': '-LXD9_P6tB6r-_RwAg01',
+    'myKey': '-LXDEjd1md3CfRY6zkLw',
+    'admin': 'GUfzhtGu1vVFJaYIvxi1yIa49Oy1'
   };
   final Session session = Session.fromMap(sessionData);
   group('instantiation', () {

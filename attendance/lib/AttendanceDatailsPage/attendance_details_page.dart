@@ -8,6 +8,7 @@ class AttendanceDetailsPage extends StatefulWidget {
   AttendanceDetailsPage(this._attendance);
 
   final Attendance _attendance;
+
   /// get the attendance model.
   Attendance get model => _attendance;
 

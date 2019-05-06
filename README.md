@@ -8,7 +8,7 @@
 [![CircleCI](https://circleci.com/gh/ammaratef45/Attendance/tree/master.svg?style=svg)](https://circleci.com/gh/ammaratef45/Attendance/tree/master)
 [![codecov](https://codecov.io/gh/ammaratef45/Attendance/branch/master/graph/badge.svg)](https://codecov.io/gh/ammaratef45/Attendance)
 [![Hits-of-Code](https://hitsofcode.com/github/ammaratef45/attendance)](https://hitsofcode.com/view/github/ammaratef45/attendance)
-[![Codemagic build status](https://api.codemagic.io/apps/5ca0a581581a2d000dec8080/5ca0a581581a2d000dec807f/status_badge.svg)](https://codemagic.io/apps/5ca0a581581a2d000dec8080/5ca0a581581a2d000dec807f/latest_build)
+[![Codemagic build status](https://api.codemagic.io/apps/5ca0a581581a2d000dec8080/5cd016d389dd020011a439ca/status_badge.svg)](https://codemagic.io/apps/5ca0a581581a2d000dec8080/5cd016d389dd020011a439ca/latest_build)
 
 [![MIT License](https://img.shields.io/github/license/ammaratef45/Attendance.svg)](https://github.com/ammaratef45/Attendance/blob/master/LICENSE)
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg)](#contributors)

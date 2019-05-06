@@ -13,6 +13,9 @@ class User {
   User._internal();
 
   String _nativeName;
+  String _name;
+  String _email;
+  String _picURL;
   String _phone;
   static final User _user = User._internal();
   final API _api = API();
@@ -46,6 +49,24 @@ class User {
     }
   }
 
+  /// change user's name
+  void nameMe(String newName) {
+    final String trimmed = newName.trim();
+    _name = trimmed;
+  }
+
+  /// change user's email
+  void assignEmail(String mail) {
+    final String trimmed = mail.trim();
+    _email = trimmed;
+  }
+
+  /// change user's email
+  void changePicture(String picUrl) {
+    final String trimmed = picUrl.trim();
+    _picURL = trimmed;
+  }
+
   bool _isValidName(String name) {
     if (name.length < 21) {
       return true;
@@ -68,6 +89,8 @@ class User {
     }
   }
 
+  // @todo #47 add _name, _email and _picUrl too.
+  //  payload can be found in the API repo
   /// get payload of request when saving the info
   String requestBody() {
     final Map<String, String> body = <String, String>{};
@@ -87,6 +110,7 @@ class User {
   Future<String> _token() async =>
       (await FirebaseAuth.instance.currentUser()).getIdToken(refresh: true);
 
+  
   /// save data to api and local storage
   Future<void> save() async {
     _persist();

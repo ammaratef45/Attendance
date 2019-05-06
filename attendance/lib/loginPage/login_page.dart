@@ -1,8 +1,8 @@
+import 'package:attendance/loginPage/login_page_view.dart';
 import 'package:flutter/material.dart';
-import './login_page_view.dart';
 
+/// login page
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
 
   @override
   LoginPageView createState() => LoginPageView();

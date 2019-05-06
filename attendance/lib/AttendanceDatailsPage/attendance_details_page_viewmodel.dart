@@ -3,13 +3,11 @@ import 'dart:convert';
 
 import 'package:attendance/AttendanceDatailsPage/attendance_details_page.dart';
 import 'package:flutter/material.dart';
-import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/backend/session.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:attendance/scan_exceptions.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 /// view model of attendance page
 abstract class AttendanceDetailsPageViewModel
@@ -51,7 +49,7 @@ extends State<AttendanceDetailsPage> {
         .reference().child('attendances').child(widget.model.key);
       final DataSnapshot oldModel = await attendanceRef.once();
       if(oldModel.value['session'] != session.key) {
-        throw InvalidSessionException('this is not the same session code');
+        throw Exception('this is not the same session code');
       }
       final DateTime now = DateTime.now();
       final Map<String, dynamic> map = <String, dynamic>{
@@ -79,12 +77,8 @@ extends State<AttendanceDetailsPage> {
       }
     } on FormatException{
       setState(() => scanResult = 'Scan cancelled');
-    } on InvalidSessionException catch(e){
-      setState(() {
-        scanResult = e.cause;
-      });
     } on Exception catch (e) {
-      setState(() => scanResult = 'Unknown error: $e');
+      setState(() => scanResult = 'Error: $e');
     }
   }
 

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// attendance details page
 class AttendanceDetailsPage extends StatefulWidget {
   /// constructor
-  AttendanceDetailsPage(this._attendance);
+  const AttendanceDetailsPage(this._attendance);
 
   final Attendance _attendance;
   /// get the attendance model.

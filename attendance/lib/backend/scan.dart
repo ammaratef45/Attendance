@@ -31,10 +31,11 @@ class Scan {
   /// the time of arrival scanned
   String get arrive => _arrive;
   String _leave;
-  // @todo #75 instead of null make a property indicates if scanned for leave.
   /// the time of leaving scan
   String get leave => _leave;
   final API _api = API();
+  /// check if scanned session is leaved
+  bool get isLeaved => _leave!=null;
 
   /// convert to a map.
   Map<String, dynamic> toMap()  =>
@@ -57,7 +58,7 @@ class Scan {
 
   /// get the time part of leaving
   String leaveTimePart() {
-    if(_leave==null) {
+    if(!isLeaved) {
       return '';
     }
     final List<String> datetime = _leave.split('T');
@@ -68,10 +69,10 @@ class Scan {
 
   /// change the leaved time
   void leavedAt(String iso8601string) {
-    if(_leave==null) {
-      _leave = iso8601string;
-    } else {
+    if(isLeaved) {
       throw Exception('session already left');
+    } else {
+      _leave = iso8601string;
     }
   }
 
@@ -94,7 +95,7 @@ class Scan {
   }
 
   void _persist() {
-    DBProvider.db.newScan(this);
+    DBProvider.db.addScan(this);
   }
 
   // @todo #45 add synced flag to the scen table.

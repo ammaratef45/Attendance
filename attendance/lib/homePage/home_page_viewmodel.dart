@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/backend/session.dart';
 import 'package:attendance/homePage/home_page.dart';
-import 'package:attendance/scan_exceptions.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -82,8 +81,9 @@ abstract class HomePageViewModel extends State<HomePage> {
           .child('sessions')
           .child(session.key);
       if (await _isScanned(sessionRef, _mUser)) {
-        throw AlreadyScannedSessionException(
-            'already scanned atendance to this session');
+        throw Exception(
+          'already scanned atendance to this session'
+        );
       }
       final DatabaseReference attendanceRef =
       FirebaseDatabase.instance.reference().child('attendances').push();
@@ -114,10 +114,8 @@ abstract class HomePageViewModel extends State<HomePage> {
       }
     } on FormatException {
       print('Scan Cancelled');
-    } on AlreadyScannedSessionException catch (e) {
-      scanResult = e.cause;
     } on Exception catch (e) {
-      scanResult = 'Unknown error: $e';
+      scanResult = 'Error: $e';
     }
     await Dialogs.messageDialog(context, 'result', scanResult);
   }

@@ -1,13 +1,12 @@
 import 'package:attendance/anim/fade_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:attendance/loginPage/login_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
-import './login_page_viewmodel.dart';
-// @todo #67 solve all remaining 195 lint errors.
+/// view of login page
 class LoginPageView extends LoginPageViewModel {
   @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
+  Widget build(BuildContext context) =>
+    Scaffold(
         backgroundColor: Colors.lightBlueAccent,
         body: SafeArea(
             child: ListView(
@@ -20,9 +19,9 @@ class LoginPageView extends LoginPageViewModel {
                       children: <Widget>[
                         FadeIn(
                           child: Text(
-                            "Welcome,",
+                            'Welcome,',
                             style: TextStyle(
-                                color: Colors.white, fontSize: 30.0),
+                                color: Colors.white, fontSize: 30),
                           ),
                           delay: 1000,
                         ),
@@ -31,40 +30,39 @@ class LoginPageView extends LoginPageViewModel {
                             child: Text(
                               "Let's get you in..",
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 35.0),
+                                  color: Colors.white, fontSize: 35),
                             ),
-                            padding: EdgeInsets.only(top: 25),
+                            padding: const EdgeInsets.only(top: 25),
                           ),
                           delay: 1500,
                         )
                       ],
                     ),
-                    padding: EdgeInsets.only(left: 15, top: 130),
+                    padding: const EdgeInsets.only(left: 15, top: 130),
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 120),
+                      margin: const EdgeInsets.only(top: 120),
                       child: Center(
                         child: RaisedButton(
                             padding:
-                            EdgeInsets.only(top: 3.0, bottom: 3.0, left: 6.0),
+                            const EdgeInsets.only(top: 3, bottom: 3, left: 6),
                             color: const Color(0xFFFFFFFF),
                             onPressed: () =>
                                 signInUser()
-                                    .then((FirebaseUser user) =>
-                                    handleUser(user)),
+                                    .then(handleUser),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Image.asset(
                                   'assets/icons/g-logo.png',
                                   fit: BoxFit.fill,
-                                  height: 40.0,
+                                  height: 40,
                                 ),
                                 Container(
                                     padding:
-                                    EdgeInsets.only(left: 15.0, right: 10.0),
+                                    const EdgeInsets.only(left: 15, right: 10),
                                     child: Text(
-                                      "Sign in with Google",
+                                      'Sign in with Google',
                                       style: TextStyle(
                                           color: Colors.black38,
                                           fontWeight: FontWeight.bold),
@@ -73,26 +71,25 @@ class LoginPageView extends LoginPageViewModel {
                             )),
                       )),
                   Container(
-                      margin: EdgeInsets.only(top: 20.0),
+                      margin: const EdgeInsets.only(top: 20),
                       child: Center(
                         child: Text(
-                          "Having troubles?",
+                          'Having troubles?',
                           style: TextStyle(color: Colors.white),
                         ),
                       )),
                   Container(
-                    margin: EdgeInsets.only(top: 20.0),
+                    margin: const EdgeInsets.only(top: 20),
                     child: Center(
                       child: OutlineButton(
-                          child: Text("Go offline"),
+                          child: const Text('Go offline'),
                           onPressed: () =>
                               Navigator.of(context).pushNamed('/offline'),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
+                              borderRadius: BorderRadius.circular(30))),
                     ),
                   )
                 ])
               ],
             )));
-  }
 }

@@ -81,10 +81,6 @@ abstract class HomePageViewModel extends State<HomePage> {
           .child(session.classKey)
           .child('sessions')
           .child(session.key);
-      if (await _isScanned(sessionRef, _mUser)) {
-        throw AlreadyScannedSessionException(
-            'already scanned atendance to this session');
-      }
       final DatabaseReference attendanceRef =
       FirebaseDatabase.instance.reference().child('attendances').push();
       final DateTime now = DateTime.now();
@@ -120,28 +116,6 @@ abstract class HomePageViewModel extends State<HomePage> {
       scanResult = 'Unknown error: $e';
     }
     await Dialogs.messageDialog(context, 'result', scanResult);
-  }
-
-  // @todo #9 delete this (checking will be performed in the backend)
-  Future<bool> _isScanned(DatabaseReference session, FirebaseUser user) async {
-    final DataSnapshot attendees = await session.child('attended').once();
-    final Map<dynamic, dynamic> value = attendees.value;
-    if (value == null || value.isEmpty) {
-      return false;
-    }
-    for (String key in value.keys) {
-      final DataSnapshot ref = await FirebaseDatabase.instance
-          .reference()
-          .child('attendances')
-          .child(value[key])
-          .once();
-      if (ref.value['user'] == user.uid) {
-        debugPrint(user.uid);
-        debugPrint(ref.value['user']);
-        return true;
-      }
-    }
-    return false;
   }
 
   // @todo #9 get data from api /getInfo and save in user class (add more endpoints if needed)

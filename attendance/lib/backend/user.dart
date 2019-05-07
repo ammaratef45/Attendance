@@ -13,6 +13,9 @@ class User {
   User._internal();
 
   String _nativeName;
+  String _name;
+  String _email;
+  String _picURL;
   String _phone;
   static final User _user = User._internal();
   final API _api = API();
@@ -25,6 +28,15 @@ class User {
 
   /// user's native name
   String get nativeName => _nativeName;
+
+  /// user's name
+  String get name => _name;
+
+  /// user's email
+  String get mail => _email;
+
+  /// user's picUrl
+  String get picUrl => _picURL;
 
   /// rename the user (change native name)
   void rename(String newName) {
@@ -44,6 +56,24 @@ class User {
     } else {
       throw const FormatException('invalid phone number format');
     }
+  }
+
+  /// change user's name
+  void nameMe(String newName) {
+    final String trimmed = newName.trim();
+    _name = trimmed;
+  }
+
+  /// change user's email
+  void assignEmail(String mail) {
+    final String trimmed = mail.trim();
+    _email = trimmed;
+  }
+
+  /// change user's email
+  void changePicture(String picUrl) {
+    final String trimmed = picUrl.trim();
+    _picURL = trimmed;
   }
 
   bool _isValidName(String name) {
@@ -77,6 +107,15 @@ class User {
     if (_phone != null) {
       body['phone'] = _phone;
     }
+    if (_name != null) {
+      body['name'] = _name;
+    }
+    if (_email != null) {
+      body['mail'] = _email;
+    }
+    if (_picURL != null) {
+      body['photo'] = _picURL;
+    }
     return json.encode(body);
   }
 
@@ -87,6 +126,7 @@ class User {
   Future<String> _token() async =>
       (await FirebaseAuth.instance.currentUser()).getIdToken(refresh: true);
 
+  
   /// save data to api and local storage
   Future<void> save() async {
     _persist();

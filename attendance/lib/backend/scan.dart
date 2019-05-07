@@ -1,3 +1,8 @@
+import 'package:attendance/backend/api.dart';
+import 'package:attendance/backend/session.dart';
+import 'package:attendance/backend/user.dart';
+import 'package:attendance/db/database.dart';
+
 /// model that represents the scan.
 class Scan {
 
@@ -28,6 +33,7 @@ class Scan {
   String _leave;
   /// the time of leaving scan
   String get leave => _leave;
+  final API _api = API();
   /// check if scanned session is leaved
   bool get isLeaved => _leave!=null;
 
@@ -68,6 +74,33 @@ class Scan {
     } else {
       _leave = iso8601string;
     }
+  }
+
+  /// save data to api
+  Future<void> save() async {
+    _persist();
+    try {
+      await _api.addSession(
+        Session.fromMap(<String, dynamic>{
+          'classkey' : classKey,
+          'myKey' : key,
+          'admin' : admin
+        }),
+        await User.token()
+      );
+      _markSaved();
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _persist() {
+    DBProvider.db.addScan(this);
+  }
+
+  // @todo #45 add synced flag to the scen table.
+  void _markSaved() {
+    //DBProvider.db.scanIsSynced();
   }
   
 }

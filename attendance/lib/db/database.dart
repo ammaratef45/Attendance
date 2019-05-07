@@ -73,7 +73,7 @@ class DBProvider {
   }
 
   /// insert new scan
-  Future<int> newScan(Scan newScan) async {
+  Future<int> addScan(Scan newScan) async {
     final Database db = await database;
     //get the biggest id in the table
     final List<Map<String, dynamic>> table =

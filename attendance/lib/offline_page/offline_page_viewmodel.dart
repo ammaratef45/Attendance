@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
@@ -65,7 +64,7 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
           'arrive': now.toIso8601String()
         }
       );
-      await DBProvider.db.newScan(scan);
+      await DBProvider.db.addScan(scan);
       await getScans();
       _scanResult = 'Scanned Successfully';
     } on PlatformException catch (e) {
@@ -132,36 +131,13 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     showMessageDialog('test', message);
   }
 
-  // @todo #9 use /newsession instead of database as in online
   /// register this to the backend.
   Future<void> registerMe(int index) async {
     String message = '';
     if(!(await isLoggedIn())) {
       message = 'Not loggedin, login first';
-    } else if(true /*isScanned(index)*/) {
-      message = 'You already registered this session, Delete this record';
     } else {
-      final DatabaseReference attendanceRef = 
-        FirebaseDatabase.instance.reference().child('attendances').push();
-      final DatabaseReference sessionRef =
-        FirebaseDatabase.instance.reference()
-        .child(scanedList[index].admin).child('classes')
-        .child(scanedList[index].classKey)
-        .child('sessions').child(scanedList[index].key);
-      final Map<String, dynamic> map = <String, dynamic>{};
-      map['session'] = scanedList[index].key;
-      map['sessionClass'] = scanedList[index].classKey;
-      map['sessionAdmin'] = scanedList[index].admin;
-      map['user'] = _mUser.uid;
-      map['arriveTime'] = scanedList[index].arrive;
-      map['leaveTime'] = scanedList[index].isLeaved?
-      scanedList[index].leave:
-      'NULL';
-      await attendanceRef.set(map);
-      await sessionRef.child('attended')
-      .push().set(attendanceRef.key);
-      await FirebaseDatabase.instance.reference()
-      .child(_mUser.uid).child('attended').push().set(attendanceRef.key);
+      await scanedList[index].save();
       await DBProvider.db.deleteScan(scanedList[index].id);
       message = 'Synced with the cloud successfully';
       await getScans();

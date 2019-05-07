@@ -7,10 +7,16 @@ void main() {
   final User _testUser = User.instance();
   const String _perfectName = 'someName';
   const String _perfectPhone = '1234567890';
+  const String _uName = 'ammar';
+  const String _uPic = 'http://test.test';
+  const String _umail = 'ammar.atef45@gmail.com';
 
   final Map<String, dynamic> data = <String, dynamic>{
     'nativeName': _perfectName,
-    'phone': _perfectPhone
+    'phone': _perfectPhone,
+    'name': _uName,
+    'mail': _umail,
+    'photo': _uPic
   };
 
 
@@ -114,6 +120,24 @@ void main() {
 
       expect(_testUser.phone, _perfectPhone);
     });
+  });
+
+  group('set login info', () {
+    test('change name', () {
+      _testUser.nameMe(_uName);
+      expect(_testUser.name, _uName);
+    });
+
+    test('change mail', () {
+      _testUser.assignEmail(_umail);
+      expect(_testUser.mail, _umail);
+    });
+
+    test('change pic', () {
+      _testUser.changePicture(_uPic);
+      expect(_testUser.picUrl, _uPic);
+    });
+    
   });
 
   group('requestBody', () {

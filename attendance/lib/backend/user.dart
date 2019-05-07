@@ -29,6 +29,15 @@ class User {
   /// user's native name
   String get nativeName => _nativeName;
 
+  /// user's name
+  String get name => _name;
+
+  /// user's email
+  String get mail => _email;
+
+  /// user's picUrl
+  String get picUrl => _picURL;
+
   /// rename the user (change native name)
   void rename(String newName) {
     final String trimmed = newName.trim();
@@ -98,13 +107,13 @@ class User {
     if (_phone != null) {
       body['phone'] = _phone;
     }
-    if (_phone != null) {
+    if (_name != null) {
       body['name'] = _name;
     }
-    if (_phone != null) {
+    if (_email != null) {
       body['mail'] = _email;
     }
-    if (_phone != null) {
+    if (_picURL != null) {
       body['photo'] = _picURL;
     }
     return json.encode(body);

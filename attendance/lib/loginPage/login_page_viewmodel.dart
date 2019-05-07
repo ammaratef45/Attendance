@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'package:attendance/backend/user.dart';
 import 'package:attendance/loginPage/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -39,22 +39,11 @@ abstract class LoginPageViewModel extends State<LoginPage> {
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1);
     } else {
-      // @todo #9 just update the user class and call save
-      FirebaseDatabase.instance
-          .reference()
-          .child(user.uid)
-          .child('name')
-          .set(user.displayName);
-      FirebaseDatabase.instance
-          .reference()
-          .child(user.uid)
-          .child('mail')
-          .set(user.email);
-      FirebaseDatabase.instance
-          .reference()
-          .child(user.uid)
-          .child('photo')
-          .set(user.photoUrl);
+      User()
+      ..nameMe(user.displayName)
+      ..assignEmail(user.email)
+      ..changePicture(user.photoUrl)
+      ..save();
       Navigator.of(context).pushReplacementNamed('/home');
     }
   }

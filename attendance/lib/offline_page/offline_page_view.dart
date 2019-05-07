@@ -1,19 +1,20 @@
+import 'package:attendance/offline_page/offline_page_viewmodel.dart';
 import 'package:flutter/material.dart';
-import './offline_page_viewmodel.dart';
 
+/// offline scanning page
 class OfflinePageView extends OfflinePageViewModel {
 
   @override
   void showMessageDialog(String title, String message) {
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text(title),
-          content: new Text(message),
+      builder: (BuildContext context) =>
+        AlertDialog(
+          title: Text(title),
+          content: Text(message),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
+            FlatButton(
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
@@ -22,23 +23,22 @@ class OfflinePageView extends OfflinePageViewModel {
               },
             ),
           ],
-        );
-      },
+        ),
     );
   }
 
-  Widget buildBody(BuildContext ctxt, int index) {
-    Widget result = Center(
+  Widget _buildBody(BuildContext ctxt, int index) =>
+    Center(
       child: Card(
-        elevation: 8.0,
-        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        elevation: 8,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: GestureDetector(
           onTap: (){
             
           },
           child: Container(
             decoration: BoxDecoration(color: Colors.blue),
-            alignment: Alignment(0, 0),
+            alignment: const Alignment(0, 0),
             child: Column(
               children: <Widget>[
                 Row(
@@ -48,7 +48,7 @@ class OfflinePageView extends OfflinePageViewModel {
                       child: Text(
                         scanedList[index].arriveTimePart(),
                         style: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: 20,
                           color: Colors.white
                         ),
                       ),
@@ -56,7 +56,7 @@ class OfflinePageView extends OfflinePageViewModel {
                     Flexible(
                       child: Visibility(
                         child: RaisedButton(
-                          child: Text("Leave"),
+                          child: const Text('Leave'),
                           onPressed: (){
                             scanLeave(index);
                           },
@@ -76,15 +76,15 @@ class OfflinePageView extends OfflinePageViewModel {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Delete"),
+                      child: const Text('Delete'),
                       onPressed: ()=>deleteItem(index),
                     ),
                     RaisedButton(
-                      child: Text("Test"),
+                      child: const Text('Test'),
                       onPressed: testConnection,
                     ),
                     RaisedButton(
-                      child: Text("Register"),
+                      child: const Text('Register'),
                       onPressed: ()=>registerMe(index),
                     ),
                   ],
@@ -95,26 +95,23 @@ class OfflinePageView extends OfflinePageViewModel {
         ),
       ),
     );
-    return result;
-  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) =>
+    Scaffold(
       appBar: AppBar(
-        title: Text("Offline"),
+        title: const Text('Offline'),
       ),
-      body: new ListView.builder(
+      body: ListView.builder(
         itemCount: scanedList.length,
-        itemBuilder: (BuildContext ctxt, int index) => buildBody(ctxt, index)
+        itemBuilder: _buildBody
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: scan,
         tooltip: 'Add',
-        child: Icon(Icons.add),
-        elevation: 2.0,
+        child: const Icon(Icons.add),
+        elevation: 2,
       ),
     );
-  }
   
 }

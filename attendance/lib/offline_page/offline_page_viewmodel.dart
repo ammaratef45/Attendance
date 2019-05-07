@@ -4,7 +4,6 @@ import 'package:attendance/db/database.dart';
 import 'package:attendance/backend/scan.dart';
 import 'package:attendance/backend/session.dart';
 import 'package:attendance/offline_page/offline_page.dart';
-import 'package:attendance/scan_exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
@@ -72,93 +71,105 @@ abstract class OfflinePageViewModel extends State<OfflinePage> {
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          this._scanResult = 'You did not grant the camera permission!';
+          _scanResult = 'You did not grant the camera permission!';
         });
       } else {
-        setState(() => this._scanResult = 'Unknown error: $e');
+        setState(() => _scanResult = 'Unknown error: $e');
       }
     } on FormatException{
       setState(() => print('Scan Cancelled'));
     } on Exception catch (e) {
       setState(() => print('Unknown error: $e'));
     }
-    showMessageDialog("scan", this._scanResult);
+    showMessageDialog('scan', _scanResult);
   }
 
+  /// scan page for leaving
   Future<void> scanLeave(int index) async {
     try {
-      String barcode = await BarcodeScanner.scan();
-      Session session = Session.fromMap(json.decode(barcode));
+      final String barcode = await BarcodeScanner.scan();
+      final Session session = Session.fromMap(json.decode(barcode));
       if(session.key!=scanedList[index].key) {
-        throw InvalidSessionException("This is not the same session you attended");
+        throw Exception('This is not the same session you attended');
       }
-      DateTime now = DateTime.now();
+      final DateTime now = DateTime.now();
       scanedList[index].leavedAt(now.toIso8601String());
-      DBProvider.db.updateScan(scanedList[index]);
-      getScans();
-      this._scanResult = "Scanned Successfully";
+      await DBProvider.db.updateScan(scanedList[index]);
+      await getScans();
+      _scanResult = 'Scanned Successfully';
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          this._scanResult = 'You did not grant the camera permission!';
+          _scanResult = 'You did not grant the camera permission!';
         });
       } else {
-        setState(() => this._scanResult = 'Unknown error: $e');
+        setState(() => _scanResult = 'Unknown error: $e');
       }
     } on FormatException{
-      setState(() => this._scanResult = 'Scan cancelled');
-    } on InvalidSessionException {
-      setState(() => this._scanResult = "This is not the same session you attended");
+      setState(() => _scanResult = 'Scan cancelled');
     } on Exception catch (e) {
-      setState(() => this._scanResult = 'Unknown error: $e');
+      setState(() => _scanResult = 'Error: $e');
     }
-    showMessageDialog("scan", this._scanResult);
+    showMessageDialog('scan', _scanResult);
   }
 
+  /// delete item from scans
   void deleteItem(int index) {
     DBProvider.db.deleteScan(scanedList[index].id);
     getScans();
   }
 
+  /// test if connected
   Future<void> testConnection() async {
-    String message = "You are not connected to internet";
-    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+    String message = 'You are not connected to internet';
+    final ConnectivityResult connectivityResult =
+      await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.mobile) {
-      message = "You are connected to mobile data";
+      message = 'You are connected to mobile data';
     } else if (connectivityResult == ConnectivityResult.wifi) {
-      message = "You are connected to wifi";
+      message = 'You are connected to wifi';
     }
-    showMessageDialog("test", message);
+    showMessageDialog('test', message);
   }
 
   // @todo #9 use /newsession instead of database as in online
+  /// register this to the backend.
   Future<void> registerMe(int index) async {
-    String message = "";
+    String message = '';
     if(!(await isLoggedIn())) {
-      message = "Not loggedin, login first";
+      message = 'Not loggedin, login first';
     } else if(true /*isScanned(index)*/) {
-      message = "You already registered this session, Delete this record";
+      message = 'You already registered this session, Delete this record';
     } else {
-      DatabaseReference attendanceRef =  FirebaseDatabase.instance.reference().child("attendances").push();
-      DatabaseReference sessionRef = FirebaseDatabase.instance.reference().child(scanedList[index].admin).child("classes")
-              .child(scanedList[index].classKey).child("sessions").child(scanedList[index].key);
-      Map<String, dynamic> map = Map<String, dynamic>();
-      map["session"] = scanedList[index].key;
-      map["sessionClass"] = scanedList[index].classKey;
-      map["sessionAdmin"] = scanedList[index].admin;
-      map["user"] = _mUser.uid;
-      map["arriveTime"] = scanedList[index].arrive;
-      map["leaveTime"] = scanedList[index].leave==null?"NULL":scanedList[index].leave;
+      final DatabaseReference attendanceRef = 
+        FirebaseDatabase.instance.reference().child('attendances').push();
+      final DatabaseReference sessionRef =
+        FirebaseDatabase.instance.reference()
+        .child(scanedList[index].admin).child('classes')
+        .child(scanedList[index].classKey)
+        .child('sessions').child(scanedList[index].key);
+      final Map<String, dynamic> map = <String, dynamic>{};
+      map['session'] = scanedList[index].key;
+      map['sessionClass'] = scanedList[index].classKey;
+      map['sessionAdmin'] = scanedList[index].admin;
+      map['user'] = _mUser.uid;
+      map['arriveTime'] = scanedList[index].arrive;
+      map['leaveTime'] = scanedList[index].isLeaved?
+      scanedList[index].leave:
+      'NULL';
       await attendanceRef.set(map);
-      sessionRef.child("attended").push().set(attendanceRef.key);
-      await FirebaseDatabase.instance.reference().child(_mUser.uid).child("attended").push().set(attendanceRef.key);
-      DBProvider.db.deleteScan(scanedList[index].id);
-      message = "Synced with the cloud successfully";
-      getScans();
+      await sessionRef.child('attended')
+      .push().set(attendanceRef.key);
+      await FirebaseDatabase.instance.reference()
+      .child(_mUser.uid).child('attended').push().set(attendanceRef.key);
+      await DBProvider.db.deleteScan(scanedList[index].id);
+      message = 'Synced with the cloud successfully';
+      await getScans();
     }
-    showMessageDialog("result", message);
+    showMessageDialog('result', message);
   }
 
+  /// check if user is loggedin
   Future<bool> isLoggedIn() async {
     _mUser = await _auth.currentUser();
     return _mUser!=null;

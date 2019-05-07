@@ -89,8 +89,6 @@ class User {
     }
   }
 
-  // @todo #47 add _name, _email and _picUrl too.
-  //  payload can be found in the API repo
   /// get payload of request when saving the info
   String requestBody() {
     final Map<String, String> body = <String, String>{};
@@ -99,6 +97,15 @@ class User {
     }
     if (_phone != null) {
       body['phone'] = _phone;
+    }
+    if (_phone != null) {
+      body['name'] = _name;
+    }
+    if (_phone != null) {
+      body['mail'] = _email;
+    }
+    if (_phone != null) {
+      body['photo'] = _picURL;
     }
     return json.encode(body);
   }

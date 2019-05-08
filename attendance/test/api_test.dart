@@ -122,4 +122,50 @@ void main() {
       }
     });
   });
+
+  group('test getting info', () {
+    final Future<String> t = token();
+    
+    test('test added session', () async {
+      final String res = await api.getInfo(await t);
+      expect(
+        res,
+        contains(
+          '{"success":"true",'
+          '"message":"These are your profile data in the server",' 
+        )
+      );
+    });
+    test('leave fails due to forgetting token', () async {
+      try {
+        await api.getInfo('');
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e.toString(),
+          contains(
+            '{"success":"false",'
+            '"message":"Token is not provided in x-token header",'
+            '"data":null}'
+          )
+        );
+      }
+    });
+    test('leave fails due to wrong token', () async {
+      try {
+        await api.getInfo('superSecretToken');
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e.toString(),
+          contains(
+            'status code is not 200\n'
+            '{"success":"false",'
+          )
+        );
+      }
+    });
+  });
 }

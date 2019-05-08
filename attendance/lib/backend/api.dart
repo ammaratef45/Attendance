@@ -20,7 +20,7 @@ class API {
   http.Request _buildRequest(
     String url,
     String token,
-    String body
+    [String body = '']
   ) =>
     http.Request('POST', Uri.parse(url))
     ..headers.addAll(_buildHeaders(token))
@@ -66,6 +66,21 @@ class API {
     const String url = '${_baseUrl}newSession';
     final http.Request request =
       _buildRequest(url, token, session.sessionBody());
+    final http.StreamedResponse response = await _client.send(request);
+    final int statusCode = response.statusCode;
+    final String responseData =
+      await response.stream.transform(utf8.decoder).join();
+    if(statusCode == 200) {
+      return responseData;
+    }
+    throw Exception('status code is not 200\n$responseData');
+  }
+
+  /// call getInfo endpoint that graps user info
+  Future<String> getInfo(String token) async {
+    const String url = '${_baseUrl}getInfo';
+    final http.Request request =
+      _buildRequest(url, token);
     final http.StreamedResponse response = await _client.send(request);
     final int statusCode = response.statusCode;
     final String responseData =

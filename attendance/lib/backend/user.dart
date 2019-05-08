@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:attendance/backend/api.dart';
+import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/db/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+// @todo #50 add gettinng info functionality.
 /// User class
 class User {
   /// initialization factory
@@ -19,6 +20,7 @@ class User {
   String _phone;
   static final User _user = User._internal();
   final API _api = API();
+  final List<Attendance> _attended = <Attendance>[];
 
   /// instance getter
   static User instance() => _user;
@@ -37,6 +39,9 @@ class User {
 
   /// user's picUrl
   String get picUrl => _picURL;
+
+  /// user's attended sessions.
+  List<Attendance> get attended => _attended;
 
   /// rename the user (change native name)
   void rename(String newName) {
@@ -130,6 +135,10 @@ class User {
   
   /// save data to api and local storage
   Future<void> save() async {
+    // @todo #50 add save to attendance model
+    for(Attendance attendance in _attended) {
+      // attendance.save();
+    }
     _persist();
     try {
       await _api.setUserInfo(this, await token());

@@ -115,7 +115,7 @@ abstract class HomePageViewModel extends State<HomePage> {
     await Dialogs.messageDialog(context, 'result', scanResult);
   }
 
-  // @todo #9 get data from api /getInfo and save in user class (add more endpoints if needed)
+  // @todo #50 get data from user class, add all needed functionality.
   Future<void> _fillData() async {
     litems.clear();
     uitems.clear();

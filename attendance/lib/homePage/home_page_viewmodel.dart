@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/backend/session.dart';
+import 'package:attendance/backend/user.dart';
 import 'package:attendance/homePage/home_page.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -115,49 +116,19 @@ abstract class HomePageViewModel extends State<HomePage> {
     await Dialogs.messageDialog(context, 'result', scanResult);
   }
 
-  // @todo #50 get data from user class, add all needed functionality.
+  // @todo #102 remove litems and uitems and get them from user as future.
   Future<void> _fillData() async {
     litems.clear();
     uitems.clear();
-    FirebaseDatabase.instance
-        .reference()
-        .child(_mUser.uid)
-        .child('attended')
-        .onChildAdded
-        .listen((Event event) async {
-      final String key = event.snapshot.value;
-      final DatabaseReference itemRef =
-      FirebaseDatabase.instance.reference().child('attendances').child(key);
-      final DataSnapshot item = await itemRef.once();
-      final DatabaseReference classRef = FirebaseDatabase.instance
-          .reference()
-          .child(item.value['sessionAdmin'])
-          .child('classes')
-          .child(item.value['sessionClass']);
-      final DataSnapshot classSnap = await classRef.once();
-      final String name = classSnap.value['name'];
-      final DataSnapshot sessionSnap =
-      await classRef.child('sessions').child(item.value['session']).once();
-      final String date = json.decode(sessionSnap.value['qrval'])['date'];
-      final String attendTime = item.value['arriveTime'];
-      final String leaveTime = item.value['leaveTime'];
-      setState(() {
-        Attendance m;
-        m = Attendance.fromMap(
-          <String, dynamic> {
-            'key': key,
-            'className': name,
-            'sessionDate': date,
-            'arriveDate': attendTime,
-            'leaveDate' :leaveTime
-          }
-        );
-        if (m.leaveDate == 'NULL') {
-          uitems.add(m);
-        } else {
-          litems.add(m);
-        }
-      });
+    for(Attendance m in await User().attended()){
+      if (m.leaveDate == 'NULL') {
+        uitems.add(m);
+      } else {
+        litems.add(m);
+      }
+    }
+    setState(() {
+      
     });
   }
 }

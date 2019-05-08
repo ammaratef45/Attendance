@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:attendance/AttendanceDatailsPage/attendance_details_page.dart';
+import 'package:attendance/backend/user.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance/backend/session.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -20,6 +21,7 @@ extends State<AttendanceDetailsPage> {
         anchorOffset: 60,
         anchorType: AnchorType.bottom,
       );
+      User().attended(referesh: true);
   }
   
   /// result of scanning

@@ -1,6 +1,10 @@
 /// model of the attendance.
 class Attendance {
   /// constructor
+  Attendance(String key) {
+    _key = key;
+  }
+  /// constructor with map
   Attendance.fromMap(Map<String, dynamic> map) {
     _key = map['key'];
     _date = map['sessionDate'];
@@ -35,4 +39,25 @@ class Attendance {
     _leaveDate = date;
   }
 
+  // @todo 102 implement the saving in API.
+  /// save any changes made to the object.
+  Future<void> save() async {
+    _persist();
+    try {
+      // await _api.setUserInfo(this, await token());
+      _markSaved();
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // @todo #102 implement the persistence of data in DB module.
+  void _persist() {
+    //DBProvider.db.saveAttendance(this);
+  }
+
+  void _markSaved() {
+    //DBProvider.db.userIsSynced();
+  }
+  
 }

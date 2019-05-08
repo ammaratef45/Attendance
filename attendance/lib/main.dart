@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 
 void main() => runApp(MyApp());
-
+// @todo #102 solve obvious errors appear when running after refactoring
 /// The Application class
 class MyApp extends StatelessWidget {
   final Widget _myHome = LoginPage();

@@ -41,7 +41,22 @@ class User {
   String get picUrl => _picURL;
 
   /// user's attended sessions.
-  List<Attendance> get attended => _attended;
+  Future<List<Attendance>> attended({bool referesh=false}) async {
+    if(referesh) {
+      await _loadInfo();
+    }
+    return Future<List<Attendance>>.value(_attended);
+  }
+
+  Future<void> _loadInfo() async {
+    final String wholeInfo = await _api.getInfo(await token());
+    final Map<String, dynamic> attendances =
+      json.decode(wholeInfo)['data']['attended'];
+      _attended.clear();
+    for(String key in attendances.keys) {
+      _attended.add(Attendance(attendances[key]));
+    }
+  }
 
   /// rename the user (change native name)
   void rename(String newName) {
@@ -135,9 +150,8 @@ class User {
   
   /// save data to api and local storage
   Future<void> save() async {
-    // @todo #50 add save to attendance model
     for(Attendance attendance in _attended) {
-      // attendance.save();
+      await attendance.save();
     }
     _persist();
     try {

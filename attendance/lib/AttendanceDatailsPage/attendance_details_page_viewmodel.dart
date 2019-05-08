@@ -4,9 +4,7 @@ import 'dart:convert';
 import 'package:attendance/AttendanceDatailsPage/attendance_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance/backend/session.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 /// view model of attendance page

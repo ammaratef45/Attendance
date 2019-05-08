@@ -40,33 +40,16 @@ extends State<AttendanceDetailsPage> {
     try {
       final String barcode = await BarcodeScanner.scan();
       final Session session = Session.fromMap(json.decode(barcode));
-      // @todo #51 save locally and call api.leaveSession and
-      //  remove firebase admin usage
-      final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      final String uid = user.uid;
-      final DatabaseReference attendanceRef =
-        FirebaseDatabase.instance
-        .reference().child('attendances').child(widget.model.key);
-      final DataSnapshot oldModel = await attendanceRef.once();
-      if(oldModel.value['session'] != session.key) {
+
+      if(widget.model.key != session.key) {
         throw Exception('this is not the same session code');
       }
       final DateTime now = DateTime.now();
-      final Map<String, dynamic> map = <String, dynamic>{
-        'session' : session.key,
-        'sessionClass' : session.classKey,
-        'sessionAdmin' : session.adminUID,
-        'user' : uid,
-        'arriveTime' : widget.model.arriveDate,
-        'leaveTime' : now.toIso8601String()
-      };
-      await attendanceRef.set(map);
-      await FirebaseDatabase.instance
-        .reference().child(uid).child('attended').push().set(attendanceRef.key);
-      setState(() {
-      scanResult = '';
       widget.model.leave(now.toIso8601String());
-      });
+      // @todo #59 add save functionality to attendance.
+      //  then uncomment the line below.
+      
+      //widget.model.save();
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {

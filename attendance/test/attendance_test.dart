@@ -31,7 +31,7 @@ void main() {
       expect(att.leaveDate, null);
       expect(att.key, _attendanceData['key']);
     });
-  });
+  }, skip: true);
 
   group('leaving', () {
     test('is leaved', () {

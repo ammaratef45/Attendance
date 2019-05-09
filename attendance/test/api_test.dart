@@ -121,7 +121,7 @@ void main() {
         );
       }
     });
-  });
+  }, skip: true);
 
   group('test getting info', () {
     final Future<String> t = token();

@@ -66,9 +66,14 @@ class Attendance {
     //DBProvider.db.userIsSynced();
   }
 
-  // @todo #51 implement this methos
   /// get the body of the API request for leave session
-  String leaveRequestBody() => 'what?';
+  String leaveRequestBody() {
+    final Map<String, String> map = <String, String>{
+      'key' : _key,
+      'time' : _leaveDate
+    }
+    return json.encode(map);
+  }
 
   /// get the body of session as a map string
   String requestBody() {

@@ -118,17 +118,25 @@ abstract class HomePageViewModel extends State<HomePage> {
 
   // @todo #102 remove litems and uitems and get them from user as future.
   Future<void> _fillData() async {
+    print('_fillData');
     litems.clear();
     uitems.clear();
     for(Attendance m in await User().attended()){
-      if (m.leaveDate == 'NULL') {
-        uitems.add(m);
-      } else {
-        litems.add(m);
-      }
+      setState(() {
+        if (m.isLeaved()) {
+          uitems.add(m);
+        } else {
+          print('non-leaved');
+          litems.add(m);
+        }
+      });
     }
-    setState(() {
-      
-    });
+  }
+
+  /// opem offline page
+  Future<void> openOffline() async {
+    Navigator.pop(context);
+    await Navigator.of(context).pushNamed('/offline');
+    await _fillData();
   }
 }

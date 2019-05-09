@@ -21,11 +21,13 @@ class HomePageView extends HomePageViewModel {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  model.className,
+                  //model.className,
+                  'mm',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 Text(
-                  model.date,
+                  //model.session.date,
+                  'mm',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
@@ -87,10 +89,7 @@ class HomePageView extends HomePageViewModel {
                     ListTile(
                       leading: const Icon(Icons.cloud_off),
                       title: const Text('Offline scan'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed('/offline');
-                      },
+                      onTap: openOffline,
                     ),
                     ListTile(
                       leading: const Icon(Icons.account_circle),

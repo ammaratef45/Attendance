@@ -15,8 +15,8 @@ class DBProvider {
   static const String _userTableV2 = 
     'CREATE TABLE USER ('
     'id INTEGER PRIMARY KEY,'
-    'nativeName TEXT'
-    'phone TEXT'
+    'nativeName TEXT,'
+    'phone TEXT,'
     'apiSynced int'
     ')';
   static const String _scanTableV2 = 
@@ -66,7 +66,7 @@ class DBProvider {
     await db.execute(_userTableV2);
     final int raw = await db.rawInsert(
       'INSERT Into USER (id,nativeName,phone,apiSynced)'
-      ' VALUES (?,?,?,?,?)',
+      ' VALUES (?,?,?,?)',
       <dynamic>[1, '', '', 0]
     );
     return raw;

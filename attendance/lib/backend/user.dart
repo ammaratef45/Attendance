@@ -43,17 +43,20 @@ class User {
   /// user's attended sessions.
   Future<List<Attendance>> attended({bool referesh=false}) async {
     if(referesh) {
-      await _loadInfo();
+      await loadInfo();
     }
     return Future<List<Attendance>>.value(_attended);
   }
 
-  Future<void> _loadInfo() async {
+  /// load the info from backend.
+  Future<void> loadInfo() async {
     final String wholeInfo = await _api.getInfo(await token());
     final Map<String, dynamic> attendances =
       json.decode(wholeInfo)['data']['attended'];
       _attended.clear();
     for(String key in attendances.keys) {
+      final Attendance att = Attendance(attendances[key]);
+      await att.loadInfo();
       _attended.add(Attendance(attendances[key]));
     }
   }

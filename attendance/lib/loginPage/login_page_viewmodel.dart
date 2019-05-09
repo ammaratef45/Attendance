@@ -43,6 +43,7 @@ abstract class LoginPageViewModel extends State<LoginPage> {
       ..nameMe(user.displayName)
       ..assignEmail(user.email)
       ..changePicture(user.photoUrl)
+      ..loadInfo()
       ..save();
       Navigator.of(context).pushReplacementNamed('/home');
     }

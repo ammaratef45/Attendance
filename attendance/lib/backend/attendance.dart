@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:attendance/backend/api.dart';
 import 'package:attendance/backend/session.dart';
+import 'package:attendance/backend/user.dart';
 
 /// model of the attendance.
 class Attendance {
@@ -11,15 +13,11 @@ class Attendance {
   /// constructor with map
   Attendance.fromMap(Map<String, dynamic> map) {
     _key = map['key'];
-    _date = map['sessionDate'];
     _arriveDate = map['arriveDate'];
     _leaveDate = map['leaveDate'];
     _className = map['className'];
   }
 
-  String _date;
-  /// get the date of the session
-  String get date => _date;
   String _arriveDate;
   /// get the date of arriving
   String get arriveDate => _arriveDate;
@@ -34,8 +32,12 @@ class Attendance {
   String get key => _key;
   /// check if the session is scanned for leaving
   bool isLeaved() => _leaveDate != null;
+  final API _api = API();
 
   Session _session;
+
+  /// session attended here.
+  Session get session => _session;
 
   /// set the leave date
   void leave(String date) {
@@ -85,6 +87,17 @@ class Attendance {
       'sessionClass' : _session.classKey
     };
     return json.encode(map);
+  }
+
+  /// load info of attendance from backend
+  Future<void> loadInfo() async {
+    final String res = await _api.getAttendance(await User.token(), _key);
+    final Map<String, dynamic> map = json.decode(res)['data'];
+    _arriveDate = map['arriveTime'];
+    if(map['leaveTime'] != 'NULL') {
+      _leaveDate = map['leaveTime'];
+    }
+    _className = map['sessionClass'];
   }
   
 }

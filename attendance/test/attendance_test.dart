@@ -18,7 +18,7 @@ void main() {
   group('instantiation', () {
     test('data is identical', () {
       expect(_attendance.className, _attendanceData['className']);
-      expect(_attendance.date, _attendanceData['sessionDate']);
+      expect(_attendance.session.date, _attendanceData['sessionDate']);
       expect(_attendance.arriveDate, _attendanceData['arriveDate']);
       expect(_attendance.leaveDate, _attendanceData['leaveDate']);
       expect(_attendance.key, _attendanceData['key']);
@@ -26,7 +26,7 @@ void main() {
     test('key only initialization', () {
       final Attendance att = Attendance(_attendanceData['key']);
       expect(att.className, null);
-      expect(att.date, null);
+      expect(att.session.date, null);
       expect(att.arriveDate, null);
       expect(att.leaveDate, null);
       expect(att.key, _attendanceData['key']);

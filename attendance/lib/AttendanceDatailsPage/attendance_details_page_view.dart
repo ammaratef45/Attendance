@@ -17,8 +17,14 @@ class AttendanceDetailsPageView extends AttendanceDetailsPageViewModel {
             const Padding(
               padding: EdgeInsets.only(top: 10)
             ),
-            Text(widget.model.className),
-            Text(widget.model.date),
+            Text(
+              //widget.model.className
+              'what'
+            ),
+            Text(
+              //widget.model.session.date
+              'what'
+            ),
             Text('Arrived: ${widget.model.arriveDate}'),
             Visibility(
               child: Text('Leaved: ${widget.model.leaveDate}'),

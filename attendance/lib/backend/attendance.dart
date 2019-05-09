@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:attendance/backend/session.dart';
+
 /// model of the attendance.
 class Attendance {
   /// constructor
@@ -31,6 +35,8 @@ class Attendance {
   /// check if the session is scanned for leaving
   bool isLeaved() => _leaveDate != null;
 
+  Session _session;
+
   /// set the leave date
   void leave(String date) {
     if(isLeaved()) {
@@ -58,6 +64,22 @@ class Attendance {
 
   void _markSaved() {
     //DBProvider.db.userIsSynced();
+  }
+
+  // @todo #51 implement this methos
+  /// get the body of the API request for leave session
+  String leaveRequestBody() => 'what?';
+
+  /// get the body of session as a map string
+  String requestBody() {
+    final Map<String, String> map = <String, String>{
+      'arriveTime' : _arriveDate,
+      'leaveTime' : _leaveDate,
+      'session' : _session.key,
+      'sessionAdmin' : _session.adminUID,
+      'sessionClass' : _session.classKey
+    };
+    return json.encode(map);
   }
   
 }

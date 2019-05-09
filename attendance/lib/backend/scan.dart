@@ -1,5 +1,5 @@
 import 'package:attendance/backend/api.dart';
-import 'package:attendance/backend/session.dart';
+import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/backend/user.dart';
 import 'package:attendance/db/database.dart';
 
@@ -81,10 +81,10 @@ class Scan {
     _persist();
     try {
       await _api.addSession(
-        Session.fromMap(<String, dynamic>{
+        Attendance.fromMap(<String, dynamic>{
           'classkey' : classKey,
           'myKey' : key,
-          'admin' : admin
+          'admin' : admin,
         }),
         await User.token()
       );

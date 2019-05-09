@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:attendance/backend/api.dart';
-import 'package:attendance/backend/session.dart';
+import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/backend/user.dart';
 import 'package:test/test.dart';
 
@@ -38,10 +38,10 @@ void main() {
 
   group('session calls', () {
     final Future<String> t = token();
-    // @todo #51 mock a session for this test and make it work.
-    Session s;
+    // @todo #51 mock an attendance for this test and make it work.
+    Attendance att;
     test('leave success', () async {
-      final String res = await api.leaveSession(s, await t);
+      final String res = await api.leaveSession(att, await t);
       expect(
         res,
         '{"success":"true","message":"updated","data":null}'
@@ -49,7 +49,7 @@ void main() {
     });
     test('leave fails due to forgetting token', () async {
       try {
-        await api.leaveSession(s, '');
+        await api.leaveSession(att, '');
         throw Exception('should not success');
       // ignore: avoid_catches_without_on_clauses
       } catch (e) {
@@ -63,7 +63,7 @@ void main() {
     });
     test('leave fails due to wrong token', () async {
       try {
-        await api.leaveSession(s, 'superSecretToken');
+        await api.leaveSession(att, 'superSecretToken');
         throw Exception('should not success');
       // ignore: avoid_catches_without_on_clauses
       } catch (e) {
@@ -78,12 +78,12 @@ void main() {
     });
   }, skip: true);
 
-  group('test adding session', () {
+  group('test adding attendance', () {
     final Future<String> t = token();
-    // @todo #48 mock data of the session.
-    final Session s = Session();
+    // @todo #48 mock data of the attendance.
+    Attendance att;
     test('test added session', () async {
-      final String res = await api.addSession(s, await t);
+      final String res = await api.addSession(att, await t);
       expect(res, 
         '{"success":"true",'
         '"message":"inserted",'
@@ -92,7 +92,7 @@ void main() {
     });
     test('leave fails due to forgetting token', () async {
       try {
-        await api.addSession(s, '');
+        await api.addSession(att, '');
         throw Exception('should not success');
       // ignore: avoid_catches_without_on_clauses
       } catch (e) {
@@ -108,7 +108,7 @@ void main() {
     });
     test('leave fails due to wrong token', () async {
       try {
-        await api.addSession(s, 'superSecretToken');
+        await api.addSession(att, 'superSecretToken');
         throw Exception('should not success');
       // ignore: avoid_catches_without_on_clauses
       } catch (e) {

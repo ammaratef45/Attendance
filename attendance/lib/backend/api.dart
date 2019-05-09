@@ -95,7 +95,7 @@ class API {
   Future<String> getAttendance(String token, String key) async {
     const String url = '${_baseUrl}getAttendance';
     final http.Request request =
-      _buildRequest(url, token);
+      _buildRequest(url, token, json.encode(<String, dynamic>{'key':key}));
     final http.StreamedResponse response = await _client.send(request);
     final int statusCode = response.statusCode;
     final String responseData =

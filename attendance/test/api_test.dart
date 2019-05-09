@@ -168,4 +168,54 @@ void main() {
       }
     });
   });
+
+  group('test getting attendance', () {
+    final Future<String> t = token();
+    const String _attendanceKey = '-LXDFDibiC8EyKRg96Zv';
+    test('test added session', () async {
+      final String res = await api.getAttendance(await t, _attendanceKey);
+      expect(
+        res,
+         '{"success":"true",'
+         '"message":null,'
+         '"data":{"arriveTime":"2019-01-27T09:40:45.883409",'
+         '"leaveTime":"2019-01-30T09:02:15.843889",'
+         '"session":"-LXDEjd1md3CfRY6zkLw",'
+         '"sessionAdmin":"GUfzhtGu1vVFJaYIvxi1yIa49Oy1",'
+         '"sessionClass":"-LXD9_P6tB6r-_RwAg01",'
+         '"user":"GUfzhtGu1vVFJaYIvxi1yIa49Oy1"}}'
+      );
+    });
+    test('leave fails due to forgetting token', () async {
+      try {
+        await api.getAttendance('', _attendanceKey);
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e.toString(),
+          contains(
+            '{"success":"false",'
+            '"message":"Token is not provided in x-token header",'
+            '"data":null}'
+          )
+        );
+      }
+    });
+    test('leave fails due to wrong token', () async {
+      try {
+        await api.getAttendance('superSecretToken', _attendanceKey);
+        throw Exception('should not success');
+      // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        expect(
+          e.toString(),
+          contains(
+            'status code is not 200\n'
+            '{"success":"false",'
+          )
+        );
+      }
+    });
+  });
 }

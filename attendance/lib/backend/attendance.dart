@@ -29,7 +29,7 @@ class Attendance {
   /// get the key
   String get key => _key;
   /// check if the session is scanned for leaving
-  bool isLeaved() => _leaveDate != 'NULL';
+  bool isLeaved() => _leaveDate != null;
 
   /// set the leave date
   void leave(String date) {

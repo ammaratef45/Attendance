@@ -71,7 +71,7 @@ class Attendance {
     final Map<String, String> map = <String, String>{
       'key' : _key,
       'time' : _leaveDate
-    }
+    };
     return json.encode(map);
   }
 

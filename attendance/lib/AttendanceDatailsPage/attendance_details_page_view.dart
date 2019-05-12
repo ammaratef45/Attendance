@@ -28,14 +28,14 @@ class AttendanceDetailsPageView extends AttendanceDetailsPageViewModel {
             Text('Arrived: ${widget.model.arriveDate}'),
             Visibility(
               child: Text('Leaved: ${widget.model.leaveDate}'),
-              visible: widget.model.isLeaved(),
+              visible: widget.model.isLeft(),
             ),
             Visibility(
               child: RaisedButton(
                 child: const Text('Scan For Leaving'),
                 onPressed: scan,
               ),
-              visible: !widget.model.isLeaved(),
+              visible: !widget.model.isLeft(),
             ),
           ],
         ),

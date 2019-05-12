@@ -123,7 +123,7 @@ abstract class HomePageViewModel extends State<HomePage> {
     uitems.clear();
     for(Attendance m in await User().attended()){
       setState(() {
-        if (m.isLeaved()) {
+        if (m.isLeft()) {
           uitems.add(m);
         } else {
           print('non-leaved');

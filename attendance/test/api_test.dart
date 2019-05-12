@@ -4,7 +4,7 @@ import 'package:attendance/backend/api.dart';
 import 'package:attendance/backend/attendance.dart';
 import 'package:attendance/backend/user.dart';
 import 'package:test/test.dart';
-
+// @todo #102 created a generator class for test data
 Future<String> token() async{
   final ProcessResult p = 
     await Process.run(
@@ -15,20 +15,20 @@ Future<String> token() async{
         'GUfzhtGu1vVFJaYIvxi1yIa49Oy1'
       ]
     );
-    final String t = p.stdout.toString().trim();
+    final String testToken = p.stdout.toString().trim();
     print(p.stderr);
-    return t;
+    return testToken;
 }
 
 void main() {
   final API api = API();
   group('setUserInfo', () {
-    final Future<String> t = token();
+    final Future<String> testToken = token();
     final User user = User()
     ..rename('Ammar Atef')
     ..changePhone('1153300223');
     test('set valid info', () async {
-      final String res = await api.setUserInfo(user, await t);
+      final String res = await api.setUserInfo(user, await testToken);
       expect(
         res,
         '{"success":"true","message":"You are a verified user","data":null}'
@@ -37,17 +37,17 @@ void main() {
   });
 
   group('session calls', () {
-    final Future<String> t = token();
+    final Future<String> testToken = token();
     // @todo #51 mock an attendance for this test and make it work.
     Attendance att;
-    test('leave success', () async {
-      final String res = await api.leaveSession(att, await t);
+    test('success', () async {
+      final String res = await api.leaveSession(att, await testToken);
       expect(
         res,
         '{"success":"true","message":"updated","data":null}'
       );
     });
-    test('leave fails due to forgetting token', () async {
+    test('fails due to forgetting token', () async {
       try {
         await api.leaveSession(att, '');
         throw Exception('should not success');
@@ -61,7 +61,7 @@ void main() {
         );
       }
     });
-    test('leave fails due to wrong token', () async {
+    test('fails due to wrong token', () async {
       try {
         await api.leaveSession(att, 'superSecretToken');
         throw Exception('should not success');
@@ -79,18 +79,18 @@ void main() {
   }, skip: true);
 
   group('test adding attendance', () {
-    final Future<String> t = token();
+    final Future<String> testToken = token();
     // @todo #48 mock data of the attendance.
     Attendance att;
     test('test added session', () async {
-      final String res = await api.addSession(att, await t);
+      final String res = await api.addSession(att, await testToken);
       expect(res, 
         '{"success":"true",'
         '"message":"inserted",'
         '"data":null}'
       );
     });
-    test('leave fails due to forgetting token', () async {
+    test('departure fails due to forgetting token', () async {
       try {
         await api.addSession(att, '');
         throw Exception('should not success');
@@ -106,7 +106,7 @@ void main() {
         );
       }
     });
-    test('leave fails due to wrong token', () async {
+    test('departure fails due to wrong token', () async {
       try {
         await api.addSession(att, 'superSecretToken');
         throw Exception('should not success');
@@ -124,10 +124,10 @@ void main() {
   }, skip: true);
 
   group('test getting info', () {
-    final Future<String> t = token();
+    final Future<String> testToken = token();
     
     test('test added session', () async {
-      final String res = await api.getInfo(await t);
+      final String res = await api.getInfo(await testToken);
       expect(
         res,
         contains(
@@ -136,7 +136,7 @@ void main() {
         )
       );
     });
-    test('leave fails due to forgetting token', () async {
+    test('fails due to forgetting token', () async {
       try {
         await api.getInfo('');
         throw Exception('should not success');
@@ -152,7 +152,7 @@ void main() {
         );
       }
     });
-    test('leave fails due to wrong token', () async {
+    test('fails due to wrong token', () async {
       try {
         await api.getInfo('superSecretToken');
         throw Exception('should not success');
@@ -170,10 +170,11 @@ void main() {
   });
 
   group('test getting attendance', () {
-    final Future<String> t = token();
+    final Future<String> testToken = token();
     const String _attendanceKey = '-LXDFDibiC8EyKRg96Zv';
     test('test added session', () async {
-      final String res = await api.getAttendance(await t, _attendanceKey);
+      final String res =
+        await api.getAttendance(await testToken, _attendanceKey);
       expect(
         res,
          '{"success":"true",'
@@ -186,7 +187,7 @@ void main() {
          '"user":"GUfzhtGu1vVFJaYIvxi1yIa49Oy1"}}'
       );
     });
-    test('leave fails due to forgetting token', () async {
+    test('fails due to forgetting token', () async {
       try {
         await api.getAttendance('', _attendanceKey);
         throw Exception('should not success');
@@ -202,7 +203,7 @@ void main() {
         );
       }
     });
-    test('leave fails due to wrong token', () async {
+    test('fails due to wrong token', () async {
       try {
         await api.getAttendance('superSecretToken', _attendanceKey);
         throw Exception('should not success');

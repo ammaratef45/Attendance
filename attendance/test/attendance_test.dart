@@ -10,11 +10,11 @@ void main() {
     'className' : 'BIOCHEMICAL'
   };
   final Attendance _attendance = Attendance.fromMap(_attendanceData);
-  final Map<String, dynamic> _attendanceNotLeavedData = <String, dynamic>{}
+  final Map<String, dynamic> _attendanceNotLeftData = <String, dynamic>{}
   ..addAll(_attendanceData)
   ..remove('leaveDate');
-  final Attendance _notLeavedAttendance =
-    Attendance.fromMap(_attendanceNotLeavedData);
+  final Attendance _notLeftAttendance =
+    Attendance.fromMap(_attendanceNotLeftData);
   group('instantiation', () {
     test('data is identical', () {
       expect(_attendance.className, _attendanceData['className']);
@@ -34,14 +34,14 @@ void main() {
   }, skip: true);
 
   group('leaving', () {
-    test('is leaved', () {
-      expect(_notLeavedAttendance.isLeaved(), false);
-      expect(_attendance.isLeaved(), true);
+    test('is left', () {
+      expect(_notLeftAttendance.isLeft(), false);
+      expect(_attendance.isLeft(), true);
     });
     test('leaving working', () {
-      _notLeavedAttendance.leave('2019-01-27T09:40:45.883409');
-      expect(_notLeavedAttendance.leaveDate, '2019-01-27T09:40:45.883409');
-      expect(_notLeavedAttendance.isLeaved(), true);
+      _notLeftAttendance.leave('2019-01-27T09:40:45.883409');
+      expect(_notLeftAttendance.leaveDate, '2019-01-27T09:40:45.883409');
+      expect(_notLeftAttendance.isLeft(), true);
     });
     test('leaved will refuse to be leaved again', () {
       try {

@@ -31,7 +31,7 @@ class Attendance {
   /// get the key
   String get key => _key;
   /// check if the session is scanned for leaving
-  bool isLeaved() => _leaveDate != null;
+  bool isLeft() => _leaveDate != null;
   final API _api = API();
 
   Session _session;
@@ -41,7 +41,7 @@ class Attendance {
 
   /// set the leave date
   void leave(String date) {
-    if(isLeaved()) {
+    if(isLeft()) {
       throw Exception('session is leaved already');
     }
     _leaveDate = date;

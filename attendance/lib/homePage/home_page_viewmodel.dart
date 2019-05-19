@@ -72,17 +72,7 @@ abstract class HomePageViewModel extends State<HomePage> {
     try {
       final String barcode = await BarcodeScanner.scan();
       final String uid = _mUser.uid;
-      final Session session = Session.fromMap(json.decode(barcode));
-      // @todo #48 save locally and call api /newsession instead of using firebase database
-      final DatabaseReference sessionRef = FirebaseDatabase.instance
-          .reference()
-          .child(session.adminUID)
-          .child('classes')
-          .child(session.classKey)
-          .child('sessions')
-          .child(session.key);
-      final DatabaseReference attendanceRef =
-      FirebaseDatabase.instance.reference().child('attendances').push();
+      final Session session = Session.fromMap(json.decode(barcode));    
       final DateTime now = DateTime.now();
       final Map<String, dynamic> map = <String, dynamic>{};
       map['session'] = session.key;
@@ -91,14 +81,8 @@ abstract class HomePageViewModel extends State<HomePage> {
       map['user'] = uid;
       map['arriveTime'] = now.toIso8601String();
       map['leaveTime'] = 'NULL';
-      await attendanceRef.set(map);
-      await sessionRef.child('attended').push().set(attendanceRef.key);
-      await FirebaseDatabase.instance
-          .reference()
-          .child(uid)
-          .child('attended')
-          .push()
-          .set(attendanceRef.key);
+      final Attendance attendance = Attendance.fromMap(map);
+      (await User().attended()).add(attendance);
       setState(() {
         scanResult = 'scanned successfully';
       });

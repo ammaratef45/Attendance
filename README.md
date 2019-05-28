@@ -23,6 +23,13 @@ This is the users version (student or participant).
 [![Get it on Google Play](https://github.com/Volorf/Badges/blob/master/Google%20Play/Google%20Play%20Badge.svg)](https://play.google.com/store/apps/details?id=com.ammar.attendance)
 [![Get it on App Store](https://github.com/Volorf/Badges/blob/master/App%20Store/App%20Store%20Badge.svg)]()
 
+### Features
+
+* [x] Login with google.
+* [x] Scan QR codes offline.
+* [x] Scan QR codes again when leaving.
+* [ ] Profile page to add native name and phone number.
+* [x] See list of all scanned QRs.
 
 ## Donation
 We pay money to keep the development wheel running and to make the App always FREE for everyone. 

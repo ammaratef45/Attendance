@@ -24,9 +24,10 @@ abstract class LoginPageViewModel extends State<LoginPage> {
       await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
-    final FirebaseUser firebaseUser = await _auth.signInWithGoogle(
+    final FirebaseUser firebaseUser = await _auth.signInAnonymously();
+    /*await _auth.signInWithGoogle(
         idToken: googleSignInAuthentication.idToken,
-        accessToken: googleSignInAuthentication.accessToken);
+        accessToken: googleSignInAuthentication.accessToken);*/
     return firebaseUser;
   }
 
